@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_asig_employee.access_gif_disponibilidad,access_gif_disponibilidad,gif_asig_employee.model_gif_disponibilidad,,1,1,1,1
+gif_asig_employee.access_gif_history,access_gif_history,gif_asig_employee.model_gif_history,,1,1,1,1

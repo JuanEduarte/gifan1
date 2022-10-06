@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard.payment.attachment.xml inherit form view -->
+    <record id="wizard_account_payment_attach_xml_view_form" model="ir.ui.view">
+        <field name="name">wizard.payment.attachment.xml.view.form</field>
+        <field name="model">wizard.payment.attachment.xml</field>
+        <field name="arch" type="xml">
+            <form string="Adjuntar archivos XML de facturas de compra">
+                <sheet>
+                    <div class="text-muted">
+                        Adjuntar un XML a factura
+                    </div>
+                    <group>
+                        <field name="gif_attached_xml" widget="selection"/>
+                        <field name="payment_id" readonly="1"/>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button name="attachment_to_payment" string="Adjuntar XML" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.payment.attachment.xml action window -->
+    <record id="wizard_xml_attach_payment_action" model="ir.actions.act_window">
+        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="res_model">wizard.payment.attachment.xml</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="wizard_payment_unattachment_xml_view_form" model="ir.ui.view">
+        <field name="name">wizard.payment.unattachment.xml.view.form</field>
+        <field name="model">wizard.payment.unattachment.xml</field>
+        <field name="arch" type="xml">
+            <form string="Adjuntar archivos XML de facturas de compra">
+                <sheet>
+                    <div class="text-muted">
+                        Adjuntar un XML a factura de compra
+                    </div>
+                    <group>
+                        <field name="payment_id" readonly="1"/>
+                        <field name="move_attached" widget="selection"/>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button name="unattachment_to_payment" string="Remover XML" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.payment.unattachment.xml action window -->
+    <record id="wizard_xml_unattach_payment_action" model="ir.actions.act_window">
+        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="res_model">wizard.payment.unattachment.xml</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

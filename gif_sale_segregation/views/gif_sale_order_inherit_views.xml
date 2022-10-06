@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- sale.order inherit form view -->
+    <record id="view_id_sale_segregation" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="tipificacion_venta" options="{'no_open': False, 'no_create_edit': True, 'no_create': True}" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- sale.order inherit tree view -->
+    <record id="sale_type_tree_inherit_view_id_sale_segregation" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field name="is_office_sale" invisible="1" />
+                <field name="is_primary_sale" invisible="1" />
+                <field name="is_ben_dis_sale" invisible="1" />
+                <field name="sum_sale_order" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- sale.order inherit tree view -->
+    <record id="sale_segregation_view_order_view_id" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree.sale.view.order.sale.segregation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='name']" position="after">
+                <!-- Add your fields here -->
+                <field name="is_office_sale" invisible="1" />
+                <field name="is_primary_sale" invisible="1" />
+                <field name="is_ben_dis_sale" invisible="1" />
+                <field name="sum_sale_order" invisible="1"/>
+                
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

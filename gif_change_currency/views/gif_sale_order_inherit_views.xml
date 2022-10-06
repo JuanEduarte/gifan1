@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- sale.order inherit form view -->
+    <record id="sale_order_inherit_change_currency_view_id" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form.change.currency</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- attrs="{'invisible': [('gif_own_currency_check_sale','=',False)]}" -->
+            <xpath expr="//field[@name='payment_term_id']" position="before">
+                <field name="gif_own_currency_check_sale" invisible="1"/>
+                <field name="gif_own_inverse_currency" />
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

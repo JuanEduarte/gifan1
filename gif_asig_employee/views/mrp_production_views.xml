@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- mrp.production inherit form view -->
+        <record id="mrp_production_inherit_view_form" model="ir.ui.view">
+            <field name="name">mrp.production.inherit.view.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <!-- <field name="gif_obl_emp" string="Obligatorio" attrs="{'readonly': [('state', 'in', ('progress', 'cancel', 'done', 'to_close'))]}"/> -->
+                    <field name="gif_has_emp" invisible="1"/>
+                    <field name="gif_asg_emp" />  <!-- attrs="{'readonly': [('state', 'in', ('progress', 'cancel', 'done', 'to_close'))]}" -->
+                    <field name="gif_traslate_emp" />  <!-- attrs="{'readonly': [('state', '!=', ('progress'))]}" -->
+                    <field name="gif_traslate_des" />  <!-- attrs="{'readonly': [('state', '!=', ('progress'))]}" -->
+                    <button name="change_emp" string="Trasladar" type="object" attrs="{'invisible': [('gif_has_emp','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+        
+
+        
+    </data>
+    
+</odoo>

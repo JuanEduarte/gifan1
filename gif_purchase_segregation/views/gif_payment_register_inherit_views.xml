@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.payment.register inherit form view -->
+    <record id="account_payment_register_inherit_form_view_id_sa" model="ir.ui.view">
+        <field name="name">account.payment.register.inherit.view.form.sa</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_is_purchase" invisible="1"/>
+                <field name="type_of_purchase" readonly = "1" attrs="{'invisible': [('gif_is_purchase','=',False)]}"/>                
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

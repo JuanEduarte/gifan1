@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="gif_groupPriceList" model="ir.ui.view">
+        <field name="name">gif.groupPriceList</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+                        
+                   <xpath expr="//group[2]" position="after">
+                    <group name="group_standard_price">
+                        <label for="list_price" class="mt-1"/>
+                        <div name="pricing">
+                            <field name="list_price" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" on_change="1" modifiers="{}"/>
+          <span class="ml-2"/><field name="tax_string" modifiers="{&quot;readonly&quot;: true}"/>
+      </div>
+          <field name="taxes_id" widget="many2many_tags" context="{'default_type_tax_use':'sale', 'search_default_sale': 1, 'search_default_service': type == 'service', 'search_default_goods': type == 'consu'}" on_change="1" can_create="true" can_write="true" modifiers="{}"/>
+      <field name="gif_ieps_active" modifiers="{}"/>
+      <field name="gif_ieps_sale" attrs="{'invisible': [('gif_ieps_active', '=', False)]}" can_create="true" can_write="true" modifiers="{&quot;invisible&quot;: [[&quot;gif_ieps_active&quot;, &quot;=&quot;, false]]}"/>
+      <field name="gif_ieps_purchase" attrs="{'invisible': [('gif_ieps_active', '=', False)]}" can_create="true" can_write="true" modifiers="{&quot;invisible&quot;: [[&quot;gif_ieps_active&quot;, &quot;=&quot;, false]]}"/>
+                          <field name="categ_id" string="Categoría de producto" on_change="1" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>
+      <field name="company_id" options="{'no_create': True}" on_change="1" can_create="true" can_write="true" modifiers="{}"/>
+                      </group>
+                   </xpath>
+        </field>
+    </record>
+</odoo>

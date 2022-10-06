@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="gif_pallet_pallet_view_form" model="ir.ui.view">
+        <field name="name">gif.pallet.pallet.view.form</field>
+        <field name="model">gif.pallet.pallet</field>
+        <field name="arch" type="xml">
+            <form string="pallet_control">
+                <sheet>
+                    <h5>Contador tarimas</h5>
+                    <group>
+                        <group>
+                            <field name="gif_counter_standard" readonly="1" />
+                            <field name="gif_counter_chep" readonly="1" />
+                            <field name="gif_counter_smart" readonly="1" />
+                            <field name="gif_counter_other" readonly="1" />
+                            <field name="company_id" />
+                        </group>
+                        <group>
+                            <button name="gif_pallet_control.wizard_pallet_operations_action" class="btn btn-info" type="action" string="Altas y bajas de tarimas"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Hístorico de Tarimas">
+                            <field name="gif_history_pallet" string="Tarima" widget='one2many'>
+                                <tree delete="false">
+                                    <!-- <field name="name"/> -->
+                                    <field name="stock_picking" />
+                                    <field name="partner_id" />
+                                    <field name="gif_date_historic" />
+                                    <field name="gif_standard_before" />
+                                    <field name="gif_standard_after" />
+                                    <field name="gif_chep_before" />
+                                    <field name="gif_chep_after" />
+                                    <field name="gif_smart_before" />
+                                    <field name="gif_smart_after" />
+                                    <field name="gif_other_before" />
+                                    <field name="gif_other_after" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.pallet.pallet tree view -->
+    <record id="gif_pallet_pallet_view_tree" model="ir.ui.view">
+        <field name="name">gif.pallet.pallet.view.tree</field>
+        <field name="model">gif.pallet.pallet</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- Add your fields here -->
+                <field name="name"/>
+                <field name="gif_counter_standard" readonly="1" />
+                <field name="gif_counter_chep" readonly="1" />
+                <field name="gif_counter_smart" readonly="1" />
+                <field name="gif_counter_other" readonly="1" />
+                <field name="company_id" readonly="1" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="gif_pallet_pallet_action" model="ir.actions.act_window">
+        <field name="name">Control de tarimas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.pallet.pallet</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="res_id">1</field> -->
+    </record>
+
+    <menuitem id="gif_pallet_pallet_menuitem" name="Control de tarimas" parent="stock.menu_stock_inventory_control" action="gif_pallet_pallet_action"/>
+</odoo>

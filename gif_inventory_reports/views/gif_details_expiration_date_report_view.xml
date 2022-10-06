@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- gif.details.expiration.date.report form view -->
+    <record id="gif_details_expiration_date_report_view_form" model="ir.ui.view">
+        <field name="name">gif.details.expiration.date.report.view.form</field>
+        <field name="model">gif.details.expiration.date.report</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Inventario">
+                <header>
+                    <button name="compute_products" type="object" string="Consultar" class="oe_edit_only"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1> <field name="name"/> </h1>
+                        <h2> <field name="company_name"/> </h2>
+                        <h3> <field name="date"/> </h3>
+                    </div>
+                        <field name="products">
+                            <tree string="Productos">
+                                <field name="pricing"/>
+                                <field name="description_sale"/>
+                                <field name="barcode_upc"/>
+                                <field name="gif_remaining_exp_days"/>
+                                <field name="gif_expiration_date"/>
+                                <field name="gif_qty_oh"/>
+                            </tree>
+                        </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.details.expiration.date.report tree view -->
+    <record id="model_name_view_tree" model="ir.ui.view">
+        <field name="name">gif.details.expiration.date.report.view.tree</field>
+        <field name="model">gif.details.expiration.date.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- gif.details.expiration.date.report action window -->
+    <record id="gif_details_expiration_date_report_action" model="ir.actions.act_window">
+        <field name="name">Detalle de caducidades</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.details.expiration.date.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                ¡Aún no hay reportes!
+            </p><p>
+                Comience a crear un reporte
+            </p>
+        </field>
+    </record>
+    
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+        id="details_expiration_date_report_tree_menu_act"
+        name="Detalle de caducidades"
+        parent="gifan_inventory_reports_menu_categ"
+        action="gif_details_expiration_date_report_action"
+        sequence="94"/>
+</odoo>

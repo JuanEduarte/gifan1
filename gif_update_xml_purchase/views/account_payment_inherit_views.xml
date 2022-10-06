@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.payment inherit form view -->
+    <record id="view_id" model="ir.ui.view">
+        <field name="name">account.payment.inherit.view.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//header" position="inside">
+                <button name="gif_update_xml_purchase.wizard_xml_attach_payment_action" type="action" string="Asociar XML" attrs="{'invisible': [('payment_type', 'in', ['inbound'])]}"/>
+                <button name="gif_update_xml_purchase.wizard_xml_unattach_payment_action" type="action" string="Remover XML" attrs="{'invisible': [('payment_type', 'in', ['inbound'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='l10n_mx_edi_origin']" position="after">
+                <field name="gif_invoice_uuid"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

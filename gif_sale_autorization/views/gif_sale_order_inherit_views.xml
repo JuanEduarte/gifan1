@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- sale.order inherit form view -->
+    <record id="sale_order_view_id" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar"  statusbar_visible="draft,to_approve,sent,sale"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_admin_office" invisible="1"/>
+                <field name="is_admin_primary" invisible="1"/>
+                <field name="is_admin_ben_dis" invisible="1"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="authorize_sales_primary" class="btn-primary" type="object" string="Autorizar"  attrs="{'invisible': ['|',('state','!=','to_approve'),('is_admin_primary','=',False)]}" /> 
+                <button name="authorize_sales_ben_diss" class="btn-primary" type="object" string="Autorizar"  attrs="{'invisible': ['|',('state','!=','to_approve'),('is_admin_ben_dis','=',False)]}"/> 
+                <button name="authorize_sales_office" class="btn-primary" type="object" string="Autorizar"  attrs="{'invisible': ['|',('state','!=','to_approve'),('is_admin_office','=',False)]}"/> 
+                <button name="go_back_sales" type="object" string="No autorizar" states="to_approve"/>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="before">
+                <!-- Add your fields here -->
+                <field name="gif_real_sale" invisible ="1"/>
+                <field name="gif_temp_sale" invisible="1"/>
+                <field name="gif_sale_inverse_currency" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']//tree//field[@name='tax_id']" position="before">
+                <!-- attrs="{'invisible': [('state','!=','to_approve')]}" -->
+                <field name="gif_is_different"  optional="hide" readonly="1"/>
+                <field name="gif_difference" optional="hide" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- sale.order inherit tree view -->
+    <record id="sale_order_inherit_tree_view_id_sa" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree.sa</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_temp_sale" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_inherit_tree_view_id_sa_orders" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree.sa.orders</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_temp_sale" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

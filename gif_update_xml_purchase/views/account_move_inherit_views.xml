@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.move inherit form view -->
+    <record id="account_move_inherit_attachment_xml_form" model="ir.ui.view">
+        <field name="name">account.move.inherit.attachment.xml.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//sheet//group" position="inside">
+                <field name="attachment_ids" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='journal_div']" position="after">
+                <field name="gif_invoice_uuid"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="gif_update_xml_purchase.wizard_xml_attach_invoice_action" type="action" class="btn btn-secondary" string="Adjuntar XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
+                <button name="attachment_to_invoice_auto" type="object" class="btn btn-secondary" string="Auto Adjuntar XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
+                <button name="gif_update_xml_purchase.wizard_xml_unattach_invoice_action" type="action" class="btn btn-secondary" string="Remover XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

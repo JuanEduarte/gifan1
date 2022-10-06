@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- wizard.attachment.report form view -->
+    <record id="wizard_attachment_report_view_form" model="ir.ui.view">
+        <field name="name">wizard.attachment.report.view.form</field>
+        <field name="model">wizard.attachment.report</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <p>Seleccione los documentos adjuntos que quiera buscar. </p>
+                    <group >
+                        <group> 
+                            <field name="gif_date_init" />
+                            <h6 style="color:grey">Selecciona Los Documentos De Egreso</h6>
+                            <field name="gif_purchase_draft" />
+                            <field name="gif_purchase_purchase" />
+                            <field name="gif_purchase_invoice" />
+                            <field name="gif_purchase_invoice_payment" />
+                            <field name="gif_purchase_invoice_retificated" />
+                            <field name="gif_reception" />
+                        </group>
+                        <group>
+                            <field name="gif_date_end" />
+                            <h6 style="color:grey">Selecciona Los Documentos De Ingreso</h6>
+                            <field name="gif_sales_draft" />
+                            <field name="gif_sales_sale" />
+                            <field name="gif_sales_invoice" />
+                            <field name="gif_sales_invoice_payment" />
+                            <field name="gif_sales_invoice_retificated" />
+                            <field name="gif_traslate" />
+                            <field name="gif_pick" />
+                        </group>
+                        <separator/>
+                
+                        <group>
+                            <h6 style="color:grey">Selecciona Los Documentos Internos</h6>
+                            <field name="gif_orden" />
+                            <field name="gif_election" />
+                            <field name="gif_almacen" />
+                        </group>
+                        <group>
+
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="gif_set_reports" string="Calcular" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- wizard.attachment.report action window -->
+    <record id="wizard_attachment_report_action" model="ir.actions.act_window">
+        <field name="name">Reporte de Seguimiento de Documentación Adjunta</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.attachment.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wizard_attachment_report_action_menu" name="Búsqueda" parent="account.menu_finance_reports" action="wizard_attachment_report_action" sequence="11" />
+
+</odoo>

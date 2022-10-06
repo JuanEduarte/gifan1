@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.purchase.xml.updater tree view -->
+    <record id="gif_purchase_xml_updater_view_tree" model="ir.ui.view">
+        <field name="name">gif.purchase.xml.updater.view.tree</field>
+        <field name="model">gif.purchase.xml.updater</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <!-- Add your fields here -->
+                <field name="id" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="gif_total" readonly="1"/>
+                <field name="gif_filename" readonly="1"/>
+                <field name="gif_file_type" readonly="1"/>
+                <field name="gif_pdf" readonly="1"/>
+                <field name="gif_uuid" readonly="1"/>
+                <field name="gif_rfc_issuer" readonly="1"/>
+                <field name="gif_name_issuer" readonly="1"/>
+                <field name="gif_date_timb" readonly="1"/>
+                <field name="gif_account_move" optional="hide"/>
+                <field name="gif_account_payment" optional="hide"/>
+                <field name="gif_status" optional="hide"/>
+                <button name="gif_validate_cfdi" type="object" string="Validar"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.purchase.xml.updater action window -->
+    <record id="gif_purchase_xml_updater_action" model="ir.actions.act_window">
+        <field name="name">XML subidos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.purchase.xml.updater</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_purchase_xml_updater_menu_action" name="Vista de XML" parent="account.menu_finance_payables" action="gif_purchase_xml_updater_action" sequence="250"/>
+</odoo>

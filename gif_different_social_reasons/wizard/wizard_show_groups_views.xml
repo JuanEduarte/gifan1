@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard_show_groups form view -->
+    <record id="wizard_show_groups_view_form" model="ir.ui.view">
+        <field name="name">Agregar Empresas</field>
+        <field name="model">wizard.show.groups</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="partners_id"/>
+                    </group>
+                    <footer>
+                        <button name="assign_company" string="Asignar" type="object" class="btn-primary"/>
+                        <button string="cancel" special="cancel" class="oe_link"/> 
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- wizard.show.groups action window -->
+    <record id="wizard_show_groups_action" model="ir.actions.act_window">
+        <field name="name">Agregar Empresas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.show.groups</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

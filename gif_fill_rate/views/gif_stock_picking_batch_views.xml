@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <!-- stock.picking.batch inherit tree view -->
+        <record id="stock_picking_batch_inherit_view_tree" model="ir.ui.view">
+            <field name="name">stock.picking.batch.inherit.view.tree</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="gif_stock_batch" string="Fill Rate"/>
+                </xpath>
+            </field>
+        </record>
+    
+
+        <!-- stock.picking.batch inherit kanban view -->
+        <record id="stock_picking_batch_inherit_view_kanban" model="ir.ui.view">
+            <field name="name">stock.picking.batch.inherit.view.kanban</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_kanban"/>
+            <field name="arch" type="xml">
+                <!-- Add you xpath here -->
+                <xpath expr="//kanban//div[@class='o_kanban_record_bottom']" position="before">
+                    <field name="gif_stockp_kanban_show"  attrs="{'invisible':[('gif_stockp_kanban_show', '==', '0')]}" style='color:red; font-weight: bolder '/>                    
+                </xpath>
+            </field>
+        </record>
+
+
+
+
+
+
+    </data>
+    
+
+</odoo>

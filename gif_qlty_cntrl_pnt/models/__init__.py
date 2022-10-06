@@ -1,0 +1,1 @@
+from . import gif_quality_point_inherit

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_pallet_control.access_gif_pallet_pallet,access_gif_pallet_pallet,gif_pallet_control.model_gif_pallet_pallet,,1,1,1,1
+gif_pallet_control.access_gif_history_pallet,access_gif_history_pallet,gif_pallet_control.model_gif_history_pallet,base.group_user,1,1,1,1
+gif_pallet_control.access_wizard_pallet_operations,access_wizard_pallet_operations,gif_pallet_control.model_wizard_pallet_operations,base.group_user,1,1,1,1

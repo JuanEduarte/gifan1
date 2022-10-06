@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>       
+        <!-- sale.order inherit tree view -->
+    <record id="vista_dos_inherit_view_tree" model="ir.ui.view">
+        <field name="name">vista.dos.inherit.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="before">
+                <field name="gif_sale_fill_rate" string="Fill Rate" attrs="{'invisible':[('gif_sale_fill_rate', '==', False)]}" />
+            </xpath>
+        </field>
+    </record>
+    
+
+</odoo>

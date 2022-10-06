@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    
+    <record id="account_move_inherit_tree_segregate_flow_view_id" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.tree.segregate.flow</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='amount_total_signed']" position="after">
+                <!-- Add your fields here -->
+                <field name="amount_untaxed_signed_show" string="Impuestos no incluidos" sum="Total" optional="show"/>
+                <field name="amount_tax_signed_show" string="Impuestos" sum="Total" optional="hide"/>
+                <field name="amount_total_signed_show" string="Total" sum="Total" decoration-bf="1" optional="show"/>
+                <field name="amount_total_in_currency_signed_show" string="Total Divisa" groups="base.group_multi_currency" optional="show"/>
+                <field name="amount_residual_signed_show" string="Importe Pendiente" sum="Importe Pendiente" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='amount_untaxed_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_total_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_total_in_currency_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_residual_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

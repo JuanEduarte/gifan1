@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- stock.move.line inherit form view -->
+        <record id="stock_move_line_inherit_view_form" model="ir.ui.view">
+            <field name="name">stock.move.line.inherit.view.form</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//field[@name='product_uom_id']" position="after">
+                    <field name="gif_unidad_stock" string="Unidades" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='product_uom_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    
+
+
+
+
+
+    </data>
+</odoo>

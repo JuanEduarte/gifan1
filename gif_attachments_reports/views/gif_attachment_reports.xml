@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.attachment.reports tree view -->
+    <record id="gif_attachment_report_view_tree" model="ir.ui.view">
+        <field name="name">gif.attachment.reports.view.tree</field>
+        <field name="model">gif.attachment.reports</field>
+        <field name="arch" type="xml">
+            <tree string="select" editable="top">
+                <!-- <button name="unlink" icon="gtk-cancel" type="object" string="Selected"/> -->
+
+                <field name="name" readonly="1" />
+                <field name="gif_type_document" readonly="1"/>
+                <field name="gif_doc_state" readonly="1"/>
+                <field name="gif_origin_reference" readonly="1"/>
+                <!-- <field name="gif_attachments" /> -->
+                <field name="gif_adj_selection" readonly="1"/>
+                <field name="gif_attachments_ids" readonly="1"/>
+                <field name="gif_date_documents" readonly="1"/>
+                <field name="user_id" readonly="1"/>
+
+                <!-- <field name="gif_documents_adj"/> -->
+
+            </tree>
+
+        </field>
+    </record>
+
+    <!-- gif.attachment.reports action window -->
+    <record id="gif_attachment_report_action" model="ir.actions.act_window">
+        <field name="name">Reporte de Adjuntos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.attachment.reports</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{"search_default_gif_attachments_ids":1}</field>
+        <!-- <field name="domain">[('gif_attachments','!=',True),('gif_attachments_ids','!=',''), ('gif_des_adj','=','')]</field> -->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p>
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <!-- gif.attachment.reports search view -->
+    <record id="gif_attachment_reports_view_search" model="ir.ui.view">
+        <field name="name">gif.attachment.reports.view.search</field>
+        <field name="model">gif.attachment.reports</field>
+        <field name="arch" type="xml">
+            <search string="Search Description">
+                <filter name='name' string="Nombre Referencia" domain="[('name','!=', '')]" />
+                <filter name='gif_type_document' string="Tipo de documento" domain="[('gif_type_document','!=','')]" />
+                <filter name='gif_doc_state' string="Estado del Documento" domain="[('gif_doc_state','!=','')]" />
+                <filter name='gif_origin_reference' string="Documento de Origen" domain="[('gif_origin_reference','!=','')]" />
+                <filter name='gif_attachments' string="Adjuntos" domain="[('gif_attachments','!=',False)]" />
+                <!-- <filter name="gif_attachments_ids" string="Nombre de Documentos Adjuntos" domain="[('gif_attachments_ids','!=','')]" /> -->
+
+
+                <group>
+                    <field name="name" string="Nombre Referencia" context="{'group_by': 'name'}" />
+                    <field name="gif_type_document" context="{'group_by': 'gif_type_document'}" />
+                    <field name="gif_doc_state" context="{'group_by': 'gif_doc_state'}" />
+                    <field name="gif_origin_reference" context="{'group_by': 'gif_origin_reference'}" />
+                    <field name="gif_adj_selection" context="{'group_by': 'gif_adj_selection'}" />
+                    <field name="gif_attachments_ids" context="{'group_by': 'gif_attachments_ids'}" />
+                    <field name="gif_date_documents" context="{'group_by': 'gif_date_documents'}" />
+                    <field name="user_id" context="{'group_by': 'user_id'}" />
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_attachment_report_action_menu" name="Reporte de Adjuntos" parent="account.menu_finance_reports" action="gif_attachment_report_action" sequence="10" />
+
+</odoo>

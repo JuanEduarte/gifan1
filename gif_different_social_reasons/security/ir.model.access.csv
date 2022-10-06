@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_different_social_reasons.access_gif_groups,access_gif_groups,gif_different_social_reasons.model_gif_groups,,1,1,1,1
+gif_different_social_reasons.access_wizard_show_groups,access_wizard_show_groups,gif_different_social_reasons.model_wizard_show_groups,,1,1,1,1

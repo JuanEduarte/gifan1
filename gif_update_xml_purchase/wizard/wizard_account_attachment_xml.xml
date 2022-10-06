@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard.account.attachment.xml inherit form view -->
+    <record id="wizard_account_attachment_xml_view_form" model="ir.ui.view">
+        <field name="name">wizard.account.attachment.xml.view.form</field>
+        <field name="model">wizard.account.attachment.xml</field>
+        <field name="arch" type="xml">
+            <form string="Adjuntar archivos XML de facturas de compra">
+                <sheet>
+                    <div class="text-muted">
+                        Adjuntar un XML a factura de compra
+                    </div>
+                    <group>
+                        <field name="gif_attached_xml" widget="selection"/>
+                        <field name="move_id" readonly="1"/>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button name="attachment_to_invoice" string="Adjuntar XML" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.account.attachment.xml action window -->
+    <record id="wizard_xml_attach_invoice_action" model="ir.actions.act_window">
+        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="res_model">wizard.account.attachment.xml</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="wizard_account_unattachment_xml_view_form" model="ir.ui.view">
+        <field name="name">wizard.account.unattachment.xml.view.form</field>
+        <field name="model">wizard.account.unattachment.xml</field>
+        <field name="arch" type="xml">
+            <form string="Adjuntar archivos XML de facturas de compra">
+                <sheet>
+                    <div class="text-muted">
+                        Remover un XML de factura de compra
+                    </div>
+                    <group>
+                        <field name="move_id" readonly="1"/>
+                        <field name="move_attached" widget="selection" context = "{'full_code':True}"/>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button name="unattachment_to_invoice" string="Remover XML" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.account.unattachment.xml action window -->
+    <record id="wizard_xml_unattach_invoice_action" model="ir.actions.act_window">
+        <field name="name">Remover archivo de Facturas en XML</field>
+        <field name="res_model">wizard.account.unattachment.xml</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

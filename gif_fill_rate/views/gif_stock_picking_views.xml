@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- stock.picking inherit form view -->
+        <record id="stock_picking_view_id" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.view.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//sheet/group/group/field[@name='owner_id']" position="after">
+                    <field name="gif_stock_fill_rate" string="Con FILL RATE" style="color:red" attrs="{'readonly':[('gif_stock_fill_rate','!=',True)], 'invisible':[('gif_stock_fill_rate', '==', False)]}" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        
+
+        <!-- se agrego el campo Fill Rate en la vista Lista en Traslados  -->
+        <!-- stock.picking inherit tree view -->
+        <record id="stock_picking_inherit_view_tree" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.view.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="gif_stock_fill_rate" string="Fill Rate" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Se agrega el campo de Fill Rate en la vista Kanban en Traslados -->
+        <!-- stock.picking inherit kanban view -->
+        <record id="stock_picking_inherit_view_kanban" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.view.kanban</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.stock_picking_kanban"/>
+            <field name="arch" type="xml">
+                <!-- Add you xpath here -->
+                <xpath expr="//kanban//div[@class='o_kanban_record_top mb8']" position="after">
+                    <field name="gif_stock_kanban_show" attrs="{'invisible':[('gif_stock_kanban_show', '==', '0')],}" />                    
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Se agrego el filtro de busqueda en Traslados  -->
+        <!-- stock.picking inherit search view -->
+        <record id="stock_picking_inherit_view_search" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.view.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//filter[@name='my_transfers']" position="after">
+                    <filter name="gif_categories_stock_picking" string="Fill Rate" domain="[('gif_stock_fill_rate', '!=', False)]"/>
+                    <!-- <field name="gif_fill_rate" string="Fill Rate"/> -->
+                </xpath>
+                <xpath expr="//group" position="inside">
+                    <filter name="group_gif_categories_stock_picking" string="Fill Rate" context="{'group_by': 'gif_stock_fill_rate'}" />
+                </xpath>
+
+            </field>
+        </record>
+
+
+    
+    </data>
+    
+</odoo>

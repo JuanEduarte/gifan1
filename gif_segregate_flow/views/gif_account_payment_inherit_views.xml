@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.payment inherit tree view -->
+    <record id="account_payment_tree_inherit_segregate_flow_view_id" model="ir.ui.view">
+        <field name="name">account.payment.inherit.view.tree.segregate.flow</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='amount_company_currency_signed']" position="after">
+                <!-- Add your fields here -->
+                <field name="amount_company_currency_signed_show" widget="monetary" string="Importe" sum="Total"/>
+            </xpath>
+
+            <xpath expr="//field[@name='amount_company_currency_signed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

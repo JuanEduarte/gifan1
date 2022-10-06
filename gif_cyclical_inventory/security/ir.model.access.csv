@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_cyclical_inventory.access_gif_cyc_inventory,access_gif_cyc_inventory,gif_cyclical_inventory.model_gif_cyc_inventory,,1,1,1,1
+gif_cyclical_inventory.access_gif_inventory,access_gif_inventory,gif_cyclical_inventory.model_gif_inventory,,1,1,1,1

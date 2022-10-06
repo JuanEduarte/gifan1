@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- purchase.order inherit form view -->
+    <record id="purchase_order_inherit_view_id_purchase_segregation" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <!-- Add your fields here -->
+                <field name="tipificacion_compra" options="{'no_open': False, 'no_create_edit': True, 'no_create': True}" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <purchase.order> inherit tree view -->
+    <record id="purchase_order_inherit_view_id_purchase_segregation" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.tree</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='name']" position="after">
+                <!-- Add your fields here -->
+                <field name="sum_purchase_order" invisible="1" />
+                <field name="is_office_purchase" invisible="1" />
+                <field name="is_primary_purchase" invisible="1" />
+                <field name="is_ben_dis_purchase" invisible="1" />
+                <field name="is_insume_purchase" invisible="1" />
+                <field name="is_associated_purchase" invisible="1" />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

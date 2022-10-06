@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="res_partner_inherit_view_id_gif_ro_gr" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.form.gif.ro.gr</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//notebook//page[@name='contact_addresses']//field[@name='child_ids']//form//sheet//field[@name='mobile']" position="after">
+                <!-- Add your fields here -->
+                <!-- <field name="gif_ro_gr">
+                    <tree editable="botton">
+                        <field name="name"/>
+                    </tree>
+                </field> -->
+                <field name="gif_ro_gr" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

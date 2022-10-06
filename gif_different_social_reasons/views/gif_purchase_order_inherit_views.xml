@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- purchase.order inherit search view -->
+    <record id="purchase_order_inherit_view" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.search</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//search" position="inside">
+                <field name="group_s" string="Grupos"/>
+            </xpath>
+
+            <xpath expr="//filter[@name='my_purchases']" position="before">
+                <!-- Add your fields here -->
+                <filter string="Grupo" name="group_purchase_gif" domain="[('group_s','!=','')]" />
+                <field name="group_s" string="Grupos" context="{'group_by': 'group_s'}" />            
+            </xpath>
+            
+        </field>
+    </record>
+
+    <!-- purchase.order inherit search view -->
+    <record id="purchase_order_inherit_search_view_id" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.search</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="." position="inside">
+                <field name="group_s" string="Grupos"/>
+                <filter string="Grupo" name="group_partner_gif" domain="[('group_s','!=','')]" />
+                <field name="group_s" string="Grupos" context="{'group_by': 'group_s'}" />            
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

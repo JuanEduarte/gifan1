@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- res.partner inherit form view -->
+    <record id="res_partner_inherit_view_id" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//div[hasclass('oe_title')]//field[@name='parent_id']" position="after">
+                <!-- Add your fields here -->
+                <field name="group_id"
+                            widget="res_partner_many2one"
+                            placeholder="Nombre del grupo..."
+                            domain="[('is_group', '=', True)]" context="{'default_is_group': True, 'show_vat': True}"
+                            attrs="{'invisible': [('is_company','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- res.partner inherit search view -->
+    <record id="view_id" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="group_id" string="Grupos"/>
+            </xpath>
+            <xpath expr="//filter[@name='type_company']" position="before">
+                <filter string="Grupo" name="group_partner_gif" domain="[('group_id','!=','')]" />
+                <field name="group_id" string="Grupos" context="{'group_by': 'group_id'}" />            
+            </xpath>
+        </field>
+    </record>
+</odoo>

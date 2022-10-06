@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.partners.details form view -->
+    <record id="gif_partners_details_view_form" model="ir.ui.view">
+        <field name="name">gif.partners.details.view.form</field>
+        <field name="model">gif.partners.details</field>
+        <field name="arch" type="xml">
+            <form string="Detalles">
+                <sheet>
+                    <group>
+                        <!-- Add your fields here -->
+                        <field name="partner"/>
+                        <field name="partner_price"/>
+                        <field name="partner_uom"/> 
+                        <field name="bar_code"/>
+                        <field name="individual_code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard.sales.orders.uploader inherit form view -->
+    <record id="wizard_sales_orders_uploader_view_form" model="ir.ui.view">
+        <field name="name">wizard.sales.orders.uploader.view.form</field>
+        <field name="model">wizard.sales.orders.uploader</field>
+        <field name="arch" type="xml">
+            <form string="Subir archivo de ordenes de venta">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="gif_load_type"/>
+                            <field name="xlsx_files" filename="name"/>
+                            <field name="name" readonly="1"/>
+                            <!-- <field name="gif_customer"/>
+                            <field name="gif_customer_code"/>
+                            <field name="gif_delivery_dir"/>
+                            <field name="gif_delivery_dir_code"/> -->
+                        </group>
+                        <group>
+                            <field name="gif_order_date"/>
+                            <field name="gif_init_date"/>
+                            <field name="gif_cancel_date"/>
+                            <field name="gif_order"/>
+                            <field name="gif_supplier_code"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="gif_lines">
+                                <tree editable="inline">
+                                    <field name="gif_delivery_dir_code"/>
+                                    <field name="gif_delivery_dir"/>
+                                    <field name="gif_customer_code"/>
+                                    <field name="gif_customer"/>
+                                </tree >
+                            </field>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="upload_files" string="Subir" type="object" class="btn-primary" />
+                        <button name="preview_files" string="Visualizar" type="object" class="oe_link" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.sales.orders.uploader action window -->
+    <record id="wizard_sales_orders_uploader_action" model="ir.actions.act_window">
+        <field name="name">Subir archivo con ordenes de venta</field>
+        <field name="res_model">wizard.sales.orders.uploader</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wizard_updater_sales_orders_menu" name="Carga masiva de pedidos" parent="sale.sale_order_menu" action="wizard_sales_orders_uploader_action" sequence="5"/>
+</odoo>

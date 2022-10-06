@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        
+      <record id="form_import_payment_order" model="ir.ui.view">
+        <field name="name">import.payment.order.form</field>
+        <field name="model">import.payment.order</field>
+        <field name="arch" type="xml">
+
+                <form>
+                 <sheet>
+                  <group col='2' >  
+                     
+                     <group>
+                      <field name="payment_method" />
+                      <field name="gif_journal" />
+                      <field name="memo" />
+                      
+
+                     </group>
+                     <group  style="width:2%" >
+                        <field name="file_data" filename="file_name" widget="binary" required="1"/>
+                        <button string="Importar" name="files_data" type="object" class="btn-primary"/>
+                     </group>
+                  </group>   
+                    <notebook>
+                      <page string="Detalles del personal">
+                        <field name="gif_masive_payment_line" >
+                          <tree editable="botton">
+                            <field name="client"/>
+                            <field name="invoice_id"/>
+                            <field name="amount" />
+                            <field name="partner" />
+                          </tree>
+                        </field>
+                      </page>
+                    </notebook>
+                 </sheet>
+                </form>
+
+
+        </field>
+      </record>
+
+        <record id="action_import_payment_order" model="ir.actions.act_window">
+            <field name="name">Importar de pagos de forma masiva</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">import.payment.order</field>
+            <field name="view_mode">form</field>
+        </record>
+    
+        <menuitem  id="sale_order_menu_import" name="Pago Masivo" parent="account.menu_finance_receivables"  action="action_import_payment_order"/>
+
+    </odoo>

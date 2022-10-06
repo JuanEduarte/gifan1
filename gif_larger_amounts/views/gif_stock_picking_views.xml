@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+    
+        <!-- stock.picking inherit form view -->
+        <record id="stock_picking_inherit_view_form" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.view.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//notebook//page[@name='operations']//field[@name='move_ids_without_package']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                </xpath>
+                <xpath expr="//sheet//notebook//page[@name='operations']//field[@name='move_ids_without_package']" position="attributes">
+                    <attribute name="widget">one2many</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo>

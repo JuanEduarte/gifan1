@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="gif_acount_move_inherit" inherit_id="account.report_invoice_document" name="Invoice Report Inherit">
+        <xpath expr="//table[@class='table table-sm']" position="after">
+            <p>Tipo de Moneda:<span t-field="o.currency_id.name"/></p>
+        </xpath>
+        </template>
+</odoo>

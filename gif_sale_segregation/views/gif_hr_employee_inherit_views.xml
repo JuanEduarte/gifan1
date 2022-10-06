@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- hr.employee inherit form view -->
+    <record id="hr_employee_inherit_form_view_sale_segregation" model="ir.ui.view">
+        <field name="name">hr.employee.inherit.view.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//notebook//page[@name='hr_settings']" position="after">
+                <!-- Add your fields here -->
+                <page name="permisos_ingresos" string="Permisos de ingresos">
+                    <div>
+                        <button class="btn-primary" name="save_in" string="Validar Ingresos" type="object" groups="gif_sale_segregation.group_gifan_admin_rh_i" />
+                        <group>
+                            <group>
+                                <field name="productos_primarios_i" />
+                            </group>
+                            <group>
+                                <field name="productos_oficina_i" />
+                            </group>
+                            <group>
+                                <field name="descuentos_y_beneficios_i" />
+                            </group> 
+                        </group>
+                    </div>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

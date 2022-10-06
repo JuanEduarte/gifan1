@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <data>
+            <!-- account.payment inherit form view -->
+            <record id="account_payment_inherit_view_form" model="ir.ui.view">
+                <field name="name">account.payment.inherit.view.form</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='is_internal_transfer']" position="before">
+                        <field name="gif_account_pay_change" string="Con FILL RATE" attrs="{'invisible':[('gif_account_pay_change', '!=', True)]}"/>
+                    </xpath>
+                </field>
+            </record>
+
+
+
+        <!-- se agrego el campo Fill Rate en la vista Lista en Facturas  -->
+        <!-- account.payment inherit tree view -->
+        <record id="account_payment_inherit_view_tree" model="ir.ui.view">
+            <field name="name">account.payment.inherit.view.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="gif_account_pay_change" string="Fill Rate" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Se agrego el filtro de busqueda en Facturas  -->
+        <!-- account.payment inherit search view -->
+        <record id="account_payment_inherit_view_search" model="ir.ui.view">
+            <field name="name">account.payment.inherit.view.search</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <!-- Add your xpath here -->
+                <xpath expr="//filter[@name='transfers_filter']" position="after">
+                    <filter name="gif_categories_account_payment" string="Fill Rate" domain="[('gif_account_pay_fill_rate', '!=', False)]"/>
+                    <separator/>
+                    <!-- <field name="gif_fill_rate" string="Fill Rate"/> -->
+                </xpath>
+                <xpath expr="//filter[@name='partner']" position="after">
+                    <filter name="group_gif_categories_account_payment" string="Fill Rate" context="{'group_by': 'gif_account_pay_fill_rate'}" />
+                </xpath>
+                
+            </field>
+        </record>
+
+        </data>
+</odoo>

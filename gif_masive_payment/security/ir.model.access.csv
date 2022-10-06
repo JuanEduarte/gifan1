@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_masive_payment.access_import_payment_order,access_import_payment_order,gif_masive_payment.model_import_payment_order,,1,1,1,1
+gif_masive_payment.access_gif_masive_payment_line,access_gif_masive_payment_line,gif_masive_payment.model_gif_masive_payment_line,,1,1,1,1
+gif_masive_payment.access_gif_masive_payment_form,access_gif_masive_payment_form,gif_masive_payment.model_gif_masive_payment_form,,1,1,1,1

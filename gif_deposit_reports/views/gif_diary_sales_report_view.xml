@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- gif.diary.sales.report form view -->
+    <record id="gif_diary_sales_report_view_form" model="ir.ui.view">
+        <field name="name">gif.diary.sales.report.view.form</field>
+        <field name="model">gif.diary.sales.report</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button name="compute_lines" type="object" string="Consultar" class="oe_edit_only"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1> <field name="name"/> </h1>
+                        <h2> <field name="company_name"/> </h2>
+                        <h3> <field name="date"/> </h3>
+                    </div>
+                    <group name="input_data" string=" ">
+                        <group>
+                            <field name="search_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="init_range"/>
+                            <field name="final_range"/>
+                        </group>
+                        <group>
+                            <field name="init_time"/>
+                            <field name="final_time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string = "Resumen">
+                            <field name="lines">
+                                <tree string="Productos">
+                                    <field name="gif_customer"/>
+                                    <field name="gif_brand"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.diary.sales.report tree view -->
+    <record id="gif_diary_sales_report_view_tree" model="ir.ui.view">
+        <field name="name">gif.diary.sales.report.view.tree</field>
+        <field name="model">gif.diary.sales.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.diary.sales.report action window -->
+    <record id="gif_diary_sales_report_action" model="ir.actions.act_window">
+        <field name="name">Ventas Diario</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.diary.sales.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+                No hay reportes.
+            </p><p>
+                <!-- More details about what a user can do with this object will be OK --> 
+                Comience por a crear un reporte.
+            </p>
+        </field>
+    </record>
+
+     <!-- This Menu Item Must have a parent -->
+    <menuitem id="gifan_deposit_reports_menu_categ" name="GIFAN" parent="sale.menu_sale_report" sequence="10"/>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+        id="gif_diary_sales_report_tree_menu_act"
+        name="Ventas Diario"
+        parent="gifan_deposit_reports_menu_categ"
+        action="gif_diary_sales_report_action"
+        sequence="1"/>
+
+</odoo>

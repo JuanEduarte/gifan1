@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="gif_account_report_payment_receipt_prov_view" inherit_id="account.report_payment_receipt_document" name="Supplier Report Receipt Inherit">
+		  <xpath expr="//div[@class='page']//div" position="after">
+        <div class="col-6" t-if="o.amount">
+          <p>Tipo de Moneda: <span t-field="o.currency_id.name"/></p></div>
+      </xpath>
+	</template>     
+</odoo>

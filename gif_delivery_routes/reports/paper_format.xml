@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="paperformat_report" model="report.paperformat">
+    <field name="name">Sale Summary</field>
+    <field name="default" eval="False"/>
+    <field name="format">letter</field>
+    <field name="orientation" >Landscape</field>
+</record>
+</odoo>

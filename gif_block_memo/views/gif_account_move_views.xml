@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- account.move inherit form view -->
+    <!-- <record id="account_move_inherit_view_form" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml"> -->
+            <!-- Add your xpath here -->
+            <!-- <xpath expr="//field[@name='payment_id']" position="after">                
+            </xpath>
+        </field>
+    </record> -->
+
+
+    <!-- account.move inherit tree view -->
+    <record id="account_move_inherit_view_tree" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="gif_account_payment_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record id="account_move_inherit_view_search" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.search</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+
+            <xpath expr="//group/filter[@name='salesperson']" position="after">
+                <filter name="group_gif_categories_account_move" string="Pagos" context="{'group_by': 'gif_account_payment_ids'}" />
+            </xpath>
+            
+        </field>
+    </record>
+</odoo> 

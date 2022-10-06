@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.documents tree view -->
+    <record id="gif_documents_view_tree" model="ir.ui.view">
+        <field name="name">gif.documents.view.tree</field>
+        <field name="model">gif.documents</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="gif_desc" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.documents form view -->
+    <record id="gif_documents_view_form" model="ir.ui.view">
+        <field name="name">gif.documents.view.form</field>
+        <field name="model">gif.documents</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="2">
+                        <field name="name" />
+                        <field name="gif_desc" />
+                    </group>
+                    <field name="gif_set_data">
+                        <tree editable="botton">
+                            <!-- <field name="name" /> -->
+                            <field name="gif_data" />
+                            <field name="gif_sec_des"/>
+                            <field name="gif_con" />
+                            <field name="gif_data_type"/>
+                            <field name="gif_has_iva" />
+                            <field name="gif_iva" attrs="{'readonly': [('gif_block_iva','=',True)]}"/>
+                            <field name="gif_cost" />
+                            <field name="gif_debit" />
+                            <field name="gif_credit" />
+                            <field name="gif_block_iva" invisible="1"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- This Menu Item will appear in the Upper bar, that's why It needs NO parent or action -->
+    <menuitem id="gif_documents_menu_root" name="Documentos de Importación" sequence="500" />
+
+    <!-- gif.documents action window -->
+    <record id="gif_documents_action" model="ir.actions.act_window">
+        <field name="name">Configuración de Documentos de importación</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.documents</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Configuración de Documentos de importación.
+            </p>
+            <p>
+                Aún no se han creado pedimentos.
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_documents_menu_act" name="Documentos" parent="gif_documents_menu_root" action="gif_documents_action" sequence="100" />
+</odoo>

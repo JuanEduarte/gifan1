@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_attachments_reports.access_gif_attachment_reports,access_gif_attachment_reports,gif_attachments_reports.model_gif_attachment_reports,,1,1,1,1
+gif_attachments_reports.access_wizard_attachment_report,access_wizard_attachment_report,gif_attachments_reports.model_wizard_attachment_report,base.group_user,1,1,1,1
+gif_attachments_reports.access_name_attachment,access_name_attachment,gif_attachments_reports.model_name_attachment,base.group_user,1,1,1,1

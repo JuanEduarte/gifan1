@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="purchase_report_inherit" inherit_id="purchase.report_purchaseorder_document" name="Purchase Report Inherit">
+		  <xpath expr="//div[@id='total']//table[@class='table table-sm']" position="after">
+            <p>Tipo de Moneda:<span t-field="o.currency_id.name"/></p>
+      </xpath>
+	</template>     
+</odoo>

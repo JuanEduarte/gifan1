@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="gif_page_product" model="ir.ui.view">
+        <field name="name">gif.page.product</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <notebook>
+                <page name="product_info_gpt" string="Información del Producto">
+                    <group name="Campos Adicionales">
+                        <field name="default_code"/>
+                        <field name="description_sale"/>
+                        <field name="description_purchase"/>
+                        <field name="barcode"/>
+                        <field name="uom_id"/>
+                        <field name="gif_pt_content"/>
+                        <field name="gif_unit_contentnet" widget="many2one_tags"/>
+                        <field name="gif_height"/>
+                        <field name="gif_width"/>
+                        <field name="gif_depth"/>
+                        <field name="gif_weight"/>
+                        <field name="use_expiration_date"/>
+                        <field name="gif_active"/>
+                    </group>
+                    <group name="group_standard_price">
+                        <div name="pricing">
+                                  <field name="list_price" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" on_change="1" modifiers="{}"/>
+                <span class="ml-2"/><field name="tax_string" modifiers="{&quot;readonly&quot;: true}"/>
+            </div>
+                        <field name="taxes_id" widget="many2many_tags" context="{'default_type_tax_use':'sale', 'search_default_sale': 1, 'search_default_service': type == 'service', 'search_default_goods': type == 'consu'}" on_change="1" can_create="true" can_write="true" modifiers="{}"/>
+                    </group>
+                </page>
+                <page string="Info. Proveedor y Compra" name="Supplier">
+                    <group>
+                        <field name="gif_vendCode"/>
+                        <field name="uom_po_id"/>
+                        <field name="standard_price"/>
+                        <field name="supplier_taxes_id"/>
+                        <field name="gif_businessLine"/>
+                    </group>
+                </page>
+                <page string="Agrupaciones" name="Groups">
+                    <group>
+                        <field name="gif_originCountry"/>
+                        <field name="gif_product_type"/>
+                        <field name="gif_subtypeprod"/>
+                        <field name="gif_category"/>
+                        <field name="gif_subCategory"/>
+                        <field name="gif_freecamp"/>
+                        <field name="gif_brand_ids"/>
+                    </group>
+                </page>
+                <page string="Info. Empaque Paletizado" name="Packet">
+                    <group>
+                        <group name="packaging" string="Embalaje" colspan="4" attrs="{'invisible':['|', ('type', 'not in', ['product', 'consu']), ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}">
+                            <field name="packaging_ids" nolabel="1" context="{'tree_view_ref':'product.product_packaging_tree_view2'}" modifiers="{}"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

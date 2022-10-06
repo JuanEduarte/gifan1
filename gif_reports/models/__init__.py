@@ -1,0 +1,1 @@
+from . import gif_articulos_ubicaciones

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record model="ir.module.category" id="module_category_gif_sale_autorization">
+        <field name="name">Gifan</field>
+        <field name="description">Ayuda a administrar el permiso de aprobación de ventas</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_gifan_e_oficina_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Egreso Productos de Oficina</field>
+        <field name="comment">Transacciones de Egreso de Productos de Oficina.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_e_asociados_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Egreso Gastos Asociados</field>
+        <field name="comment">Transacciones de Egreso de Gastos Asociados.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_e_insumos_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Egreso Productos Insumos</field>
+        <field name="comment">Transacciones de Egreso de Productos Insumos.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_e_primarios_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Egreso Productos Primarios</field>
+        <field name="comment">Transacciones de Egreso de Productos primarios.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_e_descuentos_beneficios_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Egreso Descuentos y Beneficios</field>
+        <field name="comment">Transacciones de Egreso de Descuentos y Beneficios.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_i_oficina_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Ingreso Productos de Oficina</field>
+        <field name="comment">Transacciones de Ingreso de Productos de Oficina.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_i_primarios_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Ingreso Productos Primarios</field>
+        <field name="comment">Transacciones de Ingreso de Productos primarios.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+    <record id="group_gifan_i_descuentos_beneficios_administrador" model="res.groups">
+        <field name="name">Validador Transacciones Ingreso Descuentos y Beneficios</field>
+        <field name="comment">Transacciones de Ingreso de Descuentos y Beneficios.</field>
+        <field name="category_id" ref="module_category_gif_sale_autorization" />
+    </record>
+
+</odoo>

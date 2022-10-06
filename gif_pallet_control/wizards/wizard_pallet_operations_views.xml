@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard.pallet.operations action window -->
+    <record id="wizard_pallet_operations_form" model="ir.ui.view">
+        <field name="name">wizard.pallet.operations.form</field>
+        <field name="model">wizard.pallet.operations</field>
+        <field name="arch" type="xml">
+            <form string="Clasificador de Clientes manual">
+                <sheet>
+                    <div class="text-muted">
+                        Altas y bajas de tarimas.
+                    </div>
+                    <group>
+                        <p>Paramétros</p>
+                        <field name="gif_pallet_qty" />
+                        <field name="gif_move_type" />
+                        <field name="gif_pallet_type" />
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <p>Información adicional</p>
+                        <field name="gif_date_history" readonly="1"/>
+                        <field name="gif_pallete_id" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="gif_set_tarimes" string="Ejecutar operación" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- wizard.pallet.operations action window -->
+    <record id="wizard_pallet_operations_action" model="ir.actions.act_window">
+        <field name="name">Obtener la meta monetaria de empleado</field>
+        <field name="res_model">wizard.pallet.operations</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

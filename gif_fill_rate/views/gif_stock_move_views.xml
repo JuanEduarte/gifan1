@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+    
+        <!-- stock.move inherit tree view -->
+        <record id="stock_move_inherit_view_tree" model="ir.ui.view">
+            <field name="name">stock.move.inherit.view.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="gif_stock_move"/>
+                </xpath>
+                
+            </field>
+        </record>
+    
+
+        <!-- stock.move inherit kanban view -->
+        <record id="stock_move_inherit_view_kanban" model="ir.ui.view">
+            <field name="name">stock.move.inherit.view.kanban</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_kandan"/>
+            <field name="arch" type="xml">
+                <!-- Add you xpath here -->
+                <xpath expr="//kanban//div[@class='o_kanban_record_body']" position="before">
+                    <field name="gif_stockm_kanban_show" attrs="{'invisible':[('gif_stockm_kanban_show', '==', '0')]}" />                    
+                </xpath>               
+            </field>
+        </record>
+
+
+    </data>
+    
+</odoo>

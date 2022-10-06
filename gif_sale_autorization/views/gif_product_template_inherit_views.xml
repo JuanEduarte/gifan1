@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- product.template inherit form view -->
+    <record id="gif_product_temple_inherit_view_form" model="ir.ui.view">
+        <field name="name">product.template.inherit.view.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[2]" position="after">
+                <!-- <xpath expr="//group=[@name='group_standard_price']" position="after"> -->
+                <group name="group_name" string=" ">
+                    <field name="descount_selector" string="Tipo de Descuento en compras"/>
+                    <field name="d_f" attrs="{'invisible': [('descount_selector', '!=', '1')]}"/>
+                    <field name="d_p" attrs="{'invisible': [('descount_selector', '!=', '2')]}"/>
+                    <field name="porcentaje_ventas" string="Porcentaje de descuento en ventas"/>
+                    <field name="partners_details" string="Detalles de ventas">
+                        <tree editable="botton">
+                            <field name="partner"/>
+                            <field name="partner_price"/>
+                            <field name="currency_sale"/>
+                            <field name="partner_uom"/>
+                            <field name="bar_code"/>
+                            <field name="individual_code"/>
+                        </tree>
+                    </field>
+                    <field name="partners_details_purchase" string="Detalles de compras">
+                        <tree editable="botton">
+                            <field name="partner_purchase"/>
+                            <field name="partner_price_purchase"/>
+                            <field name="currency_purchase"/>
+                            <field name="partner_uom_purchase"/>
+                            <field name="bar_code_purchase"/>
+                            <field name="individual_code_purchase"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

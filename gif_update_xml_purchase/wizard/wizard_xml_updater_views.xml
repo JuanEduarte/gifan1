@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- wizard.xml.updater inherit form view -->
+    <record id="wizard_xml_updater_view_form" model="ir.ui.view">
+        <field name="name">wizard.xml.updater.view.form</field>
+        <field name="model">wizard.xml.updater</field>
+        <field name="arch" type="xml">
+            <form string="Subir facturas XML de ordenes de venta">
+                <sheet>
+                    <div class="text-muted">
+                        Subir un archivo con extensión .zip para subir tus archivos xml
+                    </div>
+                    <group>
+                        <field name="xml_files" filename="name"/>
+                        <field name="name" readonly="1"/>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button name="upload_files" string="Subir" type="object" class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="oe_link" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- wizard.xml.updater action window -->
+    <record id="wizard_xml_updater_action" model="ir.actions.act_window">
+        <field name="name">Subir archivo con Facturas en XML</field>
+        <field name="res_model">wizard.xml.updater</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wizard_updater_xml_menu" name="Subir XMLs" parent="account.menu_finance_payables" action="wizard_xml_updater_action" sequence="251"/>
+</odoo>

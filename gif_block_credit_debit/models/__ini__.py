@@ -1,0 +1,1 @@
+from . import gif_account_move_inherit

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_sale_autorization.access_gif_productos,access_gif_productos,gif_sale_autorization.model_product_template,,1,1,1,1
+gif_sale_autorization.access_gif_partners_details,access_gif_partners_details,gif_sale_autorization.model_gif_partners_details,,1,1,1,1
+gif_sale_autorization.access_gif_partners_details_purchase,access_gif_partners_details_purchase,gif_sale_autorization.model_gif_partners_details_purchase,,1,1,1,1
+gif_sale_autorization.access_gif_product_brand,access_gif_product_brand,gif_sale_autorization.model_gif_product_brand,,1,1,1,1

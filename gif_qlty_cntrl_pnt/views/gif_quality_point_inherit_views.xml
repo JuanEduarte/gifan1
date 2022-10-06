@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- quality.point inherit form view -->
+    <record id="gif_quality_point_inherit_view_form_qcp" model="ir.ui.view">
+        <field name="name">quality.point.inherit.view.form.gif.qcp</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality.quality_point_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='product_category_ids']" position="after">
+                <!-- Add your fields here "-->
+                <field name="gif_product_brand" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

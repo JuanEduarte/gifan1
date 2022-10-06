@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.pediments tree view -->
+    <record id="gif_pediments_view_tree" model="ir.ui.view">
+        <field name="name">gif.pediments.view.tree</field>
+        <field name="model">gif.pediments</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="gif_doc_ref" />
+                <field name="gif_date" />
+                <field name="gif_ad_val" />
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.pediments form view -->
+    <record id="gif_pediments_view_form" model="ir.ui.view">
+        <field name="name">gif.pediments.view.form</field>
+        <field name="model">gif.pediments</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}' />
+                    <button name="set_done" type="object" string="Cerrar" states='draft' class="btn-primary"/>
+                    <button name="go_back" type="object" string="Abrir" states='done' class="btn-primary" attrs="{'invisible': ['|',('gif_prorrateado','=',True),('state','=','draft')]}"/>
+                </header>
+                <sheet>
+                    <group name="ped_header">
+                        <group name="ped_1">
+                            <field name="gif_prorrateado" invisible="1"/>
+                            <field name="name" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_doc_ref" widget="many2many_tags" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_aduana" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_dol_val" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_dol_inv" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_com_val" readonly="1"/>
+                            <field name="gif_ad_val" readonly="1"/>
+                            <field name="gif_igi" readonly="1"/>
+                            <field name="gif_dta" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_ieps" attrs="{'readonly': [('state','=','done')]}"/>
+                        </group>
+                        <group name="ped_2">
+                            <field name="gif_date" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_change" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_seg" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_emb" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_flete" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_inc" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_contract" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_pre_val" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_iva" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_pallets" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_total" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Partidas" name="gif_partials_notebook">
+                            <field name="gif_set_part" attrs="{'readonly': [('state','=','done')]}">
+                                <tree editable="botton">
+                                    <field name="gif_part_no" />
+                                    <field name="gif_no_igi" />
+                                    <field name="gif_imp_igi" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Detalles del pedimento" name="gif_pediments_notebook">
+                            <field name="gif_set_ped" attrs="{'readonly': [('state','=','done')]}">
+                                <tree editable="botton" default_oder='gif_con'>
+                                    <field name="gif_rel_name" readonly="1"/>
+                                    <field name="gif_con" readonly="1" />
+                                    <field name="gif_data" readonly="1" />
+                                    <field name="gif_sec_des" readonly="1" />
+                                    <field name="gif_dt_ref" attrs="{'readonly': [('gif_block_ref','=',True)]}" />
+                                    <field name="gif_dt_imp" attrs="{'readonly': [('gif_block_imp','=',True)]}" />
+                                    <field name="gif_dt_com" attrs="{'readonly': [('gif_block_com','=',True)]}" />
+                                    <field name="gif_dt_da" attrs="{'readonly': [('gif_block_da','=',True)]}" />
+                                    <field name="gif_cal_iva" attrs="{'invisible': [('gif_has_iva','=',False)]}" />
+                                    <field name="gif_cost" readonly="1"/>
+                                    <field name="gif_has_iva" invisible="1" />
+                                    <field name="gif_block_ref" invisible="1" />
+                                    <field name="gif_block_imp" invisible="1" />
+                                    <field name="gif_block_com" invisible="1" />
+                                    <field name="gif_block_da" invisible="1" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Asignación de Partidas" name="gif_assign_part">
+                            <group>
+                                <field name="gif_ped_stock" attrs="{'readonly': [('state','=','done')]}"/>
+                            </group>
+                                <field name="gif_rel_doc_ped" attrs="{'readonly': [('state','=','done')]}">
+                                    <tree editable="botton">
+                                        <field name="gif_stock_qty"/>
+                                        <field name="gif_stock_product"/>
+                                        <field name="gif_nm_part"/>
+                                    </tree>
+                                </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.pediments action window -->
+    <record id="gif_pediments_action" model="ir.actions.act_window">
+        <field name="name">Captura de Pedimentos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.pediments</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No se han creado pedimentos.
+            </p>
+            <p>
+                Por favor cree un pedimento. 
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_pediments_menu_act" name="Pedimentos" parent="gif_documents_menu_root" action="gif_pediments_action" sequence="150" />
+
+</odoo>

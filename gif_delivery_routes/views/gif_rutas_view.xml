@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="gif_delivery_routes_view_form" model="ir.ui.view">
+        <field name="name">gif.routes.view.form</field>
+        <field name="model">gif.delivery.routes</field>
+        <field name="arch" type="xml">
+
+            <form string="deivery_routes">
+
+                <header>
+                    <button  name="action_report" type="object" string="Imprimir en pdf" />
+                </header>
+                
+                <sheet>
+                    <h5>Rutas de entrega</h5>
+                        <group col='2' >
+                           <group>
+                             <field name='name' placeholder='Name' readonly = "1"  />
+                             <field name="customer" />
+                             <field name="carrier" />
+                             <field name="vehicle_number"/>
+                             <field name="plates"/>
+                           </group>
+
+                            <group >
+                                <field name="date"/>
+                                <field name="child_ids" />
+                                <field name="evidence" optional="show" widget='image' class="oe_left oe_avatar"  />
+                            </group>
+
+                        </group>
+                    <notebook>
+                        <page string="Detalles del personal">
+                            <field name="gif_personal_details" >
+                                <tree editable="botton">
+                                    <field name="secuence" />
+                                    <field name="employe_name" />
+                                    <field name="employe_type" />
+                                    <field name="employe_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    
+                    <notebook>
+                        <page string="Detalles de Ruta">
+                            <field name="gif_routes_details" >
+                                <tree editable="botton">
+
+                                    <field name="secuence" />
+                                    <field name="invoice" domain="[('name',  'ilike', 'FVMXN%')]"  />
+                                    <field name='fiscal' />
+                                    <field name='client' />
+                                    <field name='order'/>
+                                    <field name='importe' />        
+                                    <field name='cobrado'/>
+                                    
+
+                                </tree>
+                            </field>
+                         </page>
+                    </notebook>
+                    <group>
+                    <field name="total" />
+                    </group>
+                    <group>
+                      <field name="flete" />
+                      <field name="seguros" />
+                      <field name="maniobras" />
+                    </group>
+                     
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+  <record id="gif_delivery_routes_view_tree" model="ir.ui.view">
+    <field name="name">gif.delivery.routes.view.tree</field>
+    <field name="model">gif.delivery.routes</field>
+    <field name="arch" type="xml">
+      <tree string="">
+        <field name="name" readonly = "1" />
+        <field name="date" readonly = "1" />
+        <field name="carrier" readonly = "1" />
+        <field name="vehicle_number" readonly = "1" />
+        <field name="plates" readonly = "1" />
+        <field name="flete" readonly = "1" />
+        <field name="maniobras" readonly = "1" />
+        <field name="seguros" readonly = "1" />
+      </tree>
+    </field>
+  </record>
+<!--
+  <record id="gif_delivery_routes_view_kanban" model="ir.ui.view">
+    <field name="name">gif.delivery.routes.view.kanban</field>
+    <field name="model">gif.delivery.routes</field>
+    <field name="arch" type="xml">
+      <kanban string="rutas" >
+        <templates>
+                    <t t-name="kanban-box">
+                        <div >
+                            <div >
+                                <strong >
+                                    <field name="distribution_route" />
+                                </strong>
+                                <ul>
+                                    <li><field name="date" /></li>
+                                    <li><field name="plates" /></li>
+                                </ul>
+                                <div>
+                                     <span>Ventas: </span>
+                                     <field name="flete"/>
+                                </div>
+                                <div>
+                                    <span>Compras: </span>
+                                     <field name="seguros"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+      </kanban>
+    </field>
+  </record>
+-->
+  <record id="gif_delivery_action" model="ir.actions.act_window">
+      <field name="name">Rutas de entrega</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">gif.delivery.routes</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+  
+  <menuitem id="gif_routes_menuitem" name="Rutas de entrega" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action"/>
+</odoo> 

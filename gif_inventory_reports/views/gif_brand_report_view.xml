@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- gif.brand.report form view -->
+    <record id="gif_brand_report_view_form" model="ir.ui.view">
+        <field name="name">gif.brand.report.view.form</field>
+        <field name="model">gif.brand.report</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Inventario">
+                <header>
+                    <button name="compute_products" type="object" string="Consultar" class="oe_edit_only"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1> <field name="name"/> </h1>
+                        <h2> <field name="company_name"/> </h2>
+                        <h3> <field name="date"/> </h3>
+                    </div>
+                    <notebook>
+                        <page string="Productos">
+                            <field name="products">
+                                <tree readonly="1">
+                                    <field name="gif_partner_purchase"/>
+                                    <field name="product"/>
+                                    <field name="description_sale" optional="hide"/>
+                                    <field name="gif_brand"/>
+                                    <field name="gif_warehouse_existences"/>
+                                    <field name="last_move"/>
+                                    <field name="gif_unit_cost"/>
+                                    <field name="gif_total_cost"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                        
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.brand.report tree view -->
+    <record id="model_name_view_tree" model="ir.ui.view">
+        <field name="name">gif.brand.report.view.tree</field>
+        <field name="model">gif.brand.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- gif.brand.report action window -->
+    <record id="gif_brand_report_action" model="ir.actions.act_window">
+        <field name="name">Inventario por Marca</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.brand.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                ¡Aún no hay reportes!
+            </p><p>
+                Comience a crear un reporte
+            </p>
+        </field>
+    </record>
+    
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+        id="brand_report_tree_menu_act"
+        name="Inventario por Marca"
+        parent="gifan_inventory_reports_menu_categ"
+        action="gif_brand_report_action"
+        sequence="97"/>
+</odoo>

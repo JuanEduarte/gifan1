@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="quality_alert_form_view_inherit" model="ir.ui.view">
+        <field name="name">quality.alert.form.view.inherit</field>
+        <field name="model">quality.alert</field>
+        <field name="inherit_id" ref="quality_control.quality_alert_view_form"/>
+        <field name="arch" type="xml">    
+            <xpath expr="//field[@name='priority']" position="after">
+                <field name="saleorder_id"/>
+                <field name="account_move_id"  string="Facturas de Ventas" widget="selection" attrs="{'invisible': [('saleorder_id', '=', False)]}"/>
+                <field name="purchorder_id"/>
+                <field name="account_purchase_id"  string="Facturas de Compra" widget="selection" attrs="{'invisible': [('purchorder_id', '=', False)]}"/>
+                <field name="gif_mrp_production"/>
+            </xpath> 
+        </field>
+    </record>
+</odoo>

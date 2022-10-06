@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- gif.disponibilidad form view -->
+        <record id="gif_disponibilidad_view_form" model="ir.ui.view">
+            <field name="name">gif.disponibilidad.view.form</field>
+            <field name="model">gif.disponibilidad</field>
+            <field name="arch" type="xml">
+                <form string="Disponibilidad De Empleados">
+                    
+                    <sheet>
+                        
+                        <div class="oe_button_box" name="button_box">
+                            <button name="emp_history" type="object" class="oe_stat_button" icon="fa-arrow-up">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Trazabilidad</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <h1>Control De Empleados</h1>
+                        <group>
+                            <group>
+                                <group >
+                                    <field name="gif_emp_total" style=' max-width: 50px;  width: 50px; text-align: center' readonly="1"/>
+                                    <field name="gif_emp_linea" style=' max-width: 50px;  width: 50px; color:orange; text-align: center' readonly="1"/>
+                                    <field name="gif_emp_dps" style=' max-width: 50px;  width: 50px; color:green; text-align: center' readonly="1"/>
+                                </group>
+                                
+                            </group>
+                            <group name="asig_employee" string="Alta y Baja De Empleados" >
+                                <group name="Validador">
+                                    <field name="gif_emp_alta" style=' max-width: 25px;width: 25px; text-align:center;' />
+                                    <field name="gif_emp_baja" style=' max-width: 25px;  width: 25px; text-align: center' />
+                                </group>
+                                <group>
+                                    <button name="in_emp" string="Validar" type="object"/><br/>
+                                    <button name="out_emp" string="Validar" type="object"/>
+                                </group>
+                                <group>
+                                    <field name="company_id" string="Compañia" style=' max-width: 250px;  width: 250px; '/>
+                                </group>
+                            </group>
+                        </group>
+
+                        
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- gif.disponibilidad tree view -->
+        <record id="gif_disponibilidad_view_tree" model="ir.ui.view">
+            <field name="name">gif.disponibilidad.view.tree</field>
+            <field name="model">gif.disponibilidad</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <!-- Add your fields here -->
+                    <field name="name"/>
+                    <field name="gif_emp_total" />
+                    <field name="gif_emp_linea" />
+                    <field name="gif_emp_dps" />
+                    <!-- <field name="gif_emp_miss"/> -->
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- gif.disponibilidad action window -->
+        <record id="gif_disponibilidad_action" model="ir.actions.act_window">
+            <field name="name">Asignar Empleados</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">gif.disponibilidad</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    No hay empleados registrados
+                </p><p>
+                    Por favor ingrese a los empleados  
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="gif_disponibilidad_emp_menu" name="Control Empleados" parent="mrp.menu_mrp_manufacturing" action="gif_disponibilidad_action"/>
+    </data>
+    
+</odoo>

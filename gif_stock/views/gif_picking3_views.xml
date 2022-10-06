@@ -1,0 +1,14 @@
+<odoo>
+  <!-- model.name inherit tree view -->
+  <record id="stock_view_move_line_tree" model="ir.ui.view">
+    <field name="name">	stock.view.move.line.tree</field>
+    <field name="model">stock.move.line</field>
+    <field name="inherit_id" ref="stock.view_move_line_tree"></field>
+    <field name="arch" type="xml">
+      <!-- Add your xpath here -->
+      <xpath expr="//field[@name='qty_done']" position="after">
+        <field name= "gif_real_stock" force_save="1"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

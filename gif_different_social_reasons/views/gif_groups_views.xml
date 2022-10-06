@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- gif.groups tree view -->
+    <record id="gif_groups_view_tree" model="ir.ui.view">
+        <field name="name">gif.groups.view.tree</field>
+        <field name="model">gif.groups</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="email"/>                
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.groups kanban view  -->
+    <record id="gif_groups_view_kanban" model="ir.ui.view">
+        <field name="name">gif.groups.view.kanban</field>
+        <field name="model">gif.groups</field>
+        <field name="arch" type="xml">
+            <kanban string="Grupos">
+                <field name="color"/>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_sales" class="oe_stat_button" icon="fa-bars" type="object">
+                            <field name="sales_count" widget="statinfo" String="Ventas" />
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Company S.A de C.V" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_group" invisible="1" />
+                            <label for="street" string="Address" />
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Calle..." class="o_address_street" />
+                                <field name="street2" placeholder="Calle 2..." class="o_address_street" />
+                                <field name="city" placeholder="Ciudad" class="o_address_city" />
+                                <field name="state_id" class="o_address_state" placeholder="Estado" options="{'no_open': True, 'no_quick_create': True}" context="{'default_country_id': country_id}" />
+                                <field name="zip" placeholder="C.P" class="o_address_zip" />
+                                <field name="country_id" placeholder="País" class="o_address_country" options='{"no_open": True, "no_create": True}' />
+                            </div>
+                            <field name="vat" placeholder="e.g. BE0477472701" />
+                            <field name="l10n_mx_edi_curp" />
+                            <field name="l10n_mx_edi_operator_licence" />
+                        </group>
+                        <group>
+                            <field name="user_ids" invisible="1" />
+                            <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}" />
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" />
+                            <field name="mobile" widget="phone" options="{'enable_sms': false}" />
+                            <field name="lang"/>
+                            <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Etiquetas..." />
+                            <field name="l10n_it_pec_email" />
+                            <field name="l10n_it_codice_fiscale" />
+                            <field name="l10n_it_pa_index" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Empresas Asociadas" name="partner_companys" autofocus="autofocus">
+                            <field name="partners_ids" readonly="1" mode="kanban" create="false"></field>
+                            <button name="gif_different_social_reasons.wizard_show_groups_action" type="action" string="Asignar Empresas" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban" >
+                            <div class="o_kanban_image">
+                                <img class="oe_kanban_image_inner_pic" src="https://cdn-icons-png.flaticon.com/512/993/993891.png" />
+                            </div>
+                            <div class="oe_kanban_details d-flex flex-column">
+                                <strong class="o_kanban_record_title oe_partner_heading">
+                                    <field name="name" />
+                                </strong>
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories">
+                                    <field name="category_id"/>
+                                </div>
+                                <ul>
+                                    <li><field name="country_id" /></li>
+                                    <li><field name="email" /></li>
+                                </ul>
+                                <div>
+                                     <span>Ventas: </span>
+                                     <field name="sales_count"/>
+                                </div>
+                                <div>
+                                    <span>Compras: </span>
+                                     <field name="purchases_count"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- gif.groups form view -->
+    <record id="gif_groups_view_form" model="ir.ui.view">
+        <field name="name">gif.groups.view.form</field>
+        <field name="model">gif.groups</field>
+        <field name="arch" type="xml">
+            <form string="Grupos">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_sales" class="oe_stat_button" icon="fa-money" type="object">
+                            <field name="sales_count" widget="statinfo" String="Ventas" />
+                        </button>
+                        <button name="action_show_purchases" class="oe_stat_button" icon="fa-credit-card" type="object">
+                            <field name="purchases_count" widget="statinfo" String="Compras" />
+                        </button>
+                        <button name='action_show_invoices_out' class="oe_stat_button" icon="fa-edit" type="object">
+                            <field name="total_invo_out" widget="statinfo" String="Facturas Clientes" />
+                        </button>
+                        <button name='action_show_invoices_in' class="oe_stat_button" icon="fa-edit" type="object">
+                            <field name="total_invo_in" widget="statinfo" String="Facturas Proveedores" />
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Company S.A de C.V" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_group" invisible="1" />
+                            <label for="street" string="Address" />
+                            <div class="o_address_format">
+                                <field name="country_id" placeholder="País" class="o_address_country" options='{"no_open": True, "no_create": True}' />
+                                <field name="state_id" class="o_address_state" placeholder="Estado" options="{'no_open': True, 'no_quick_create': True}" context="{'default_country_id': country_id}" />
+                                <field name="street" placeholder="Calle..." class="o_address_street" />
+                                <field name="street2" placeholder="Calle 2..." class="o_address_street" />
+                                <field name="city" placeholder="Ciudad" class="o_address_city" />
+                                <field name="zip" placeholder="C.P" class="o_address_zip" />
+                            </div>
+                            <field name="vat" placeholder="e.g. BE0477472701" />
+                            <field name="l10n_mx_edi_curp" />
+                            <field name="l10n_mx_edi_operator_licence" />
+                            <field name="color"/>
+                        </group>
+                        <group>
+                            <field name="user_ids" invisible="1" />
+                            <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}" />
+                            <field name="phone" widget="phone" options="{'enable_sms': false}" />
+                            <field name="mobile" widget="phone" options="{'enable_sms': false}" />
+                            <field name="lang"/>
+                            <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Etiquetas..." />
+                            <field name="l10n_it_pec_email" />
+                            <field name="l10n_it_codice_fiscale" />
+                            <field name="l10n_it_pa_index" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Empresas Asociadas" name="partner_companys" autofocus="autofocus">
+                            <button name="gif_different_social_reasons.wizard_show_groups_action" type="action" string="Asignar Empresas" />
+                            <field name="partners_ids" mode="kanban" create="false"></field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- gif.groups action window -->
+    <record id="gif_groups_action" model="ir.actions.act_window">
+        <field name="name">Grupos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.groups</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+                No existen grupos.
+            </p>
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+                Ingrese un grupo.
+            </p>
+        </field>
+    </record>
+    <menuitem id="gif_groups_menu_act" name="Grupos" parent="contacts.res_partner_menu_config" action="gif_groups_action" />
+</odoo>

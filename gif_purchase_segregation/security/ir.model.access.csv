@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_purchase_segregation.access_gif_tipificaciones_compras,access_gif_tipificaciones_compras,gif_purchase_segregation.model_gif_tipificaciones_compras,,1,1,1,1

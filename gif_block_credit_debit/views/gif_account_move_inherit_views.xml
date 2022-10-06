@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.move inherit form view -->
+    <record id="account_move_inherit_view_id" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='invoice_tab']//field[@name='invoice_line_ids']//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@id='invoice_tab']//field[@name='invoice_line_ids']//tree//field[@name='tax_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="price_unit" attrs="{'readonly': ['|',(['parent.move_type','=','out_refund']),('parent.move_type','=','in_refund')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='tax_ids']" position="after">
+                <field name="tax_ids" widget="many2many_tags" domain="[('type_tax_use', '=?', parent.invoice_filter_type_domain), ('company_id', '=', parent.company_id), ('country_id', '=', parent.tax_country_id)]" context="{'append_type_to_tax_name': not parent.invoice_filter_type_domain}" options="{'no_create': True}" optional="show" attrs="{'readonly': ['|',(['parent.move_type','=','out_refund']),('parent.move_type','=','in_refund')]}"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.cyc.inv tree view -->
+    <record id="gif_cyc_inventory_view_tree" model="ir.ui.view">
+        <field name="name">gif.cyc.inv.view.tree</field>
+        <field name="model">gif.cyc.inventory</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="gif_name" />
+                <field name="gif_init_date" />
+                <field name="gif_end_date" />
+                <field name="gif_resp" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.cyc.inv form view -->
+    <record id="gif_cyc_inventory_view_form" model="ir.ui.view">
+        <field name="name">gif.cyc.inv.view.form</field>
+        <field name="model">gif.cyc.inventory</field>
+        <field name="arch" type="xml">
+            <form string="Reporte">
+                <header>
+                    <!-- <button name="set_on_progress" class="btn-primary" type="object" string="Aprobar" states="draft" /> -->
+                    <!-- <button name="set_on_done" class="btn-primary" type="object" string="Concluir" groups="gif_cyclical_inventory.group_gifan_inv_cycl" attrs="{'invisible': [('state','not in', ('first_c','second_c','third_c'))]}"/> -->
+                    <button name="set_on_done" class="btn-primary" type="object" string="Concluir" states="draft"/>
+                    <button name="cancel" type="object" string="Cancelar" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                </header>
+                <sheet>
+                    <group>
+                        <!-- Add your fields here -->
+                        <field name="gif_name" />
+                        <field name="gif_resp" />
+                        <field name="gif_init_date" />
+                        <field name="gif_end_date" />
+                        <field name="gif_porc" readonly="1" groups="gif_cyclical_inventory.group_gifan_inv_cycl" states="done"/>
+                        <field name="gif_count_ubi" readonly="1" groups="gif_cyclical_inventory.group_gifan_inv_cycl" states="done"/>
+                        <field name="gif_cons_ubi" readonly="1" groups="gif_cyclical_inventory.group_gifan_inv_cycl" states="done"/>
+                        <field name="gif_err_ubi" readonly="1" groups="gif_cyclical_inventory.group_gifan_inv_cycl" states="done"/>
+                    </group>
+                    <field name="gif_cyc_inv" attrs="{'readonly': [('state','in',('cancel','done'))]}">
+                        <tree editable="botton">
+                            <field name="state" invisible="1"/>
+                            <field name="code_ubi" />
+                            <field name="code_prod" />
+                            <field name="gif_location" readonly="1" />
+                            <field name="gif_product" readonly="1" />
+                            <field name="gif_uom" readonly="1" />
+                            <!-- <field name="gif_qty" attrs="{'readonly': [('state','in',('second_c','third_c','done'))]}" /> -->
+                            <field name="gif_qty" />
+                            <!-- <field name="gif_sec_count" groups="gif_cyclical_inventory.group_gifan_inv_cycl" attrs="{'readonly': ['|',('state','!=','second_c'),('gif_check','=',True)]}" optional="hide" force_save="1"/>
+                            <field name="gif_trd_count" groups="gif_cyclical_inventory.group_gifan_inv_cycl" attrs="{'readonly': ['|',('state','!=','third_c'),('gif_check','=',True)],}" optional="hide" force_save="1"/> -->
+                            <field name="gif_real_inv" groups="gif_cyclical_inventory.group_gifan_inv_cycl" readonly="1" />
+                            <field name="gif_check" groups="gif_cyclical_inventory.group_gifan_inv_cycl" readonly="1" />
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.cyc.inv action window -->
+    <record id="gif_cyc_inventory_model_name_action" model="ir.actions.act_window">
+        <field name="name">Creacion Reportes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.cyc.inventory</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Aún no se han creado reportes.
+            </p>
+            <p>
+                Por favor cree un nuevo reporte
+            </p>
+        </field>
+    </record>
+
+    <record id="gif_auto_name" model="ir.sequence">
+        <field name="name">Auto Incremente Name</field>
+        <field name="code">gif.cyc.inventory.name</field>
+        <field name="prefix">INVCIC</field>
+        <field name="padding">5</field>
+    </record>
+
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="gif_cyc_inventory_menu_categ" name="Inventario Ciclico" parent="stock.menu_stock_warehouse_mgmt" sequence="31" />
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_cyc_inv_menu_act" name="Crear reporte" parent="gif_cyc_inventory_menu_categ" action="gif_cyc_inventory_model_name_action" sequence="1" />
+
+</odoo>

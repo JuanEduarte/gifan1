@@ -1,0 +1,14 @@
+<!-- account.move inherit tree view -->
+<record id="account_move_inherit_tree_view_id" model="ir.ui.view">
+    <field name="name">account.move.inherit.view.tree</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_invoice_tree"/>
+    <field name="arch" type="xml">
+        <!-- Add your xpath here -->
+        <xpath expr="//field[@name='partner_id']" position="after">
+            <!-- Add your fields here -->
+            <field name="muestra"/>
+        </xpath>
+        
+    </field>
+</record>

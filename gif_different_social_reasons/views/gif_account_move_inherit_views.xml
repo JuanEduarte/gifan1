@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.move inherit search view -->
+    <record id="account_move_inherit_search_view" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.search</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//search" position="inside">
+                <field name="group_s" string="Grupos"/>
+            </xpath>
+            <xpath expr="//filter[@name='to_check']" position="before">
+                <filter string="Grupo" name="group_partner_gif" domain="[('group_s','!=','')]" />
+                <field name="group_s" string="Grupos" context="{'group_by': 'group_s'}" />            
+            </xpath>
+            
+        </field>
+    </record>
+
+    <!-- account.payment_tree inherit search view -->
+    <record id="account_payment_tree_search_view_id" model="ir.ui.view">
+        <field name="name">account.payment.tree.inherit.view.search</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="." position="inside">
+                <field name="group_s" string="Grupos"/>
+                <filter string="Grupo" name="group_partner_gif" domain="[('group_s','!=','')]" />
+                <field name="group_s" string="Grupos" context="{'group_by': 'group_s'}" />            
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

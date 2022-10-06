@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- purchase.requisition inherit tree view -->
+    <record id="purchase_requisition_view_id_purchase_segregation" model="ir.ui.view">
+        <field name="name">purchase.requisition.inherit.view.tree.purchase.segregation</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <!-- Add your fields here -->
+                <field name="sum_requisition_order" invisible="0" />
+                <field name="is_office_requisition" invisible="1" />
+                <field name="is_primary_requisition" invisible="0" />
+                <field name="is_ben_dis_requisition" invisible="1" />
+                <field name="is_insume_requisition" invisible="1" />
+                <field name="is_associated_requisition" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- purchase.requisition inherit form view -->
+    <record id="purchase_requisition_view_id_form_inherit_purchase_segregation" model="ir.ui.view">
+        <field name="name">purchase.requisition.inherit.view.form.purchase.segregation</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="tipificacion_requisition" options="{'no_open': False, 'no_create_edit': True, 'no_create': True}" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

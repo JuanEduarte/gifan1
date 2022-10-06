@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="batch_payment_inherit" inherit_id="account_batch_payment.print_batch_payment" name="Batch Payment Inherit">
+      <xpath expr="//table//thead//tr" position="inside"> 
+            <th class="text-center">Moneda</th></xpath>
+      <xpath expr="//table//tfoot//tr" position="inside">
+            <td class="text-center"><t t-esc="payment.currency_id.name"/></td>
+		</xpath>
+    </template>
+</odoo>

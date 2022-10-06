@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- sale.order inherit form view -->
+    <record id="view_id" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="tipificacion_venta" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- sale.order inherit tree view -->
+    <record id="sale_type_tree_inherit_view_id" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree[hasclass('o_sale_order')]" position="replace">
+                <tree string="Quotation" class="o_sale_order" sample="1" decoration-info="state in ['draft', 'sent']" decoration-muted="state == 'cancel'">
+                    <field name="name" string="Number" readonly="1" decoration-bf="1"  />
+                    <field name="create_date" string="Creation Date" widget="date" optional="show"  />
+                    <field name="commitment_date" widget="date" optional="hide"  />
+                    <field name="expected_date" widget="date" optional="hide"  />
+                    <field name="partner_id" readonly="1"  />
+                    <field name="user_id" widget="many2one_avatar_user" optional="show"  />
+                    <field name="activity_ids" widget="list_activity" optional="show"  />
+                    <field name="team_id" optional="hide"  />
+                    <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"  />
+                    <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"  />
+                    <field name="amount_untaxed_show" sum="Total Tax Excluded" widget="monetary" optional="hide"  />
+                    <field name="amount_tax_show" sum="Tax Total" widget="monetary" optional="hide" />
+                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" invisible="1"/>
+                    <field name="amount_total_show" sum="Total Show" widget="monetary" optional="show"/>
+                    <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"  />
+                    <field name="invoice_status" optional="hide"  />
+                    <field name="message_needaction" invisible="1" />
+                    <field name="currency_id" invisible="1" />
+                    <field name="groups_i" invisible="1" />
+                    <field name="is_office" invisible="1" />
+                    <field name="is_primary" invisible="1" />
+                    <field name="is_ben_dis" invisible="1" />
+                    <field name="user_id" invisible="1"/>
+                    <field name="suma" invisible="1"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
