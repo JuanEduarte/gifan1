@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 gif_delivery_routes.access_gif_delivery_routes,access_gif_delivery_routes,gif_delivery_routes.model_gif_delivery_routes,,1,1,1,1
 gif_delivery_routes.access_gif_personal_details,access_gif_personal_details,gif_delivery_routes.model_gif_personal_details,,1,1,1,1
 gif_delivery_routes.access_gif_routes_details,access_gif_routes_details,gif_delivery_routes.model_gif_routes_details,,1,1,1,1
+gif_delivery_routes.access_gif_movements_details,access_gif_movements_details,gif_delivery_routes.model_gif_movements_details,,1,1,1,1

@@ -12,20 +12,24 @@
                 </header>
                 
                 <sheet>
-                    <h5>Rutas de entrega</h5>
                         <group col='2' >
                            <group>
                              <field name='name' placeholder='Name' readonly = "1"  />
-                             <field name="customer" />
-                             <field name="carrier" />
-                             <field name="vehicle_number"/>
-                             <field name="plates"/>
+                             <field name="type1" attrs="{'invisible':[('type2','=',True)]}" />
+                             <field name="type2" attrs="{'invisible':[('type1','=',True)]}" />
+
+
+                             <field name="customer" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}"  />
+                             <field name="carrier" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+                             <field name="vehicle_number" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+                             <field name="plates" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
                            </group>
 
                             <group >
-                                <field name="date"/>
-                                <field name="child_ids" />
-                                <field name="evidence" optional="show" widget='image' class="oe_left oe_avatar"  />
+                                <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+                                <field name="move" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
+                                <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)]}"/>
+                                <field name="movement" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
                             </group>
 
                         </group>
@@ -43,12 +47,13 @@
                     </notebook>
                     
                     <notebook>
-                        <page string="Detalles de Ruta">
+
+                        <page string="Detalles de Ruta" attrs="{'invisible':[('type2','=',True)]}" >
                             <field name="gif_routes_details" >
                                 <tree editable="botton">
 
                                     <field name="secuence" />
-                                    <field name="invoice" domain="[('name',  'ilike', 'FVMXN%')]"  />
+                                    <field name="invoice" domain="[('state', '=', 'posted')]"  />
                                     <field name='fiscal' />
                                     <field name='client' />
                                     <field name='order'/>
@@ -59,6 +64,24 @@
                                 </tree>
                             </field>
                          </page>
+
+                         <page string="Detalles" attrs="{'invisible':[('type1','=',True)]}" >
+                            <field name="gif_routes_movements" >
+                                <tree editable="botton">
+
+                                    <field name="secuence" />
+                                    <field name='name'/>
+                                    <field name="type" />
+                                    <field name="client" />
+                                    <field name='origin_doc' />        
+                                    <field name='cobrado'/>
+                                    
+
+                                </tree>
+                            </field>
+                         </page>
+
+
                     </notebook>
                     <group>
                     <field name="total" />
@@ -73,7 +96,7 @@
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>                </div>
+                    <field name="message_ids" widget="mail_thread"/></div>
 
             </form>
         </field>
@@ -125,7 +148,6 @@
                         </div>
                     </t>
                 </templates>
-
       </kanban>
     </field>
   </record>
