@@ -11,7 +11,6 @@ class GifDeliveriRoutes(models.Model):
   customer              = fields.Many2one('res.partner', string='Cliente',store=True , required=True) 
   type1                 = fields.Boolean (string='Rutas de factura', default=False, store = True)
   type2                 = fields.Boolean (string='Rutas de movimientos', default=False,store = True) 
-  move                  = fields.Many2one('stock.picking', string='Cliente',store=True)
   date                  = fields.Datetime(string='Fecha', required=True)
   carrier               = fields.Many2one('res.company', string='Transportista')
   vehicle_number        = fields.Many2one('fleet.vehicle', string='N° de veiculo')
@@ -19,10 +18,10 @@ class GifDeliveriRoutes(models.Model):
   flete                 = fields.Integer (string='flete pactado', required=True)
   seguros               = fields.Integer (string='importe de maniobras', required=True)
   maniobras             = fields.Integer (string='Importe de seguros', required=True)
-  total                 = fields.Float (string='Total', compute = '_onchange_custom')
+  total                 = fields.Float   (string='Total', compute = '_onchange_custom')
   child_ids             = fields.Many2one('res.partner', string='Direccion de entrega')
-  movement              = fields.Selection(string='Tipo de movimiento', selection=[('1','Translados Internos'),('2','Recolecciones'),('3','Paquetes'),('4','Entregas')], store=True)
-  evidence              = fields.Image('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
+  mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('internal','Recolecciones'),('3','Paquetes'),('outgoing','Entregas')], store=True)
+  evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
   
   
   gif_personal_details  = fields.One2many(comodel_name='gif.personal.details', inverse_name='gif_personal_id', string='Detalles del personal')
@@ -43,23 +42,17 @@ class GifDeliveriRoutes(models.Model):
     for record in (self): 
       if record.customer:
         stock_picking_ids = self.env['stock.picking'].search([('partner_id.name', '=', record.customer.name)])
-        print('#########', stock_picking_ids)
         for i in stock_picking_ids:
           pass
-          #print('++++++++++++',i.name)
-          #print('++++++++++++',i.state)
       else:
         stock_picking_ids = self.env['stock.picking'].search([('partner_id', '=', False)])
-        print('######### none', stock_picking_ids)
         for i in stock_picking_ids:
           pass
-          #print('++++++++++++ mad',i.name)
         
   @api.onchange('customer')
   def _onchange_customer_select(self):
     for record in (self): 
       for i in record.customer:
-        #print('*******',i.child_ids)
         return {'domain':{'child_ids':[('id', 'in', record.customer.child_ids.ids)]}}
 
 
@@ -89,29 +82,28 @@ class GifDeliveriRoutes(models.Model):
         pass
       
       
-  @api.onchange('movement')
+  @api.onchange('mov')
   def _onchange_movement(self):
     for record in (self):
           b = 0
           if record.customer:
             stock_picking_ids = self.env['stock.picking'].search([('partner_id.name', '=', record.customer.name)])
-            print('abc#########', stock_picking_ids)
+            #print('abc#########', stock_picking_ids)
             for i in stock_picking_ids:
-              print('abc#########', i.name, i.state, i.picking_type_code)
-              print('####### DONE')
-              b = b+1
-              inv_rel =self.env['gif.movements.details'].create([{
-                'gif_delivery_mov': record.id,
-                'name': i.name,
-                'type' : i.picking_type_code, 
-                'origin_doc': i.origin,
-                'secuence': b,
-                  }])
-            else:
-              pass
-      
-
-
+              if i.picking_type_id.code == record.mov:
+                print('abc#########', i.name, i.state, i.picking_type_code, i.picking_type_id.name)
+                print('####### DONE')
+                b = b+1
+                inv_rel =self.env['gif.movements.details'].create([{
+                  'gif_delivery_mov': record.id,
+                  'name': i.name,
+                  'type' : i.picking_type_id.name, 
+                  'origin_doc': i.origin,
+                  'secuence': b,
+                    }])
+              else:
+                pass
+    
   @api.onchange('customer')
   def _onchange_child_id(self):
     for record in (self):
@@ -131,12 +123,9 @@ class GifDeliveriRoutes(models.Model):
         a = 0
         for i in record.customer.invoice_ids:
           if   i.state == 'posted' and record.child_ids == i.partner_shipping_id : 
-            #print('***',i)
-            #print('****************',i.amount_total)
             a = a + i.amount_total
           record.total= a
         
- 
   @api.onchange('vehicle_number')
   def _onchange_vehicle_number(self):
     for record in self:
@@ -219,16 +208,14 @@ class GifRoutesDetails(models.Model):
   def _onchange_customer_selec(self):
     for record in (self): 
       return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted')]}}
-  
-  
-        
+       
 class GifmovementsDetails(models.Model):
   _name = 'gif.movements.details'
   _description = 'Detalles de los movimientos'
   
   gif_delivery_mov = fields.Many2one(comodel_name='gif.delivery.routes')
   secuence = fields.Char(string='Secuencia')
-  name = fields.Char(string='Nombre')
+  name = fields.Char(string='Nombre', store=True)
   type = fields.Char(string='Tipo')
   client = fields.Char(string='Cliente')
   origin_doc  = fields.Char(string='Domcumento de origen')

@@ -27,9 +27,8 @@
 
                             <group >
                                 <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
-                                <field name="move" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
                                 <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)]}"/>
-                                <field name="movement" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
+                                <field name="mov" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
                             </group>
 
                         </group>
