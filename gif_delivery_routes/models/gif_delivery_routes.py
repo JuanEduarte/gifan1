@@ -50,6 +50,33 @@ class GifDeliveriRoutes(models.Model):
       result = super(GifDeliveriRoutes, self).create(vals)
       return result
 
+  @api.onchange('gif_routes_details')
+  def _onchange_gif_routes_details(self):
+    frst_invoice=[]
+    lst_invoice= []
+    for record in self:
+      for i in record.customer.invoice_ids:
+        if i.route_id == False and i.move_type == 'out_invoice' and i.state == 'posted':
+         #print('**********',i.name)
+         frst_invoice.append(i.id)
+         #print('+++++',frst_invoice)
+        
+      for i in record.gif_routes_details.invoice:
+        i.route_id = True
+        lst_invoice.append(i.id)
+        print('+++++',lst_invoice)
+
+      c = set(frst_invoice).difference(set(lst_invoice))
+      print('~~~~~~',c)
+      for i in c:
+        name = i
+        for i in record.customer.invoice_ids:
+          if name == i.id:
+            i.route_id = False
+            #print('[[[[[[[[[[[[',i.id)
+          
+        
+
   @api.onchange('customer')
   def _onchange_move_select(self):
     for record in (self): 
@@ -93,7 +120,7 @@ class GifDeliveriRoutes(models.Model):
             a = 0
             b = ""
     else:
-        pass
+        pass  
       
       
   @api.onchange('mov')
@@ -228,20 +255,7 @@ class GifRoutesDetails(models.Model):
   @api.onchange('invoice')
   def _onchange_customer_select(self):
     for record in (self): 
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', False), ('name', 'ilike', '%FVM')]}}
-  
-  @api.depends('gif_delivery_id.customer')
-  @api.onchange('invoice')
-  def _onchange_customer_selec(self):
-    for record in (self): 
-      for i in record.gif_delivery_id.gif_routes_details:
-        if i._origin.id:
-          i.invoice.route_id = True
-        else:
-          i.invoice.route_id = False
-    
- 
-
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', False), ('name', 'ilike', '%FVMXN')]}}
        
 class GifmovementsDetails(models.Model):
   _name = 'gif.movements.details'
