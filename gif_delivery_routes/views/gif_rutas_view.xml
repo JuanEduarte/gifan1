@@ -1,37 +1,42 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
   <record id="gif_delivery_routes_view_form" model="ir.ui.view">
-        <field name="name">gif.routes.view.form</field>
-        <field name="model">gif.delivery.routes</field>
-        <field name="arch" type="xml">
+  <field name="name">gif.routes.view.form</field>
+  <field name="model">gif.delivery.routes</field>
+  <field name="arch" type="xml">
 
-            <form string="deivery_routes">
+    <form string="deivery_routes">
+      <header>
+        <button  name="action_report" type="object" string="Imprimir en pdf" />   
 
-                <header>
-                    <button  name="action_report" type="object" string="Imprimir en pdf" />
-                </header>
+        <button id='btn_draft'   name='action_draft'   class='btn-primary' string='Regresar a borrador' states='cancel,done'         type='object'/>
+        <button id='btn_done'    name='action_done'    class='btn-primary' string='Hecho'               states='draft'          type='object' />
+        <button id='btn_confirm' name='action_confirm' class='btn-primary' string='Confirmar'           states='done'           type='object'/>
+        <button id='btn_cancel'  name='action_cancel'  class='btn-primary' string='Cancelar'            states='done,draft,confirm'  type='object' /> 
+                    
+        <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm"/>
+      </header>
                 
-                <sheet>
-                        <group col='2' >
-                           <group>
-                             <field name='name' placeholder='Name' readonly = "1"  />
-                             <field name="type1" attrs="{'invisible':[('type2','=',True)]}" />
-                             <field name="type2" attrs="{'invisible':[('type1','=',True)]}" />
+        <sheet>
+          <group col='2' >
+            <group>
+              <field name='name' placeholder='Name' readonly = "1"  />
+              <field name="type1" attrs="{'invisible':[('type2','=',True)]}" />
+              <field name="type2" attrs="{'invisible':[('type1','=',True)]}" />
 
+              <field name="customer" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
+              <field name="carrier" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+              <field name="vehicle_number" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+              <field name="plates" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+            </group>
 
-                             <field name="customer" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}"  />
-                             <field name="carrier" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
-                             <field name="vehicle_number" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
-                             <field name="plates" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
-                           </group>
+            <group >
+              <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+              <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
+              <field name="mov" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+            </group>
 
-                            <group >
-                                <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
-                                <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)]}"/>
-                                <field name="mov" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)]}" />
-                            </group>
-
-                        </group>
+          </group>
                     <notebook>
                         <page string="Detalles del personal">
                             <field name="gif_personal_details" >
@@ -61,6 +66,7 @@
                                     
 
                                 </tree>
+
                             </field>
                          </page>
 
@@ -74,9 +80,10 @@
                                     <field name="client" />
                                     <field name='origin_doc' />        
                                     <field name='cobrado'/>
-                                    
-
+                
                                 </tree>
+                                
+
                             </field>
                          </page>
 

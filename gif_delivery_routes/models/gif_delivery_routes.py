@@ -1,3 +1,4 @@
+from email.policy import default
 from odoo import fields, models, api,_
 
 
@@ -20,15 +21,27 @@ class GifDeliveriRoutes(models.Model):
   maniobras             = fields.Integer (string='Importe de seguros', required=True)
   total                 = fields.Float   (string='Total', compute = '_onchange_custom')
   child_ids             = fields.Many2one('res.partner', string='Direccion de entrega')
-  mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('internal','Recolecciones'),('3','Paquetes'),('outgoing','Entregas')], store=True)
+  mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('internal','Recolecciones'),('outgoing','Entregas')], store=True)
   evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
-  
+  state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
   
   gif_personal_details  = fields.One2many(comodel_name='gif.personal.details', inverse_name='gif_personal_id', string='Detalles del personal')
   gif_routes_details    = fields.One2many(comodel_name='gif.routes.details', inverse_name='gif_delivery_id', string='Detalles de las rutas', store=True)
   gif_routes_movements  = fields.One2many(comodel_name='gif.movements.details', inverse_name='gif_delivery_mov', string='Detalles de movimientos', store=True)
   gif_account_move = fields.One2many(comodel_name = 'account.move', inverse_name= 'Route' ,  string='campo de validacion', store=True)
 
+  
+  def action_done(self):
+    self.state='done'
+    
+  def action_draft(self):
+    self.state='draft' 
+  
+  def action_confirm(self):
+    self.state='confirm'
+  
+  def action_cancel(self):
+    self.state='cancel'
   
   @api.model
   def create(self, vals):
@@ -63,9 +76,10 @@ class GifDeliveriRoutes(models.Model):
     for record in (self):
      if len(record.gif_routes_details) == 0:
         for i in record.customer.invoice_ids:
-          if i.state == 'posted' and record.child_ids == i.partner_shipping_id: 
+          if i.state == 'posted' and i.route_id == False and record.child_ids == i.partner_shipping_id: 
             b =+ 1
             a = a + i.amount_total
+            i.route_id=True
             #record.total = a
             invoice_rel =self.env['gif.routes.details'].create([{
               'gif_delivery_id': record.id,
@@ -97,7 +111,7 @@ class GifDeliveriRoutes(models.Model):
                 inv_rel =self.env['gif.movements.details'].create([{
                   'gif_delivery_mov': record.id,
                   'name': i.name,
-                  'type' : i.picking_type_id.name, 
+                  'type' : i.picking_type_code, 
                   'origin_doc': i.origin,
                   'secuence': b,
                     }])
@@ -185,6 +199,7 @@ class GifRoutesDetails(models.Model):
   importe  = fields.Char(string='Importe', compute='_onchange_invoice')
   order = fields.Char(string = 'Orden de venta', compute='_onchange_invoice')
   cobrado  = fields.Char(string='Cobrado')
+  validate = fields.Char(String='validar')
   
   
   @api.onchange('invoice')
@@ -203,11 +218,30 @@ class GifRoutesDetails(models.Model):
         record.client = ''
         record.secuence = a
         
+  @api.onchange('gif_delivery_id.gif_routes_details.invoice')
+  def _onchange_move_field(self):
+    for record in (self): 
+      for i in record.gif_delivery_id.gif_routes_details.invoice:
+        print('#####',i)
+        
+  @api.depends('gif_delivery_id.customer')
+  @api.onchange('invoice')
+  def _onchange_customer_select(self):
+    for record in (self): 
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', False), ('name', 'ilike', '%FVM')]}}
+  
   @api.depends('gif_delivery_id.customer')
   @api.onchange('invoice')
   def _onchange_customer_selec(self):
     for record in (self): 
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted')]}}
+      for i in record.gif_delivery_id.gif_routes_details:
+        if i._origin.id:
+          i.invoice.route_id = True
+        else:
+          i.invoice.route_id = False
+    
+ 
+
        
 class GifmovementsDetails(models.Model):
   _name = 'gif.movements.details'
@@ -215,7 +249,7 @@ class GifmovementsDetails(models.Model):
   
   gif_delivery_mov = fields.Many2one(comodel_name='gif.delivery.routes')
   secuence = fields.Char(string='Secuencia')
-  name = fields.Char(string='Nombre', store=True)
+  name = fields.Char(string='Nombre')
   type = fields.Char(string='Tipo')
   client = fields.Char(string='Cliente')
   origin_doc  = fields.Char(string='Domcumento de origen')
@@ -236,4 +270,4 @@ class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Char(string='Rutas')
+  route_id = fields.Boolean(string='Rutas', default=False)
