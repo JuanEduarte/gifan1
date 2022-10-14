@@ -21,7 +21,8 @@
         ],
     'data': [
       'security/ir.model.access.csv',
-      'views/gif_import_payment.xml',
+      #'views/gif_import_payment.xml',
+      'wizard/gif_import_payment_wizard.xml',
       #'data/data.xml',
     ],
     'installable': True,

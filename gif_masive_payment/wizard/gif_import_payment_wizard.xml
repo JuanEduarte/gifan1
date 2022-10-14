@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <record id="set_open_wizard" model="ir.ui.view">
+      <field name="name">gif.masive.payment</field>
+      <field name="model">gif.masive.payment.wizard</field>
+      <field name="arch" type="xml">
+        <form>
+
+          <group class="col_2">
+            <group>
+              <field name="file_data" filename="file_name" widget="binary" required="1"/>
+              <field name='gif_journal' required='True' />
+            </group>
+            <group>
+              <button string="Importar" name="files_data" type="object" class="btn-primary"/>
+            </group>
+          </group>
+          <notebook>
+                      <page string="Detalles del personal">
+                        <field name="gif_masive_payment_wzr" >
+                          <tree editable="botton">
+                            <field name="client"/>
+                            <field name="invoice_id"/>
+                            <field name="amount" />
+                            <field name="partner" />
+                            <field name="memo" />
+                          </tree>
+                        </field>
+                      </page>
+                    </notebook> 
+          <footer>
+            <button string="Cancel" special="cancel" class="oe_link" />
+            <button name='confirm' string='Confirmar' class="btn-primary" />
+          </footer>
+        </form>
+      </field>
+    </record>
+  </data>
+
+
+  <record id="action_import_payment_order" model="ir.actions.act_window">
+    <field name="name">Pagos Masivos</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">gif.masive.payment.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+<menuitem  id="sale_order_menu_import" name="Pago Masivo" parent="account.menu_finance_receivables"  action="action_import_payment_order"/>
+
+
+</odoo>

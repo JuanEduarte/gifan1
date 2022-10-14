@@ -5,7 +5,7 @@
   <field name="model">gif.delivery.routes</field>
   <field name="arch" type="xml">
 
-    <form string="deivery_routes">
+    <form string="deilvery_routes">
       <header>
         <button  name="action_report" type="object" string="Imprimir en pdf" />   
 
@@ -58,7 +58,6 @@
 
                                     <field name="secuence" />
                                     <field name="invoice" domain="[('state', '=', 'posted')]"  />
-                                    <field name='fiscal' />
                                     <field name='client' />
                                     <field name='order'/>
                                     <field name='importe' />        

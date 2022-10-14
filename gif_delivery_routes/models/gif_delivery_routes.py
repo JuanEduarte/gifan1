@@ -24,13 +24,40 @@ class GifDeliveriRoutes(models.Model):
   mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('internal','Recolecciones'),('outgoing','Entregas')], store=True)
   evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
   state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
+  array1                =fields.Char    (string='a', compute='_onchange_gif_routes_details')
+  array2                =fields.Char   (string='b', compute='_onchange_gif_routes_details')
+  
+  
   
   gif_personal_details  = fields.One2many(comodel_name='gif.personal.details', inverse_name='gif_personal_id', string='Detalles del personal')
   gif_routes_details    = fields.One2many(comodel_name='gif.routes.details', inverse_name='gif_delivery_id', string='Detalles de las rutas', store=True)
   gif_routes_movements  = fields.One2many(comodel_name='gif.movements.details', inverse_name='gif_delivery_mov', string='Detalles de movimientos', store=True)
   gif_account_move = fields.One2many(comodel_name = 'account.move', inverse_name= 'Route' ,  string='campo de validacion', store=True)
-
   
+  frst_invoice=[]
+  lst_invoice= []
+  trd_invoice=[]
+  
+  @api.onchange('gif_routes_details')
+  def _onchange_gif_routes_details(self):
+    print('*********',self.state)
+    for record in self:
+      self.frst_invoice.clear()
+      self.lst_invoice.clear()
+      for i in record.customer.invoice_ids:
+        #print(i.route_id)
+        
+        if i.route_id == ''  and i.move_type == 'out_invoice' and i.state == 'posted':
+         self.frst_invoice.append(i.id)
+      print('+++++',self.frst_invoice)
+      record.array1 = self.frst_invoice
+        
+      for i in record.gif_routes_details.invoice:
+          l = [inv for inv in self.frst_invoice if inv not in self.lst_invoice]
+          self.lst_invoice.append(i.id)
+      print('+++++',self.lst_invoice)
+      record.array2 = self.lst_invoice
+      
   def action_done(self):
     self.state='done'
     
@@ -39,6 +66,24 @@ class GifDeliveriRoutes(models.Model):
   
   def action_confirm(self):
     self.state='confirm'
+    for record in self:
+      c = [element for element in self.frst_invoice if element not in self.lst_invoice]
+      print('~~~~~~',self.frst_invoice)
+      print('~~~~~~',self.lst_invoice)
+      print('~~~~~~',c)
+        
+      for i in c:
+            nam = i
+            for i in record.customer.invoice_ids:
+              if nam == i.id:
+                i.route_id =''
+                   
+      for i in self.lst_invoice:
+            nam = i
+            for i in record.customer.invoice_ids:
+              if nam == i.id:
+                i.route_id =record.name
+                
   
   def action_cancel(self):
     self.state='cancel'
@@ -49,33 +94,11 @@ class GifDeliveriRoutes(models.Model):
         vals['name'] = self.env['ir.sequence'].next_by_code('gif.delivery.routes') or _('New')
       result = super(GifDeliveriRoutes, self).create(vals)
       return result
-
-  @api.onchange('gif_routes_details')
-  def _onchange_gif_routes_details(self):
-    frst_invoice=[]
-    lst_invoice= []
-    for record in self:
-      for i in record.customer.invoice_ids:
-        if i.route_id == False and i.move_type == 'out_invoice' and i.state == 'posted':
-         #print('**********',i.name)
-         frst_invoice.append(i.id)
-         #print('+++++',frst_invoice)
-        
-      for i in record.gif_routes_details.invoice:
-        i.route_id = True
-        lst_invoice.append(i.id)
-        print('+++++',lst_invoice)
-
-      c = set(frst_invoice).difference(set(lst_invoice))
-      print('~~~~~~',c)
-      for i in c:
-        name = i
-        for i in record.customer.invoice_ids:
-          if name == i.id:
-            i.route_id = False
-            #print('[[[[[[[[[[[[',i.id)
-          
-        
+    
+  
+    
+  
+      
 
   @api.onchange('customer')
   def _onchange_move_select(self):
@@ -106,7 +129,6 @@ class GifDeliveriRoutes(models.Model):
           if i.state == 'posted' and i.route_id == False and record.child_ids == i.partner_shipping_id: 
             b =+ 1
             a = a + i.amount_total
-            i.route_id=True
             #record.total = a
             invoice_rel =self.env['gif.routes.details'].create([{
               'gif_delivery_id': record.id,
@@ -122,7 +144,7 @@ class GifDeliveriRoutes(models.Model):
     else:
         pass  
       
-      
+  
   @api.onchange('mov')
   def _onchange_movement(self):
     for record in (self):
@@ -139,6 +161,7 @@ class GifDeliveriRoutes(models.Model):
                   'gif_delivery_mov': record.id,
                   'name': i.name,
                   'type' : i.picking_type_code, 
+                  'client': i.partner_id.name,
                   'origin_doc': i.origin,
                   'secuence': b,
                     }])
@@ -255,7 +278,7 @@ class GifRoutesDetails(models.Model):
   @api.onchange('invoice')
   def _onchange_customer_select(self):
     for record in (self): 
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', False), ('name', 'ilike', '%FVMXN')]}}
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', ''), ('name', 'ilike', '%FVMXN')]}}
        
 class GifmovementsDetails(models.Model):
   _name = 'gif.movements.details'
@@ -284,4 +307,4 @@ class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Boolean(string='Rutas', default=False)
+  route_id = fields.Char(string='Rutas')
