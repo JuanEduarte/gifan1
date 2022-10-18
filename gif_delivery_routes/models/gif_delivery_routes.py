@@ -39,18 +39,18 @@ class GifDeliveriRoutes(models.Model):
   lst_invoice= []
   trd_invoice=[]
   four_invoice = []
-  t = 0
+  
   
   @api.onchange('gif_routes_details')
   def _onchange_gif_routes_details(self):
+    t = 0
     for record in self:
       self.frst_invoice.clear()
       self.lst_invoice.clear()
       for i in record.gif_routes_details.invoice:          
-        if i.route_id == None  and i.move_type == 'out_invoice' and i.state == 'posted':
          self.frst_invoice.append(i.id)
-         self.t += i.tax_total_json
-      record.total = self.t
+         t += i.amount_total
+      record.total = t
       record.array1 = self.frst_invoice
         
       for i in record.gif_routes_details.invoice:
@@ -156,7 +156,6 @@ class GifDeliveriRoutes(models.Model):
           b = 0
           if record.customer:
             stock_picking_ids = self.env['stock.picking'].search([('partner_id.name', '=', record.customer.name)])
-            #print('abc#########', stock_picking_ids)
             for i in stock_picking_ids:
               if i.picking_type_id.code == record.mov:
                 print('abc#########', i.name, i.state, i.picking_type_code, i.picking_type_id.name)

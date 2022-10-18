@@ -27,4 +27,4 @@ class SaleOrderLine(models.Model):
 
     def total_units(self):
         for record in self:
-          record.gif_total_units = record.product_uom.ratio
+          record.gif_total_units = record.product_uom.ratio  * record.product_uom_qty
