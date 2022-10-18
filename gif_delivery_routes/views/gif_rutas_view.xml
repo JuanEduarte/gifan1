@@ -56,12 +56,12 @@
                             <field name="gif_routes_details" >
                                 <tree editable="botton">
 
-                                    <field name="secuence" />
-                                    <field name="invoice" domain="[('state', '=', 'posted')]"  />
-                                    <field name='client' />
-                                    <field name='order'/>
-                                    <field name='importe' />        
-                                    <field name='cobrado'/>
+                                    <field name="secuence" attrs="{'readonly':[('state', '=', 'done')]}" />
+                                    <field name="invoice" attrs="{'readonly':[('state', '=', 'done')]}"  />
+                                    <field name='client' attrs="{'readonly':[('state', '=', 'done')]}" />
+                                    <field name='order' attrs="{'readonly':[('state', '=', 'done')]}"/>
+                                    <field name='importe' attrs="{'readonly':[('state', '=', 'done')]}"/>        
+                                    <field name='cobrado' attrs="{'readonly':[('state', '=', 'done')]}"/>
                                     
 
                                 </tree>
@@ -124,39 +124,7 @@
       </tree>
     </field>
   </record>
-<!--
-  <record id="gif_delivery_routes_view_kanban" model="ir.ui.view">
-    <field name="name">gif.delivery.routes.view.kanban</field>
-    <field name="model">gif.delivery.routes</field>
-    <field name="arch" type="xml">
-      <kanban string="rutas" >
-        <templates>
-                    <t t-name="kanban-box">
-                        <div >
-                            <div >
-                                <strong >
-                                    <field name="distribution_route" />
-                                </strong>
-                                <ul>
-                                    <li><field name="date" /></li>
-                                    <li><field name="plates" /></li>
-                                </ul>
-                                <div>
-                                     <span>Ventas: </span>
-                                     <field name="flete"/>
-                                </div>
-                                <div>
-                                    <span>Compras: </span>
-                                     <field name="seguros"/>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
-                </templates>
-      </kanban>
-    </field>
-  </record>
--->
+
   <record id="gif_delivery_action" model="ir.actions.act_window">
       <field name="name">Rutas de entrega</field>
       <field name="type">ir.actions.act_window</field>

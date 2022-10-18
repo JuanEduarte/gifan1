@@ -13,9 +13,8 @@ class gif_masive_payment_Wizard(models.TransientModel):
 
     file_data = fields.Binary('Archivo', required=True,)
     file_name = fields.Char('nombre del archivo')
-    gif_journal = fields.Many2one(
-        comodel_name='account.journal', string='Diario')
-    confirm = fields.Char(string='Confirmar')
+    gif_journal = fields.Many2one( comodel_name='account.journal', string='Diario')
+    confirm = fields.Char(string='Confirmar') 
     
     gif_masive_payment_wzr = fields.One2many(comodel_name='gif.masive.payment.line.wzr', inverse_name='gif_masive_payment', string='a')
 
@@ -35,7 +34,7 @@ class gif_masive_payment_Wizard(models.TransientModel):
             res = self.env['res.partner'].search([('name', '=', p)])
             if self.gif_journal:
               print('0000', self.gif_journal)
-            
+
             limit += 1
             if limit > 0:
                 break
@@ -51,7 +50,7 @@ class gif_masive_payment_Wizard(models.TransientModel):
             memo.append(line['Factura de venta'])
             for line in archive_lines:
                 cliente = p
-            print(line['Cliente'], line['Factura de venta'], line['Importe'])
+            print(cliente, line['Factura de venta'], line['Importe'])
             for record in self:
                 if cliente:
                     rel = self.env['gif.masive.payment.line.wzr'].create([{
@@ -64,10 +63,18 @@ class gif_masive_payment_Wizard(models.TransientModel):
 
                 else:
                     pass
+        return{
+            'type': 'ir.actions.act_window',
+            'res_model': 'gif.masive.payment.wizard',
+            'view_mode': 'form',
+            'res_id':self.id,
+            'target': 'new',
+            }
 
 
 class GifMasivePaymentLine(models.Model):
     _name = 'gif.masive.payment.line.wzr'
+    _inherit = 'gif.masive.payment.wizard'
     _description = 'Linea de pago masivo'
 
     client = fields.Char(string='Cliente')
@@ -76,4 +83,4 @@ class GifMasivePaymentLine(models.Model):
     partner = fields.Char(string='Partner')
     memo = fields.Char(string='memo')
 
-    gif_masive_payment = fields.Many2one(comodel_name='import.payment.order')
+    gif_masive_payment = fields.Many2one(comodel_name='gif.masive.payment.wizard')

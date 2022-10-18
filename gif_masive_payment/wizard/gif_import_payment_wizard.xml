@@ -23,8 +23,6 @@
                             <field name="client"/>
                             <field name="invoice_id"/>
                             <field name="amount" />
-                            <field name="partner" />
-                            <field name="memo" />
                           </tree>
                         </field>
                       </page>

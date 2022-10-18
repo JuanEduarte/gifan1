@@ -1,4 +1,5 @@
 from email.policy import default
+from odoo.exceptions import UserError
 from odoo import fields, models, api,_
 
 
@@ -19,86 +20,93 @@ class GifDeliveriRoutes(models.Model):
   flete                 = fields.Integer (string='flete pactado', required=True)
   seguros               = fields.Integer (string='importe de maniobras', required=True)
   maniobras             = fields.Integer (string='Importe de seguros', required=True)
-  total                 = fields.Float   (string='Total', compute = '_onchange_custom')
+  total                 = fields.Float   (string='Total', compute='_onchange_gif_routes_details' )
   child_ids             = fields.Many2one('res.partner', string='Direccion de entrega')
-  mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('internal','Recolecciones'),('outgoing','Entregas')], store=True)
+  mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('colect','Recolecciones'),('outgoing','Entregas')], default=0, store=True)
   evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
   state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
-  array1                =fields.Char    (string='a', compute='_onchange_gif_routes_details')
-  array2                =fields.Char   (string='b', compute='_onchange_gif_routes_details')
+  array1                =fields.Char     (string='a', compute='_onchange_gif_routes_details')
+  array2                =fields.Char     (string='b', compute='_onchange_gif_routes_details')
   
   
   
   gif_personal_details  = fields.One2many(comodel_name='gif.personal.details', inverse_name='gif_personal_id', string='Detalles del personal')
   gif_routes_details    = fields.One2many(comodel_name='gif.routes.details', inverse_name='gif_delivery_id', string='Detalles de las rutas', store=True)
   gif_routes_movements  = fields.One2many(comodel_name='gif.movements.details', inverse_name='gif_delivery_mov', string='Detalles de movimientos', store=True)
-  gif_account_move = fields.One2many(comodel_name = 'account.move', inverse_name= 'Route' ,  string='campo de validacion', store=True)
+  gif_account_move      = fields.One2many(comodel_name = 'account.move', inverse_name= 'Route' ,  string='campo de validacion', store=True)
   
   frst_invoice=[]
   lst_invoice= []
   trd_invoice=[]
+  four_invoice = []
+  t = 0
   
   @api.onchange('gif_routes_details')
   def _onchange_gif_routes_details(self):
-    print('*********',self.state)
     for record in self:
       self.frst_invoice.clear()
       self.lst_invoice.clear()
-      for i in record.customer.invoice_ids:
-        #print(i.route_id)
-        
-        if i.route_id == ''  and i.move_type == 'out_invoice' and i.state == 'posted':
+      for i in record.gif_routes_details.invoice:          
+        if i.route_id == None  and i.move_type == 'out_invoice' and i.state == 'posted':
          self.frst_invoice.append(i.id)
-      print('+++++',self.frst_invoice)
+         self.t += i.tax_total_json
+      record.total = self.t
       record.array1 = self.frst_invoice
         
       for i in record.gif_routes_details.invoice:
-          l = [inv for inv in self.frst_invoice if inv not in self.lst_invoice]
           self.lst_invoice.append(i.id)
-      print('+++++',self.lst_invoice)
+      '''l = [inv for inv in self.frst_invoice if inv not in self.lst_invoice]  
+      for i in l:
+         
+      print('sssssssssssssssssssssssss', l)'''
+      
+          
       record.array2 = self.lst_invoice
       
+  def action_draft(self):
+    self.state='draft'
+    for i in self.gif_routes_details.invoice:
+      self.four_invoice.append(i.name)
+        
+  
   def action_done(self):
     self.state='done'
+    for i in self.gif_routes_details.invoice:
+      self.trd_invoice.append(i.name)
     
-  def action_draft(self):
-    self.state='draft' 
+     
+    
   
   def action_confirm(self):
-    self.state='confirm'
-    for record in self:
-      c = [element for element in self.frst_invoice if element not in self.lst_invoice]
-      print('~~~~~~',self.frst_invoice)
-      print('~~~~~~',self.lst_invoice)
-      print('~~~~~~',c)
-        
-      for i in c:
-            nam = i
-            for i in record.customer.invoice_ids:
-              if nam == i.id:
-                i.route_id =''
-                   
-      for i in self.lst_invoice:
-            nam = i
-            for i in record.customer.invoice_ids:
-              if nam == i.id:
-                i.route_id =record.name
-                
+    if not  self.gif_routes_details:
+     raise UserError(('Debe haber registros enlas lineas de detalles de rutas'))
+    else:
+      self.state='confirm'
+      for record in self:
+        for i in self.trd_invoice:
+              nam = i
+              for i in record.customer.invoice_ids:
+                if i.name == nam:
+                  i.route_id = record.name
+        for i in record.customer.invoice_ids:
+          if i.route_id == record.name and i.name not in self.trd_invoice:
+            i.route_id = None
+          else:
+            pass
+               
   
+             
+
   def action_cancel(self):
     self.state='cancel'
-  
+
   @api.model
   def create(self, vals):
       if vals.get('name', _('New')) == _('New'):
         vals['name'] = self.env['ir.sequence'].next_by_code('gif.delivery.routes') or _('New')
       result = super(GifDeliveriRoutes, self).create(vals)
       return result
-    
-  
-    
-  
-      
+
 
   @api.onchange('customer')
   def _onchange_move_select(self):
@@ -121,15 +129,12 @@ class GifDeliveriRoutes(models.Model):
 
   @api.onchange('child_ids')
   def _onchange_customer(self):
-    a = 0
     b = 0
     for record in (self):
      if len(record.gif_routes_details) == 0:
         for i in record.customer.invoice_ids:
           if i.state == 'posted' and i.route_id == False and record.child_ids == i.partner_shipping_id: 
             b =+ 1
-            a = a + i.amount_total
-            #record.total = a
             invoice_rel =self.env['gif.routes.details'].create([{
               'gif_delivery_id': record.id,
               'invoice': i.id,
@@ -180,15 +185,6 @@ class GifDeliveriRoutes(models.Model):
             }])
     else:
         pass
-
-  @api.onchange('child_ids')
-  def _onchange_custom(self):
-    for record in (self):
-        a = 0
-        for i in record.customer.invoice_ids:
-          if   i.state == 'posted' and record.child_ids == i.partner_shipping_id : 
-            a = a + i.amount_total
-          record.total= a
         
   @api.onchange('vehicle_number')
   def _onchange_vehicle_number(self):
@@ -277,8 +273,15 @@ class GifRoutesDetails(models.Model):
   @api.depends('gif_delivery_id.customer')
   @api.onchange('invoice')
   def _onchange_customer_select(self):
+    selet=[]
     for record in (self): 
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', ''), ('name', 'ilike', '%FVMXN')]}}
+      for i in record.gif_delivery_id.lst_invoice:
+        nam = i
+        for i in record.gif_delivery_id.customer.invoice_ids:
+          if nam == i.id:
+            selet.append(i.name)       
+        print('iiiiiiiiii', selet)
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', None), ('name', 'ilike', '%FVMXN'), ('name', 'not in', selet)]}}
        
 class GifmovementsDetails(models.Model):
   _name = 'gif.movements.details'
