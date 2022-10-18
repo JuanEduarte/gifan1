@@ -53,15 +53,15 @@
                     <notebook>
 
                         <page string="Detalles de Ruta" attrs="{'invisible':[('type2','=',True)]}" >
-                            <field name="gif_routes_details" >
+                            <field name="gif_routes_details" attrs="{'readonly': [('state', 'not in', 'draft')]}">
                                 <tree editable="botton">
-
-                                    <field name="secuence" attrs="{'readonly':[('state', '=', 'done')]}" />
-                                    <field name="invoice" attrs="{'readonly':[('state', '=', 'done')]}"  />
-                                    <field name='client' attrs="{'readonly':[('state', '=', 'done')]}" />
-                                    <field name='order' attrs="{'readonly':[('state', '=', 'done')]}"/>
-                                    <field name='importe' attrs="{'readonly':[('state', '=', 'done')]}"/>        
-                                    <field name='cobrado' attrs="{'readonly':[('state', '=', 'done')]}"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="secuence"/>
+                                    <field name="invoice" attrs="{'readonly': [('state', 'not in', 'draft')]}"  />
+                                    <field name='client'/>
+                                    <field name='order'/>
+                                    <field name='importe'/>        
+                                    <field name='cobrado'/>
                                     
 
                                 </tree>

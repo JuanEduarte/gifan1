@@ -245,6 +245,7 @@ class GifRoutesDetails(models.Model):
   order = fields.Char(string = 'Orden de venta', compute='_onchange_invoice')
   cobrado  = fields.Char(string='Cobrado')
   validate = fields.Char(String='validar')
+  state = fields.Char(string='state', compute='_onchange_move_field')
   
   
   @api.onchange('invoice')
@@ -263,11 +264,10 @@ class GifRoutesDetails(models.Model):
         record.client = ''
         record.secuence = a
         
-  @api.onchange('gif_delivery_id.gif_routes_details.invoice')
+  @api.onchange('gif_delivery_id.state')
   def _onchange_move_field(self):
     for record in (self): 
-      for i in record.gif_delivery_id.gif_routes_details.invoice:
-        print('#####',i)
+      record.state = record.gif_delivery_id.state
         
   @api.depends('gif_delivery_id.customer')
   @api.onchange('invoice')
@@ -291,7 +291,7 @@ class GifmovementsDetails(models.Model):
   name = fields.Char(string='Nombre')
   type = fields.Char(string='Tipo')
   client = fields.Char(string='Cliente')
-  origin_doc  = fields.Char(string='Domcumento de origen')
+  origin_doc  = fields.Char(string='Documento de origen')
   cobrado  = fields.Char(string='Cobrado')
   
   
