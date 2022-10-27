@@ -53,11 +53,10 @@
                     <notebook>
 
                         <page string="Detalles de Ruta" attrs="{'invisible':[('type2','=',True)]}" >
-                            <field name="gif_routes_details" attrs="{'readonly': [('state', 'not in', 'draft')]}">
+                            <field name="gif_routes_details">
                                 <tree editable="botton">
-                                    <field name="state" invisible="1"/>
                                     <field name="secuence"/>
-                                    <field name="invoice" attrs="{'readonly': [('state', 'not in', 'draft')]}"  />
+                                    <field name="invoice" />
                                     <field name='client'/>
                                     <field name='order'/>
                                     <field name='importe'/>        
@@ -69,16 +68,14 @@
                             </field>
                          </page>
 
-                         <page string="Detalles" attrs="{'invisible':[('type1','=',True)]}" >
+                         <page string="Detalles de movimientos" attrs="{'invisible':[('type1','=',True)]}" >
                             <field name="gif_routes_movements" >
                                 <tree editable="botton">
-
                                     <field name="secuence" />
                                     <field name='name'/>
-                                    <field name="type" />
+                                    <field name="typee" />
                                     <field name="client" />
-                                    <field name='origin_doc' />        
-                                    <field name='cobrado'/>
+                                    <field name='origin_doc' />
                 
                                 </tree>
                                 
