@@ -21,19 +21,16 @@
           <group col='2' >
             <group>
               <field name='name' placeholder='Name' readonly = "1"  />
-              <field name="type1" attrs="{'invisible':[('type2','=',True)]}" />
-              <field name="type2" attrs="{'invisible':[('type1','=',True)]}" />
-
-              <field name="customer" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
-              <field name="carrier" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="vehicle_number" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="plates" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+             
+              <field name="customer" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+              <field name="carrier" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="vehicle_number" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="plates"/>
             </group>
 
             <group >
-              <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
-              <field name="mov" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+              <field name="date" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="child_ids"  attrs="{'readonly': [('state', '=', 'confirm')]}"/>
             </group>
 
           </group>
@@ -52,7 +49,7 @@
                     
                     <notebook>
 
-                        <page string="Detalles de Ruta" attrs="{'invisible':[('type2','=',True)]}" >
+                        <page string="Detalles de Ruta">
                             <field name="gif_routes_details">
                                 <tree editable="botton">
                                     <field name="secuence"/>
@@ -68,22 +65,7 @@
                             </field>
                          </page>
 
-                         <page string="Detalles de movimientos" attrs="{'invisible':[('type1','=',True)]}" >
-                            <field name="gif_routes_movements" >
-                                <tree editable="botton">
-                                    <field name="secuence" />
-                                    <field name='name'/>
-                                    <field name="typee" />
-                                    <field name="client" />
-                                    <field name='origin_doc' />
-                
-                                </tree>
-                                
-
-                            </field>
-                         </page>
-
-
+                      
                     </notebook>
                     <group>
                     <field name="total" />
@@ -129,5 +111,5 @@
       <field name="view_mode">tree,form</field>
   </record>
   
-  <menuitem id="gif_routes_menuitem"  name="Rutas de entrega para facturas" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence="6"/>
+  <menuitem id="gif_routes_menuitem"  name="Rutas de entrega para facturas" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence = "100"/>
 </odoo> 

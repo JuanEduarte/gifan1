@@ -104,12 +104,12 @@
     </field>
   </record>
 
-  <record id="gif_internal_delivery_action" model="ir.actions.act_window">
+  <record id="internal_delivery_action" model="ir.actions.act_window">
       <field name="name">Rutas de entrega internas</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">gif.internal.translates</field>
       <field name="view_mode">tree,form</field>
   </record>
   
-  <menuitem id="gif_internal_routes_menuitem"  name="Rutas de entrega internas" parent="stock.menu_stock_warehouse_mgmt" action="gif_internal_delivery_action" sequence="4"/>
+  <menuitem id="gif_internal_routes_menuitem"  name="Rutas de entrega internas" parent="stock.menu_stock_warehouse_mgmt" action="internal_delivery_action" sequence="150"/>
 </odoo> 
