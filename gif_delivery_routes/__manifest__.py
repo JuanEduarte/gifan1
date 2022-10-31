@@ -17,6 +17,7 @@
            'security/ir.model.access.csv',
            'views/gif_rutas_view.xml',
            'views/gif_filed_route_view.xml',
+           'views/gif_internal_routes.xml',
            'reports/gif_routes_report.xml',
            'reports/routes_report.xml',
            'data/data.xml'

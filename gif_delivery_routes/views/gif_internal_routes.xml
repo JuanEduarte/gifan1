@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-  <record id="gif_delivery_routes_view_form" model="ir.ui.view">
-  <field name="name">gif.routes.view.form</field>
-  <field name="model">gif.delivery.routes</field>
+  <record id="gif_internal_delivery_routes_view_form" model="ir.ui.view">
+  <field name="name">gif.internal.routes.view.form</field>
+  <field name="model">gif.internal.translates</field>
   <field name="arch" type="xml">
 
     <form string="deilvery_routes">
@@ -21,19 +21,16 @@
           <group col='2' >
             <group>
               <field name='name' placeholder='Name' readonly = "1"  />
-              <field name="type1" attrs="{'invisible':[('type2','=',True)]}" />
-              <field name="type2" attrs="{'invisible':[('type1','=',True)]}" />
 
-              <field name="customer" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
-              <field name="carrier" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="vehicle_number" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="plates" attrs="{'invisible':[('type2','=',False),('type1','=',False)]}" />
+              <field name="customer"       attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+              <field name="carrier"        attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="vehicle_number" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="plates" />
             </group>
 
             <group >
-              <field name="date" attrs="{'invisible':[('type2','=',False),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
-              <field name="child_ids"  attrs="{'invisible':['|',('type2','=',True),('type1','=',False)], 'readonly': [('state', '=', 'confirm')]}"/>
-              <field name="mov" attrs="{'invisible':['|',('type1','=',True),('type2','=',False)], 'readonly': [('state', '=', 'confirm')]}" />
+              <field name="date"           attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="mov"        attrs="{'readonly': [('state', '=', 'confirm')]}" />
             </group>
 
           </group>
@@ -52,23 +49,7 @@
                     
                     <notebook>
 
-                        <page string="Detalles de Ruta" attrs="{'invisible':[('type2','=',True)]}" >
-                            <field name="gif_routes_details">
-                                <tree editable="botton">
-                                    <field name="secuence"/>
-                                    <field name="invoice" />
-                                    <field name='client'/>
-                                    <field name='order'/>
-                                    <field name='importe'/>        
-                                    <field name='cobrado'/>
-                                    
-
-                                </tree>
-
-                            </field>
-                         </page>
-
-                         <page string="Detalles de movimientos" attrs="{'invisible':[('type1','=',True)]}" >
+                         <page string="Detalles de movimientos">
                             <field name="gif_routes_movements" >
                                 <tree editable="botton">
                                     <field name="secuence" />
@@ -77,7 +58,7 @@
                                     <field name="client" />
                                     <field name='origin_doc' />
                 
-                                </tree>
+                                </tree>s
                                 
 
                             </field>
@@ -98,7 +79,8 @@
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/></div>
+                   <field name="message_ids" widget="mail_thread"/>
+                </div>
 
             </form>
         </field>
@@ -106,8 +88,8 @@
 
 
   <record id="gif_delivery_routes_view_tree" model="ir.ui.view">
-    <field name="name">gif.delivery.routes.view.tree</field>
-    <field name="model">gif.delivery.routes</field>
+    <field name="name">gif.internal.routes.view.tree</field>
+    <field name="model">gif.internal.translates</field>
     <field name="arch" type="xml">
       <tree string="">
         <field name="name" readonly = "1" />
@@ -122,12 +104,12 @@
     </field>
   </record>
 
-  <record id="gif_delivery_action" model="ir.actions.act_window">
-      <field name="name">Rutas de entrega</field>
+  <record id="gif_internal_delivery_action" model="ir.actions.act_window">
+      <field name="name">Rutas de entrega internas</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">gif.delivery.routes</field>
+      <field name="res_model">gif.internal.translates</field>
       <field name="view_mode">tree,form</field>
   </record>
   
-  <menuitem id="gif_routes_menuitem"  name="Rutas de entrega para facturas" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence="6"/>
+  <menuitem id="gif_internal_routes_menuitem"  name="Rutas de entrega internas" parent="stock.menu_stock_warehouse_mgmt" action="gif_internal_delivery_action" sequence="4"/>
 </odoo> 
