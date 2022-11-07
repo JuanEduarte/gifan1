@@ -1,6 +1,7 @@
 
+from datetime import datetime
 from odoo import api, fields, models
-
+from pytz import timezone
 
 class GitStockPicking(models.Model):
     _inherit="stock.move.line"
@@ -19,7 +20,10 @@ class GitStockPicking(models.Model):
         for record in self:
                 record.product_uom_id = record.gif_unidad_stock
 
-
-
-
+    @api.onchange('expiration_date')
+    def onchange_expiration_date(self):
+        for record in self:
+            # now_dt = datetime.now(timezone(self.env.user.tz))
+            if self.expiration_date:
+                record.lot_name = str(self.expiration_date.astimezone(timezone(self.env.user.tz)).date()).replace('-','')
 

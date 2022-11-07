@@ -10,29 +10,18 @@
                     <group>
                         <group>
                             <field name="gif_load_type"/>
-                            <field name="xlsx_files" filename="name"/>
-                            <field name="name" readonly="1"/>
-                            <!-- <field name="gif_customer"/>
+                            <field name="orders_file" filename="name"/>
+                            <field name="gif_customer" attrs="{'required':[('gif_load_type','=','csv')]}"/>
                             <field name="gif_customer_code"/>
-                            <field name="gif_delivery_dir"/>
-                            <field name="gif_delivery_dir_code"/> -->
+                            <field name="gif_delivery_dir" attrs="{'required':[('gif_load_type','=','csv')]}" domain="[('parent_id','=',gif_customer),('type','=','delivery')]"/>
+                            <field name="gif_delivery_dir_code"/>
                         </group>
                         <group>
                             <field name="gif_order_date"/>
                             <field name="gif_init_date"/>
                             <field name="gif_cancel_date"/>
-                            <field name="gif_order"/>
-                            <field name="gif_supplier_code"/>
-                        </group>
-                        <group colspan="4">
-                            <field name="gif_lines">
-                                <tree editable="inline">
-                                    <field name="gif_delivery_dir_code"/>
-                                    <field name="gif_delivery_dir"/>
-                                    <field name="gif_customer_code"/>
-                                    <field name="gif_customer"/>
-                                </tree >
-                            </field>
+                            <field name="gif_supplier_code" attrs="{'required':[('gif_load_type','=','csv')]}"/>
+                            <field name="gif_order" attrs="{'required':[('gif_load_type','=','csv')]}"/>
                         </group>
                     </group>
                     <footer>
@@ -44,13 +33,16 @@
             </form>
         </field>
     </record>
+    
     <!-- wizard.sales.orders.uploader action window -->
     <record id="wizard_sales_orders_uploader_action" model="ir.actions.act_window">
-        <field name="name">Subir archivo con ordenes de venta</field>
+        <field name="name">Carga masiva de pedidos</field>
         <field name="res_model">wizard.sales.orders.uploader</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
-    <menuitem id="wizard_updater_sales_orders_menu" name="Carga masiva de pedidos" parent="sale.sale_order_menu" action="wizard_sales_orders_uploader_action" sequence="5"/>
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="massive_uploader_menu_categ" name="Carga masiva" parent="sale.sale_order_menu" sequence="5"/>
+    <menuitem id="wizard_updater_sales_orders_menu" name="Carga masiva de pedidos" parent="massive_uploader_menu_categ" action="wizard_sales_orders_uploader_action" sequence="0"/>
 </odoo>

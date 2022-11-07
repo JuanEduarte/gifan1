@@ -8,8 +8,10 @@
         <field name="arch" type="xml">
             <!-- attrs="{'invisible': [('gif_own_currency_check_sale','=',False)]}" -->
             <xpath expr="//field[@name='payment_term_id']" position="before">
-                <field name="gif_own_currency_check_sale" invisible="1"/>
-                <field name="gif_own_inverse_currency" />
+                <field name="gif_is_usd" invisible="1"/>
+                <field name="gif_own_currency_check_sale" attrs="{'readonly': [('state','=','done')],'invisible': [('gif_is_usd','=',False)]}"/>
+                <field name="gif_own_inverse_currency" attrs="{'readonly': ['|',('state','=','done'),('gif_own_currency_check_sale','=',False)], 'invisible': [('gif_is_usd','=',False)]}" />
+                <field name="gif_write_code" invisible="1"/>
             </xpath>
             
         </field>

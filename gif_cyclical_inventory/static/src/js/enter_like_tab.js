@@ -22,7 +22,6 @@ odoo.define('gif_cyclical_inventory.enter_like_tab.js', function (require) {
                     // The end result caused some issues where a modal opened by an ENTER keypress (e.g. saving
                     // changes in multiple edition) confirmed the modal without any intentionnal user input.
                     if (this.model === "gif.inventory"){
-                        console.log('Fue el enter')
                         var event = this.trigger_up('navigation_move', {
                             direction: ev.shiftKey ? 'previous' : 'next',
                         });
@@ -32,7 +31,6 @@ odoo.define('gif_cyclical_inventory.enter_like_tab.js', function (require) {
                         }
                         break;
                     } else{
-                        console.log('El enter normal')
                         ev.preventDefault();
                         ev.stopPropagation();
                         this.trigger_up('navigation_move', {direction: 'next_line'});

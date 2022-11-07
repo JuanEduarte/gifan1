@@ -28,7 +28,7 @@ class GIFPediments(models.Model):
     gif_dol_inv = fields.Float(string='Tipo de cambio',digits=(12,4))
     gif_flete = fields.Float(string='Flete')
     gif_inc = fields.Float(string='Otros Incrementos')
-    gif_ad_val = fields.Float(string='Valor Aduana')
+    gif_ad_val = fields.Float(string='Valor Aduana',compute='_gif_calculate_ad_val')
     gif_igi = fields.Float(string='Total IGI')
     gif_dta = fields.Float(string='Total DTA')
     gif_ieps = fields.Float(string='Total IEPS')
@@ -49,9 +49,17 @@ class GIFPediments(models.Model):
     gif_set_part = fields.One2many(comodel_name='gif.partials', inverse_name='gif_rel_pedi')
 
     gif_prorrateado = fields.Boolean(default=False)
-    gif_ped_stock = fields.Many2one(comodel_name='stock.picking', string='Orden de entrega',domain=[('picking_type_code','=','incoming'),('state','=','done')])
+    gif_ped_stock = fields.Many2one(comodel_name='stock.picking', string='Orden de entrega',domain=[('picking_type_code','=','incoming'),('state','=','done'),('gif_has_pediment','=',False)])
     gif_rel_doc_ped = fields.One2many(comodel_name='gif.documents.partials', inverse_name='gif_rel_ped')
 
+    gif_part_part_one = fields.One2many(comodel_name='gif.set.partials', inverse_name='gif_rel_part_part')
+    
+    
+    @api.onchange('gif_part_part_one')
+    def _onchange_gif_part_part_one(self):
+        for record in self.gif_part_part_one:
+            if record.gif_part_prod.gif_porc_igi != False and record.gif_part_prod.gif_porc_igi != 0:
+                record.gif_part_porc = record.gif_part_prod.gif_porc_igi
     
     @api.constrains('gif_rel_doc_ped')
     def _check_gif_rel_doc_ped(self):
@@ -59,23 +67,28 @@ class GIFPediments(models.Model):
         rel_pedi = []
         for record in self.gif_rel_doc_ped:
             rel_pedi.append(record.gif_nm_part)
-        for line in self.gif_set_part:
-            pedi.append(line.gif_part_no)
+        for line in self.gif_part_part_one:
+            pedi.append(line.gif_part_num_set)
         for r in rel_pedi:
             if r not in pedi and r != 0:
                 raise ValidationError(_('Hay una partida no registrada.'))
 
     @api.onchange('gif_ped_stock')
     def _onchange_gif_ped_stock(self):
+        purchase = self.env['purchase.order'].search([('name','=',self.gif_ped_stock.origin)])
+        no_part = {}
         for record in self.gif_ped_stock.move_ids_without_package:
+            for p in purchase.order_line:
+                if record.product_id.name == p.product_template_id.name:
+                    price = p.price_subtotal
+                    break
             self.env['gif.documents.partials'].create([{
                 'gif_rel_ped': self.id,
+                'gif_total_ped': price,
                 'gif_stock_product': record.product_id.name,
                 'gif_stock_qty': record.quantity_done,
             }])
     
-    
-
     def set_done(self):
         self.state = 'done'
 
@@ -124,7 +137,6 @@ class GIFPediments(models.Model):
         self.gif_total = self.gif_total+ seg_no_iva + emb_no_iva + flete_no_iva + inc_no_iva + con_no_iva + pre_no_iva
         for record in self.gif_set_ped:
             if record.gif_data_type == 'I' and record.gif_cost == True:
-                print('Record: ',record.gif_dt_imp)
                 self.gif_total = self.gif_total + record.gif_dt_imp
                  #
             else:
@@ -140,19 +152,17 @@ class GIFPediments(models.Model):
             self.gif_com_val = 0
 
     @api.onchange('gif_dol_val','gif_dol_inv','gif_flete','gif_seg','gif_emb')
-    def _get_ad_val(self):
-        self.gif_ad_val = 0
-        seg_no_iva = self.gif_seg #/ 1.16
-        emb_no_iva = self.gif_emb #/ 1.16
-        flete_no_iva = self.gif_flete #/ 1.16
-        inc_no_iva = self.gif_inc #/ 1.16
-        self.gif_ad_val = self.gif_com_val + flete_no_iva + seg_no_iva + emb_no_iva + inc_no_iva
+    def _gif_calculate_ad_val(self):
+        for record in self:
+            seg_no_iva = record.gif_seg #/ 1.16
+            emb_no_iva = record.gif_emb #/ 1.16
+            flete_no_iva = record.gif_flete #/ 1.16
+            inc_no_iva = record.gif_inc #/ 1.16
+            record.gif_ad_val = record.gif_com_val + flete_no_iva + seg_no_iva + emb_no_iva + inc_no_iva
 
     @api.onchange('gif_doc_ref')
     def _onchange_gif_doc_ref(self):
         try:
-            print('Len: ',len(self.gif_doc_ref))
-            print('El ultimo: ',self.gif_doc_ref[-1])
             for record in self.gif_doc_ref[-1].gif_set_data:
                 ac_name = record.gif_doc_rel.name
                 data = record.gif_data
@@ -173,5 +183,13 @@ class GIFPediments(models.Model):
                     }])
         except:
             pass
-    
-        
+
+    @api.onchange('gif_set_part')
+    def _onchange_gif_set_part(self):
+        for record in self.gif_set_part:
+            for igi in self.gif_part_part_one:
+                if record.gif_part_no != False and record.gif_part_no != 0 and record.gif_no_igi != 0 and record.gif_no_igi != False:
+                    if record.gif_part_no == igi.gif_part_num_set:
+                        record.gif_imp_igi = record.gif_no_igi * (igi.gif_part_porc / 100)
+                        break
+

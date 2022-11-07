@@ -6,8 +6,10 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='picking_type_id']" position="after">
-                <field name="gif_own_currency_check_purchase"/>
-                <field name="gif_own_inverse_currency_purchase"/>
+                <field name="gif_is_usd" invisible="1"/>
+                <field name="gif_own_currency_check_purchase" attrs="{'readonly': [('state','=','done')],'invisible': [('gif_is_usd','=',False)]}"/>
+                <field name="gif_own_inverse_currency_purchase" attrs="{'readonly': ['|',('state','=','done'),('gif_own_currency_check_purchase','=',False)],'invisible': [('gif_is_usd','=',False)]}"/>
+                <field name="gif_wr_code" invisible="1"/>
             </xpath>
         </field>
     </record>

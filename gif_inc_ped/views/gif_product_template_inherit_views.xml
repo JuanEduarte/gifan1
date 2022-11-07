@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- product.template inherit form view -->
+    <record id="product_template_inherit_view_id_gip" model="ir.ui.view">
+        <field name="name">product.template.inherit.view.form.gip</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[2]" position="inside">
+                <!-- Add your fields here -->
+                <field name="gif_is_igi" attrs="{'invisible': [('detailed_type','!=','service')]}"/>
+                <field name="gif_porc_igi" attrs="{'invisible': [('gif_is_igi','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -17,27 +17,6 @@ class GIFPediments(models.Model):
                 record.gif_block_iva = False
             elif record.gif_has_iva == False:
                 record.gif_block_iva = True
-    #         if record.gif_dt_ref:
-    #             record.gif_block_imp = True
-    #             record.gif_block_com = True
-    #             record.gif_block_da = True
-    #             record.gif_data_type = 'R'
-    #         elif record.gif_dt_imp != 0:
-    #             record.gif_block_ref = True
-    #             record.gif_block_com = True
-    #             record.gif_block_da = True
-    #             record.gif_data_type = 'I'
-    #         elif record.gif_dt_com:
-    #             record.gif_block_ref = True
-    #             record.gif_block_imp = True
-    #             record.gif_block_da = True
-    #             record.gif_data_type = 'C'
-    #         elif record.gif_dt_da:
-    #             record.gif_block_ref = True
-    #             record.gif_block_imp = True
-    #             record.gif_block_com = True
-    #             record.gif_data_type = 'F'
-       
     
 
     

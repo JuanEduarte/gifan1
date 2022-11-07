@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- stock.landed.cost inherit form view -->
+    <record id="stock_landed_cost_inherit_form_view_id_gip" model="ir.ui.view">
+        <field name="name">stock.landed.cost.inherit.view.form.gip</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//page[@name='additional_costs']//tree//field[@name='price_unit']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_part_qty" invisible="1"/>
+                <field name="gif_part_no" invisible="1"/>
+                <field name="gif_part_prod" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

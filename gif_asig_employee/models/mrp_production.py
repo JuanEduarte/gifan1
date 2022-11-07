@@ -9,8 +9,8 @@ class MrpProduction(models.Model):
     gif_asg_emp=fields.Integer(string="Asignar Empleados")
     gif_close_emp=fields.Boolean(string="Cerrar", default=False)
     gif_values_emp = fields.Boolean(string="Values", default=False)
-    gif_traslate_emp = fields.Integer(string="Trasladar Empleados") 
-    gif_traslate_des = fields.Many2one('mrp.production',string="Destino De Traslado",  domain=[('state', '=', 'progress')]) 
+    gif_traslate_emp = fields.Integer(string="Liberar Empleados") 
+    gif_traslate_des = fields.Many2one('mrp.production',string="Destino De Traslado",  domain=[('state', 'in', ('progress','confirmed'))]) 
     gif_has_emp = fields.Boolean(default=False,compute='_has_emp')
     
 
@@ -27,6 +27,7 @@ class MrpProduction(models.Model):
 
     def change_emp(self):
         for record in self:
+            disponibilidad = self.env['gif.disponibilidad'].search([('company_id', '=', self.env.user.company_id.id)])
             historico = self.env['gif.history'].search([('name','=',record.name)])
             values ={
                     'gif_traslate_emp': record.gif_traslate_emp,
@@ -35,8 +36,11 @@ class MrpProduction(models.Model):
             if record.name != record.gif_traslate_des.name:
                 if record.gif_traslate_emp >=1:
                     if record.gif_asg_emp - record.gif_traslate_emp >0:
-                        record.gif_traslate_des.gif_asg_emp += record.gif_traslate_emp
+                        #record.gif_traslate_des.gif_asg_emp += record.gif_traslate_emp
                         record.gif_asg_emp -= record.gif_traslate_emp
+                        for d in disponibilidad:
+                            d.gif_emp_linea -= record.gif_traslate_emp
+                            d.gif_emp_dps += record.gif_traslate_emp
                     else:
                         raise UserError(("No puede dejar una Orden que esta en Proceso sin empleados."))
                 else:

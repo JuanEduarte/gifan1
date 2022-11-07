@@ -1,90 +1,91 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
   <record id="gif_delivery_routes_view_form" model="ir.ui.view">
-  <field name="name">gif.routes.view.form</field>
-  <field name="model">gif.delivery.routes</field>
-  <field name="arch" type="xml">
+    <field name="name">gif.routes.view.form</field>
+    <field name="model">gif.delivery.routes</field>
+    <field name="arch" type="xml">
 
-    <form string="deilvery_routes">
-      <header>
-        <button  name="action_report" type="object" string="Imprimir en pdf" />   
+      <form string="deilvery_routes">
+        <header>
+          <button name="action_report" type="object" string="Imprimir en pdf" />
 
-        <button id='btn_draft'   name='action_draft'   class='btn-primary' string='Regresar a borrador' states='cancel,done'         type='object'/>
-        <button id='btn_done'    name='action_done'    class='btn-primary' string='Hecho'               states='draft'          type='object' />
-        <button id='btn_confirm' name='action_confirm' class='btn-primary' string='Confirmar'           states='done'           type='object'/>
-        <button id='btn_cancel'  name='action_cancel'  class='btn-primary' string='Cancelar'            states='done,draft,confirm'  type='object' /> 
-                    
-        <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm"/>
-      </header>
-                
+          <button id='btn_draft' name='action_draft' class='btn-primary' string='Regresar a borrador' states='cancel,done' type='object' />
+          <button id='btn_done' name='action_done' class='btn-primary' string='Hecho' states='draft' type='object' />
+          <button id='btn_confirm' name='action_confirm' class='btn-primary' string='Confirmar' states='done' type='object' />
+          <button id='btn_cancel' name='action_cancel' class='btn-primary' string='Cancelar' states='done,draft,confirm' type='object' />
+
+          <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm" />
+        </header>
+
         <sheet>
-          <group col='2' >
+          <group col='2'>
             <group>
-              <field name='name' placeholder='Name' readonly = "1"  />
-             
-              <field name="customer" attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+              <field name='name' placeholder='Name' readonly="1" />
+
+              <field name="customer" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="carrier_origin" attrs="{'readonly': [('state', '=', 'confirm')]}" />
               <field name="carrier" attrs="{'readonly': [('state', '=', 'confirm')]}" />
               <field name="vehicle_number" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="plates"/>
+              <field name="plates" />
             </group>
 
-            <group >
+            <group>
               <field name="date" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="child_ids"  attrs="{'readonly': [('state', '=', 'confirm')]}"/>
+              <field name="child_ids" attrs="{'readonly': [('state', '=', 'confirm')]}" />
             </group>
 
           </group>
-                    <notebook>
-                        <page string="Detalles del personal">
-                            <field name="gif_personal_details" >
-                                <tree editable="botton">
-                                    <field name="secuence" />
-                                    <field name="employe_name" />
-                                    <field name="employe_type" />
-                                    <field name="employe_id" />
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                    
-                    <notebook>
+          <notebook>
+            <page string="Detalles del personal">
+              <field name="gif_personal_details">
+                <tree editable="botton">
+                  <field name="secuence" />
+                  <field name="employe_name" />
+                  <field name="employe_type" />
+                  <field name="employe_id" />
+                </tree>
+              </field>
+            </page>
+          </notebook>
 
-                        <page string="Detalles de Ruta">
-                            <field name="gif_routes_details">
-                                <tree editable="botton">
-                                    <field name="secuence"/>
-                                    <field name="invoice" />
-                                    <field name='client'/>
-                                    <field name='order'/>
-                                    <field name='importe'/>        
-                                    <field name='cobrado'/>
-                                    
+          <notebook>
 
-                                </tree>
+            <page string="Detalles de Ruta">
 
-                            </field>
-                         </page>
+              <field name="gif_routes_details">
+                <tree editable="botton">
+                  <field name="secuence" />
+                  <field name="invoice" />
+                  <field name='client' />
+                  <field name='order' />
+                  <field name='importe' />
+                  <field name='cobrado' />
+                </tree>
+              </field>
 
-                      
-                    </notebook>
-                    <group>
-                    <field name="total" />
-                    </group>
-                    <group>
-                      <field name="flete" />
-                      <field name="seguros" />
-                      <field name="maniobras" />
-                    </group>
-                     
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/></div>
+            </page>
 
-            </form>
-        </field>
-    </record>
+
+          </notebook>
+          <group>
+            <field name="total" />
+          </group>
+          <group>
+            <field name="flete" />
+            <field name="seguros" />
+            <field name="maniobras" />
+          </group>
+
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" />
+          <field name="activity_ids" widget="mail_activity" />
+          <field name="message_ids" widget="mail_thread" />
+        </div>
+
+      </form>
+    </field>
+  </record>
 
 
   <record id="gif_delivery_routes_view_tree" model="ir.ui.view">
@@ -92,24 +93,26 @@
     <field name="model">gif.delivery.routes</field>
     <field name="arch" type="xml">
       <tree string="">
-        <field name="name" readonly = "1" />
-        <field name="date" readonly = "1" />
-        <field name="carrier" readonly = "1" />
-        <field name="vehicle_number" readonly = "1" />
-        <field name="plates" readonly = "1" />
-        <field name="flete" readonly = "1" />
-        <field name="maniobras" readonly = "1" />
-        <field name="seguros" readonly = "1" />
+        <field name="name" readonly="1" />
+        <field name="date" readonly="1" />
+        <field name="carrier" readonly="1" />
+        <field name="vehicle_number" readonly="1" />
+        <field name="plates" readonly="1" />
+        <field name="flete" readonly="1" />
+        <field name="maniobras" readonly="1" />
+        <field name="seguros" readonly="1" />
       </tree>
     </field>
   </record>
 
   <record id="gif_delivery_action" model="ir.actions.act_window">
-      <field name="name">Rutas de entrega</field>
-      <field name="type">ir.actions.act_window</field>
-      <field name="res_model">gif.delivery.routes</field>
-      <field name="view_mode">tree,form</field>
+    <field name="name">Rutas de entrega</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">gif.delivery.routes</field>
+    <field name="view_mode">tree,form</field>
   </record>
-  
-  <menuitem id="gif_routes_menuitem"  name="Rutas de entrega para facturas" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence = "100"/>
-</odoo> 
+
+  <menuitem id="gif_routes_menuitem" name="Rutas de entrega para facturas" parent="gif_delivery_routes.routes_list" action="gif_delivery_action" sequence="100" />
+
+  <menuitem id="routes_list" name="Rutas de entrega" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence="90" />
+</odoo>

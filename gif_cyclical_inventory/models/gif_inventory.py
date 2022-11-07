@@ -22,11 +22,16 @@ class GifInventory(models.Model):
     @api.onchange('code_prod')
     def _onchange_gif_product(self):
         for record in self:
+            product = False
             if record.code_prod:
                 product = record.env['product.template'].search([('barcode','=',record.code_prod)])
+                if len(product) == 0:
+                    product = record.env['gif.partners.details'].search(['|',('bar_code','=',record.code_prod),('individual_code','=',record.code_prod)])
+                if len(product) == 0:
+                    product = record.env['gif.partners.details.purchase'].search(['|',('bar_code_purchase','=',record.code_prod),('individual_code_purchase','=',record.code_prod)])
                 inventary = record.env['stock.quant'].search([('location_id','=',record.gif_location.id)])
-                record.gif_product = product.id
-                record.gif_uom = product.uom_id
+                record.gif_product = product.product_tmp_id.id
+                record.gif_uom = product.product_tmp_id.uom_id
                 for i in inventary:
                     if i.product_id.name == product.name:
                         record.gif_real_inv = i.inventory_quantity_auto_apply

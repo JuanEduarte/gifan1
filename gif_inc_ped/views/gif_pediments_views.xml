@@ -10,7 +10,7 @@
                 <field name="gif_doc_ref" />
                 <field name="gif_date" />
                 <field name="gif_ad_val" />
-                <field name="state"/>
+                <field name="state" />
             </tree>
         </field>
     </record>
@@ -23,39 +23,48 @@
             <form string="">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}' />
-                    <button name="set_done" type="object" string="Cerrar" states='draft' class="btn-primary"/>
-                    <button name="go_back" type="object" string="Abrir" states='done' class="btn-primary" attrs="{'invisible': ['|',('gif_prorrateado','=',True),('state','=','draft')]}"/>
+                    <button name="set_done" type="object" string="Cerrar" states='draft' class="btn-primary" />
+                    <button name="go_back" type="object" string="Abrir" class="btn-primary" attrs="{'invisible': ['|',('gif_prorrateado','=',True),('state','=','draft')]}" />
                 </header>
                 <sheet>
                     <group name="ped_header">
                         <group name="ped_1">
-                            <field name="gif_prorrateado" invisible="1"/>
-                            <field name="name" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_doc_ref" widget="many2many_tags" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_aduana" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_dol_val" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_dol_inv" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_com_val" readonly="1"/>
-                            <field name="gif_ad_val" readonly="1"/>
-                            <field name="gif_igi" readonly="1"/>
-                            <field name="gif_dta" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_ieps" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="gif_prorrateado" invisible="1" />
+                            <field name="name" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_doc_ref" widget="many2many_tags" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_aduana" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_dol_val" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_dol_inv" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_com_val" readonly="1" />
+                            <field name="gif_ad_val" readonly="1" />
+                            <field name="gif_igi" readonly="1" />
+                            <field name="gif_dta" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_ieps" attrs="{'readonly': [('state','=','done')]}" />
                         </group>
                         <group name="ped_2">
-                            <field name="gif_date" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_change" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_seg" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_emb" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_flete" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_inc" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_contract" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_pre_val" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_iva" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_pallets" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="gif_total" readonly="1"/>
+                            <field name="gif_date" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_change" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_seg" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_emb" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_flete" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_inc" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_contract" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_pre_val" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_iva" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_pallets" attrs="{'readonly': [('state','=','done')]}" />
+                            <field name="gif_total" readonly="1" />
                         </group>
                     </group>
                     <notebook>
+                        <page string="Def. Partidas" name="gif_set_partials_notebooks">
+                            <field name="gif_part_part_one" attrs="{'readonly': [('state','=','done')]}">
+                                <tree editable="botton">
+                                    <field name="gif_part_prod" />
+                                    <field name="gif_part_porc" readonly="1" force_save="1"/>
+                                    <field name="gif_part_num_set" />
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Partidas" name="gif_partials_notebook">
                             <field name="gif_set_part" attrs="{'readonly': [('state','=','done')]}">
                                 <tree editable="botton">
@@ -68,7 +77,7 @@
                         <page string="Detalles del pedimento" name="gif_pediments_notebook">
                             <field name="gif_set_ped" attrs="{'readonly': [('state','=','done')]}">
                                 <tree editable="botton" default_oder='gif_con'>
-                                    <field name="gif_rel_name" readonly="1"/>
+                                    <field name="gif_rel_name" readonly="1" />
                                     <field name="gif_con" readonly="1" />
                                     <field name="gif_data" readonly="1" />
                                     <field name="gif_sec_des" readonly="1" />
@@ -77,7 +86,7 @@
                                     <field name="gif_dt_com" attrs="{'readonly': [('gif_block_com','=',True)]}" />
                                     <field name="gif_dt_da" attrs="{'readonly': [('gif_block_da','=',True)]}" />
                                     <field name="gif_cal_iva" attrs="{'invisible': [('gif_has_iva','=',False)]}" />
-                                    <field name="gif_cost" readonly="1"/>
+                                    <field name="gif_cost" readonly="1" />
                                     <field name="gif_has_iva" invisible="1" />
                                     <field name="gif_block_ref" invisible="1" />
                                     <field name="gif_block_imp" invisible="1" />
@@ -88,15 +97,16 @@
                         </page>
                         <page string="Asignación de Partidas" name="gif_assign_part">
                             <group>
-                                <field name="gif_ped_stock" attrs="{'readonly': [('state','=','done')]}"/>
+                                <field name="gif_ped_stock" attrs="{'readonly': [('state','=','done')]}" />
                             </group>
-                                <field name="gif_rel_doc_ped" attrs="{'readonly': [('state','=','done')]}">
-                                    <tree editable="botton">
-                                        <field name="gif_stock_qty"/>
-                                        <field name="gif_stock_product"/>
-                                        <field name="gif_nm_part"/>
-                                    </tree>
-                                </field>
+                            <field name="gif_rel_doc_ped" attrs="{'readonly': [('state','=','done')]}" options="{ 'no_open': True, 'no_create_edit': True, 'no_create': True}">
+                                <tree editable="botton" options="{ 'no_open': True, 'no_create_edit': True, 'no_create': True}">
+                                    <field name="gif_total_ped" readonly = "1" options="{'no_open': False,'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="gif_stock_qty" readonly = "1" options="{'no_open': False,'no_create_edit': True, 'no_create': True}" />
+                                    <field name="gif_stock_product" readonly = "1" options="{'no_open': False, 'no_create_edit': True, 'no_create': True}" />
+                                    <field name="gif_nm_part" />
+                                </tree>
+                            </field>
                         </page>
                     </notebook>
 

@@ -29,7 +29,7 @@
                     </notebook> 
           <footer>
             <button string="Cancel" special="cancel" class="oe_link" />
-            <button name='confirm' string='Confirmar' class="btn-primary" />
+            <button name='action_confirm' string='Confirmar' class="btn-primary" />
           </footer>
         </form>
       </field>

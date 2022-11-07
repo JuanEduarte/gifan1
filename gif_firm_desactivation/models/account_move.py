@@ -14,7 +14,7 @@ class AccountMove(models.Model):
 
     gif_firm_flag = fields.Boolean(
         string='Control de Pac', 
-        default=True,
+        default=False,
         help="Campo utilizado para evitar el timbrado de la factura.")
 
     def l10n_mx_edi_update_sat_status(self):

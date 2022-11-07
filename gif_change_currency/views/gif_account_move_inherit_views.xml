@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="account_move_form_inherit_view_id_gcc" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form.ev</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//div[@name='journal_div']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_is_usd" invisible="1"/>
+                <field name="gif_own_currency_check_account" attrs="{'readonly': [('state','=','posted')],'invisible': [('gif_is_usd','=',False)]}"/>
+                <field name="gif_own_inverse_currency_account" attrs="{'readonly': ['|',('state','=','posted'),('gif_own_currency_check_account','=',False)],'invisible': [('gif_is_usd','=',False)]}"/>
+                <field name="gif_wr_code" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

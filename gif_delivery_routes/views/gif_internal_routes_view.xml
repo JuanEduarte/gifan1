@@ -58,7 +58,7 @@
                                     <field name="client" />
                                     <field name='origin_doc' />
                 
-                                </tree>s
+                                </tree>
                                 
 
                             </field>
@@ -67,7 +67,6 @@
 
                     </notebook>
                     <group>
-                    <field name="total" />
                     </group>
                     <group>
                       <field name="flete" />
@@ -111,5 +110,5 @@
       <field name="view_mode">tree,form</field>
   </record>
   
-  <menuitem id="gif_internal_routes_menuitem"  name="Rutas de entrega internas" parent="stock.menu_stock_warehouse_mgmt" action="internal_delivery_action" sequence="150"/>
+  <menuitem id="gif_internal_routes_menuitem"  name="Rutas de entrega internas" parent="gif_delivery_routes.routes_list" action="internal_delivery_action" sequence="150"/>
 </odoo> 

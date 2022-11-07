@@ -12,7 +12,8 @@ class GifDeliveriRoutes(models.Model):
   distribution_route    = fields.Integer (string='Ruta de distribucion', default=0, store=True )
   customer              = fields.Many2one('res.partner', string='Cliente',store=True , required=True) 
   date                  = fields.Datetime(string='Fecha', required=True)
-  carrier               = fields.Many2one('res.company', string='Transportista')
+  carrier               = fields.Many2one('res.partner', string='Transportista')
+  carrier_origin = fields.Selection(string='Origen del transportista', selection=[('intern', 'Interno'), ('extern', 'Externo')])  
   vehicle_number        = fields.Many2one('fleet.vehicle', string='N° de veiculo')
   plates                = fields.Char    (string='Matriculas', compute='_onchange_vehicle_number')
   flete                 = fields.Integer (string='flete pactado', required=True)
@@ -50,7 +51,10 @@ class GifDeliveriRoutes(models.Model):
       for i in record.gif_routes_details.invoice:
           self.lst_invoice.append(i.id)   
       record.array2 = self.lst_invoice
-     
+
+
+
+ 
   def action_draft(self):
     self.state='draft'    
   
@@ -61,7 +65,6 @@ class GifDeliveriRoutes(models.Model):
         self.trd_invoice.append(i.name)
         print('tipo:Ruta de factura')
     
-
   def action_confirm(self):
     if  not  self.gif_routes_details :
      raise UserError(('Debe haber registros en las lineas de detalles de rutas'))
@@ -80,9 +83,10 @@ class GifDeliveriRoutes(models.Model):
           else:
             pass
 
-
   def action_cancel(self):
     self.state='cancel'
+
+
 
   @api.model
   def create(self, vals):
@@ -92,7 +96,17 @@ class GifDeliveriRoutes(models.Model):
       return result
 
 
-       
+
+
+  @api.onchange("carrier_origin")
+  def _onchange_carrier_origin(self):
+    for record in self:
+      if record.carrier_origin == 'intern':
+        record.carrier = 13042
+        
+    
+    
+    
   @api.onchange('customer')
   def _onchange_customer_select(self):
     for record in (self): 
@@ -225,4 +239,4 @@ class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Char(string='Rutas')
+  route_id = fields.Many2one(string='Rutas')

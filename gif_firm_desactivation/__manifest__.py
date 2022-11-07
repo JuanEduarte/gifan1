@@ -18,7 +18,9 @@
         'account_edi',
         'l10n_mx',
         'base_vat',
-        'product_unspsc'
+        'product_unspsc',
+        'gif_sale_segregation',
+        'gif_purchase_segregation'
 	],
     'data': [
         'views/gif_account_move_form.xml'

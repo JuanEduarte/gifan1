@@ -15,5 +15,9 @@
         'security/ir.model.access.csv',
         'views/gif_documents_views.xml',
         'views/gif_pediments_views.xml',
+        'views/gif_product_template_inherit_views.xml',
+        'views/gif_account_move_inherit_views.xml',
+        'views/gif_stock_landed_inherit_views.xml',
+        'views/gif_stock_picking_inherit_views.xml',
     ],
 }

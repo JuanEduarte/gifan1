@@ -4,3 +4,4 @@ gif_inc_ped.access_gif_documents_set,access_gif_documents_set,gif_inc_ped.model_
 gif_inc_ped.access_gif_pediments,access_gif_pediments,gif_inc_ped.model_gif_pediments,,1,1,1,1
 gif_inc_ped.access_gif_partials,access_gif_partials,gif_inc_ped.model_gif_partials,,1,1,1,1
 gif_inc_ped.access_gif_documents_partials,access_gif_documents_partials,gif_inc_ped.model_gif_documents_partials,,1,1,1,1
+gif_inc_ped.access_gif_set_partials,access_gif_set_partials,gif_inc_ped.model_gif_set_partials,,1,1,1,1

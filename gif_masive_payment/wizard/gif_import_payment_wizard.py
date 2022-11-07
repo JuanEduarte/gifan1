@@ -17,6 +17,7 @@ class gif_masive_payment_Wizard(models.TransientModel):
     confirm = fields.Char(string='Confirmar') 
     
     gif_masive_payment_wzr = fields.One2many(comodel_name='gif.masive.payment.line.wzr', inverse_name='gif_masive_payment', string='a')
+    memo = []
 
     def files_data(self):
         file_path = tempfile.gettempdir()+'/file.csv'
@@ -44,10 +45,9 @@ class gif_masive_payment_Wizard(models.TransientModel):
             print('****', p)
 
         archive_lines = []
-        memo = []
         for line in archive:
             archive_lines.append(line)
-            memo.append(line['Factura de venta'])
+            self.memo.append(line['Factura de venta'])
             for line in archive_lines:
                 cliente = p
             print(cliente, line['Factura de venta'], line['Importe'])
@@ -70,6 +70,15 @@ class gif_masive_payment_Wizard(models.TransientModel):
             'res_id':self.id,
             'target': 'new',
             }
+    def action_confirm(self):
+            if self.gif_masive_payment_wzr:
+               payment = self.env['account.payment'].create(('memo',{}))
+
+               print('AAAAAAAAAAAAA',self.memo)
+            else:
+                print('This is stupid')
+            
+    
 
 
 class GifMasivePaymentLine(models.Model):

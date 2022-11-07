@@ -27,7 +27,9 @@
         # 'security/ir.model.access.csv',
         'views/gif_sale_order_inherit_views.xml',
         'views/gif_purchase_order_inherit_views.xml',
-        
+        'views/gif_account_move_inherit_views.xml',
+        'views/gif_account_payment_inherit_views.xml',
+        'views/gif_stock_picking_inherit_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
