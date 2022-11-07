@@ -32,5 +32,5 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="wizard_updater_xml_menu" name="Subir XMLs" parent="account.menu_finance_payables" action="wizard_xml_updater_action" sequence="251"/>
+    <menuitem id="wizard_updater_xml_menu" name="Subir XMLs" parent="gif_xml_menu_categ" action="wizard_xml_updater_action" sequence="1"/>
 </odoo>

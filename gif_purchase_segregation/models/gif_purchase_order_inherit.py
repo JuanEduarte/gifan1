@@ -108,6 +108,7 @@ class PurchaseOrderPS(models.Model):
     def onchange_type_product(self):
         self.tipificacion_compra = None
         self.requisition_id = None
+        self.order_line = None
         for record in self:
             res_v = {}
             add_user = record.user_id

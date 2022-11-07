@@ -7,12 +7,12 @@
         <field name="arch" type="xml">
 
           <xpath expr="//tree//field[@name='qty_delivered']" position="after">            
-            <field name="real_qty" attrs="{'column_invisible': [['parent.state', 'not in', ['sale','done']]]}"/>
+            <field name="gif_real_stock1" invisible="1"/>
           </xpath>
 
-         <xpath expr="//tree//field[@name='product_uom']" position="after">            
-          <field name="gif_total_units" />
-        </xpath>
+          <xpath expr="//tree//field[@name='product_uom']" position="after">            
+            <field name="gif_total_units" />
+          </xpath>
           
         </field>
     </record>

@@ -10,16 +10,15 @@ class AccountPaymentRegisterSA(models.TransientModel):
     @api.onchange('journal_id')
     def _onchange_journal_id_sa(self):
         for record in self:
-            invoice_sale = self.env['account.move'].search([('name','=',record.communication)])
-            if invoice_sale.type_of_sale:
+            if record.line_ids.move_id.type_of_sale.id != False:
                 record.gif_is_sale = True
-                if invoice_sale.type_of_sale.id == 1:
+                if record.line_ids.move_id.type_of_sale.id == 1:
                     record.type_of_sale = 1
-                elif invoice_sale.type_of_sale.id == 2:
+                elif record.line_ids.move_id.type_of_sale.id == 2:
                     record.type_of_sale = 2
-                elif invoice_sale.type_of_sale.id == 3:
+                elif record.line_ids.move_id.type_of_sale.id == 3:
                     record.type_of_sale = 3
-            elif invoice_sale.type_of_purchase:
+            else:
                 record.gif_is_sale = False
                 record.type_of_sale = False
 

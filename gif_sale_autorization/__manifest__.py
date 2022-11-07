@@ -40,12 +40,13 @@
         'views/gif_purchase_order_inherit_views.xml',
         'views/gif_partners_details.xml',
         'views/gif_account_move_inherit_views.xml',
+        # 'views/gif_res_partner_inherit_views.xml',
         #------>RK
-        'views/gif_page_product.xml',
-        'views/gif_packaging_view_inherit.xml',
-        'views/gif_packaging_2_view_inherit.xml',
-        'views/gif_hide_fields.xml',
-        'views/gif_groupPriceList.xml',
+        # 'views/gif_page_product.xml',
+        # 'views/gif_packaging_view_inherit.xml',
+        # 'views/gif_packaging_2_view_inherit.xml',
+        # 'views/gif_hide_fields.xml',
+        # 'views/gif_groupPriceList.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

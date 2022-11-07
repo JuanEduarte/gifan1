@@ -2698,332 +2698,339 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
             for (data in data_show) {
                 if (model_show === 'sale.order' && view === "list") {
                     if (data_show[data].data.sum_sale_order) {
-                        if ($cells[0][0].title === data_show[data].data.name) {
-                            if (data_show[data].data.sum_sale_order == 7) {
-                                if (data_show[data].data.is_ben_dis_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                                if (data_show[data].data.is_primary_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                                if (data_show[data].data.is_office_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condición
-                            if (data_show[data].data.sum_sale_order == 1) {
-                                if (data_show[data].data.is_primary_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condicion
-                            if (data_show[data].data.sum_sale_order == 2) {
-                                if (data_show[data].data.is_office_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condición
-                            if (data_show[data].data.sum_sale_order == 4) {
-                                if (data_show[data].data.is_ben_dis_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { }//Comienza otra condición.
-                            if (data_show[data].data.sum_sale_order == 3) {
-                                if (data_show[data].data.is_primary_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                                if (data_show[data].data.is_office_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condicion
-                            if (data_show[data].data.sum_sale_order == 5) {
-                                if (data_show[data].data.is_primary_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                                if (data_show[data].data.is_ben_dis_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condicion
-                            if (data_show[data].data.sum_sale_order == 6) {
-                                if (data_show[data].data.is_office_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                                if (data_show[data].data.is_ben_dis_sale === true) {
-                                    var $tr = $('<tr/>', { class: 'o_data_row' })
-                                        .attr('data-id', record.id)
-                                        .append($cells);
-                                    if (this.hasSelectors) {
-                                        $tr.prepend(this._renderSelector('td', !record.res_id));
-                                    }
-                                    if (this.no_open && this.mode === "readonly") {
-                                        $tr.addClass('o_list_no_open');
-                                    }
-                                    this._setDecorationClasses($tr, this.rowDecorations, record);
-                                } else { }
-                            } else { } //Comienza otra condicion
+                        if (data_show[data].data.name){
+                            if ($cells[0][0].title === data_show[data].data.name) {
+                                if (data_show[data].data.sum_sale_order == 7) {
+                                    if (data_show[data].data.is_ben_dis_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                    if (data_show[data].data.is_primary_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                    if (data_show[data].data.is_office_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condición
+                                if (data_show[data].data.sum_sale_order == 1) {
+                                    if (data_show[data].data.is_primary_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condicion
+                                if (data_show[data].data.sum_sale_order == 2) {
+                                    if (data_show[data].data.is_office_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condición
+                                if (data_show[data].data.sum_sale_order == 4) {
+                                    if (data_show[data].data.is_ben_dis_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { }//Comienza otra condición.
+                                if (data_show[data].data.sum_sale_order == 3) {
+                                    if (data_show[data].data.is_primary_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                    if (data_show[data].data.is_office_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condicion
+                                if (data_show[data].data.sum_sale_order == 5) {
+                                    if (data_show[data].data.is_primary_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                    if (data_show[data].data.is_ben_dis_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condicion
+                                if (data_show[data].data.sum_sale_order == 6) {
+                                    if (data_show[data].data.is_office_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                    if (data_show[data].data.is_ben_dis_sale === true) {
+                                        var $tr = $('<tr/>', { class: 'o_data_row' })
+                                            .attr('data-id', record.id)
+                                            .append($cells);
+                                        if (this.hasSelectors) {
+                                            $tr.prepend(this._renderSelector('td', !record.res_id));
+                                        }
+                                        if (this.no_open && this.mode === "readonly") {
+                                            $tr.addClass('o_list_no_open');
+                                        }
+                                        this._setDecorationClasses($tr, this.rowDecorations, record);
+                                    } else { }
+                                } else { } //Comienza otra condicion
+                                if (data_show[data].data.sum_sale_order == 0) { }
+                            }
                         }
+                        
                     }
                     else {
                         if (data_show[data].data) {
                             for (d in data_show[data].data) {
-                                if ($cells[0][0].title === data_show[data].data[d].data.name) {
-                                    if (data_show[data].data[d].data.sum_sale_order == 7) {
-                                        if (data_show[data].data[d].data.is_ben_dis_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_primary_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_sale_order == 1) {
-                                        if (data_show[data].data[d].data.is_primary_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_sale_order == 2) {
-                                        if (data_show[data].data[d].data.is_office_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_sale_order == 4) {
-                                        if (data_show[data].data[d].data.is_ben_dis_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { }//Comienza otra condición.
-                                    if (data_show[data].data[d].data.sum_sale_order == 3) {
-                                        if (data_show[data].data[d].data.is_primary_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_sale_order == 5) {
-                                        if (data_show[data].data[d].data.is_primary_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_sale_order == 6) {
-                                        if (data_show[data].data[d].data.is_office_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_sale === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
+                                if (data_show[data].data[d].data) {
+                                    if ($cells[0][0].title === data_show[data].data[d].data.name) {
+                                        if (data_show[data].data[d].data.sum_sale_order == 7) {
+                                            if (data_show[data].data[d].data.is_ben_dis_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_primary_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_sale_order == 1) {
+                                            if (data_show[data].data[d].data.is_primary_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_sale_order == 2) {
+                                            if (data_show[data].data[d].data.is_office_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_sale_order == 4) {
+                                            if (data_show[data].data[d].data.is_ben_dis_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { }//Comienza otra condición.
+                                        if (data_show[data].data[d].data.sum_sale_order == 3) {
+                                            if (data_show[data].data[d].data.is_primary_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_sale_order == 5) {
+                                            if (data_show[data].data[d].data.is_primary_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_sale_order == 6) {
+                                            if (data_show[data].data[d].data.is_office_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_sale === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_sale_order == 0) { }
+                                    }
                                 }
+                                else {break;}
                             }
-
                         }
                         else {
                             var $tr = $('<tr/>', { class: 'o_data_row' })
@@ -4067,1032 +4074,1039 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                         }
                     }
                     else {
-                        if (data_show[data].data.sum_sale_order) {
+                        if (data_show[data].data) {
                             for (d in data_show[data].data) {
-                                if ($cells[1][0].title === data_show[data].data[d].data.name) {
-                                    if (data_show[data].data[d].data.sum_purchase_order == 7) {
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 1) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 2) {
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 4) {
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { }//Comienza otra condición.
-                                    if (data_show[data].data[d].data.sum_purchase_order == 8) {
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 16) {
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 3) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 9) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 17) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 5) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 10) {
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 24) {
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 12) {
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 18) {
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 6) {
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 20) {
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condicion
-                                    if (data_show[data].data[d].data.sum_purchase_order == 11) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 25) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 13) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 19) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 21) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 14) {
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 26) {
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 22) {
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 28) {
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 15) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 23) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 27) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 29) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición
-                                    if (data_show[data].data[d].data.sum_purchase_order == 30) {
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { } //Comienza otra condición 
-                                    if (data_show[data].data[d].data.sum_purchase_order == 31) {
-                                        if (data_show[data].data[d].data.is_primary_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_insume_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_associated_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                        if (data_show[data].data[d].data.is_office_purchase === true) {
-                                            var $tr = $('<tr/>', { class: 'o_data_row' })
-                                                .attr('data-id', record.id)
-                                                .append($cells);
-                                            if (this.hasSelectors) {
-                                                $tr.prepend(this._renderSelector('td', !record.res_id));
-                                            }
-                                            if (this.no_open && this.mode === "readonly") {
-                                                $tr.addClass('o_list_no_open');
-                                            }
-                                            this._setDecorationClasses($tr, this.rowDecorations, record);
-                                        } else { }
-                                    } else { }
+                                if (data_show[data].data[d].data){
+                                    if ($cells[1][0].title === data_show[data].data[d].data.name) {
+                                        console.log('5')
+                                        if (data_show[data].data[d].data.sum_purchase_order == 7) {
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 1) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 2) {
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 4) {
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { }//Comienza otra condición.
+                                        if (data_show[data].data[d].data.sum_purchase_order == 8) {
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 16) {
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 3) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 9) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 17) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 5) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 10) {
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 24) {
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 12) {
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 18) {
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 6) {
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 20) {
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condicion
+                                        if (data_show[data].data[d].data.sum_purchase_order == 11) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 25) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 13) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 19) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 21) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 14) {
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 26) {
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 22) {
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 28) {
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 15) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 23) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 27) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 29) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición
+                                        if (data_show[data].data[d].data.sum_purchase_order == 30) {
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { } //Comienza otra condición 
+                                        if (data_show[data].data[d].data.sum_purchase_order == 31) {
+                                            if (data_show[data].data[d].data.is_primary_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_insume_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_ben_dis_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_associated_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                            if (data_show[data].data[d].data.is_office_purchase === true) {
+                                                var $tr = $('<tr/>', { class: 'o_data_row' })
+                                                    .attr('data-id', record.id)
+                                                    .append($cells);
+                                                if (this.hasSelectors) {
+                                                    $tr.prepend(this._renderSelector('td', !record.res_id));
+                                                }
+                                                if (this.no_open && this.mode === "readonly") {
+                                                    $tr.addClass('o_list_no_open');
+                                                }
+                                                this._setDecorationClasses($tr, this.rowDecorations, record);
+                                            } else { }
+                                        } else { }
+                                    }
                                 }
+                                else{
+                                    break;
+                                }
+                                
                             }
                         }
                         else {
@@ -7183,8 +7197,6 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                 }
                 else if (model_show === 'account.move' && view === "list") {
                     if (this.state.context.default_move_type === 'in_invoice' || this.state.context.default_move_type === 'in_refund' || this.state.context.default_move_type === 'in_receipt') { // Ventas - Clientes
-                        console.log('El in')
-                        console.log(data_show[data])
                         if (data_show[data].data.name) {
                             if ($cells[0][0].innerText === data_show[data].data.name) {
                                 if (data_show[data].data.sum_account_purchase == 1) {
@@ -8211,7 +8223,7 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                 } else { }
                             }
                         }
-                        
+
                         else {
                             if (data_show[data].data) {
                                 for (d in data_show[data].data) {
@@ -10980,10 +10992,10 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                     this._setDecorationClasses($tr, this.rowDecorations, record);
                                 } else { }
                             } else { }
-                        } else { 
-                            if (data_show[data].data){
-                                for (d in data_show[data].data){
-                                    if (data_show[data].data[d].data){
+                        } else {
+                            if (data_show[data].data) {
+                                for (d in data_show[data].data) {
+                                    if (data_show[data].data[d].data) {
                                         if ($cells[1][0].title === data_show[data].data[d].data.name) {
                                             if (data_show[data].data[d].data.sum_payment_purchase == 1) {
                                                 if (data_show[data].data[d].data.is_primary_purchase === true) {
@@ -13065,9 +13077,9 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                     } else { }
                                 } else { }
                             } else {
-                                if (data_show[data].data){
-                                    for (d in data_show[data].data){
-                                        if (data_show[data].data[d].data){
+                                if (data_show[data].data) {
+                                    for (d in data_show[data].data) {
+                                        if (data_show[data].data[d].data) {
                                             if ($cells[0][0].innerText === data_show[data].data[d].data.name) {
                                                 if (data_show[data].data[d].data.sum_batch_purchase == 1) {
                                                     if (data_show[data].data[d].data.is_primary_purchase === true) {
@@ -14107,7 +14119,7 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                     }
                                     this._setDecorationClasses($tr, this.rowDecorations, record);
                                 }
-                             }
+                            }
                         }
                         else if (this.state.context.default_batch_type === "inbound") {
                             if ($cells[0][0].innerText === data_show[data].data.name) {
@@ -14270,9 +14282,9 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                     } else { }
                                 } else { }
                             } else {
-                                if (data_show[data].data){
-                                    for (d in data_show[data].data){
-                                        if (data_show[data].data[d].data){
+                                if (data_show[data].data) {
+                                    for (d in data_show[data].data) {
+                                        if (data_show[data].data[d].data) {
                                             if ($cells[0][0].innerText === data_show[data].data[d].data.name) {
                                                 if (data_show[data].data[d].data.sum_batch_sale == 1) {
                                                     if (data_show[data].data[d].data.is_primary_sale === true) {
@@ -14437,8 +14449,8 @@ odoo.define('gif_segregate_flow.gif_segregate_cells.js', function (require) {
                                     }
 
                                 }
-                             }
-                        } 
+                            }
+                        }
                         else {
                             var $tr = $('<tr/>', { class: 'o_data_row' })
                                 .attr('data-id', record.id)

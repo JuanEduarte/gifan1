@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- gif.product.subcategory tree view -->
+    <record id="gif_product_subcategory_view_tree" model="ir.ui.view">
+        <field name="name">gif.product.subcategory.view.tree</field>
+        <field name="model">gif.product.subcategory</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- Add your fields here -->
+                <field name="name"/>
+                <field name="gif_subcategory_active"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- gif.product.subcategory form view -->
+    <record id="gif_product_subcategory_view_form" model="ir.ui.view">
+        <field name="name">gif.product.subcategory.view.form</field>
+        <field name="model">gif.product.subcategory</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <!-- Add your fields here -->
+                        <field name="name"/>
+                        <field name="gif_subcategory_active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.product.subcategory action window -->
+    <record id="gif_product_subcategory_action" model="ir.actions.act_window">
+        <field name="name">gif.product.subcategory.action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.product.subcategory</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Aún no se han creado subcategorias.
+            </p><p>
+                Por favor cree una subcategoria.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="gif_product_subcategory_menu_act" name="Subcategorias de Productos" parent="stock.menu_stock_general_settings" action="gif_product_subcategory_action" sequence="220"/>
+
+</odoo>

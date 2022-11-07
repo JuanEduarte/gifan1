@@ -26,7 +26,7 @@
     </record>
     <!-- wizard.account.attachment.xml action window -->
     <record id="wizard_xml_attach_invoice_action" model="ir.actions.act_window">
-        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="name">Adjuntar archivo XML a Facturas</field>
         <field name="res_model">wizard.account.attachment.xml</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
@@ -58,7 +58,7 @@
     </record>
     <!-- wizard.account.unattachment.xml action window -->
     <record id="wizard_xml_unattach_invoice_action" model="ir.actions.act_window">
-        <field name="name">Remover archivo de Facturas en XML</field>
+        <field name="name">Remover archivo XML de Facturas</field>
         <field name="res_model">wizard.account.unattachment.xml</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

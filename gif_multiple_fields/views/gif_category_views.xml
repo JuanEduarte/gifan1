@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.category tree view -->
+    <record id="gif_category_view_tree" model="ir.ui.view">
+        <field name="name">gif.category.view.tree</field>
+        <field name="model">gif.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- Add your fields here -->
+                <field name="name" />
+                <field name="gif_category_active" />
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.category form view -->
+    <record id="gif_category_view_form" model="ir.ui.view">
+        <field name="name">gif.category.view.form</field>
+        <field name="model">gif.category</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <!-- Add your fields here -->
+                        <field name="name" />
+                        <field name="gif_category_active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.category action window -->
+    <record id="gif_category_action" model="ir.actions.act_window">
+        <field name="name">gif.category.action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Aún no hay categorias.
+            </p>
+            <p>
+                Por favor cree una categoria.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="gif_product_type_menu_act" name="Tipos de Producto" parent="stock.menu_stock_general_settings" action="gif_product_type_action" sequence="260" />
+</odoo>

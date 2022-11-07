@@ -1,4 +1,4 @@
-from odoo import models,api,fields,_
+from odoo import models,api,fields, exceptions,_
 from odoo.exceptions import UserError
 
 class AccountMove(models.Model):
@@ -16,94 +16,23 @@ class AccountMove(models.Model):
     is_admin_primary_accountform_sale = fields.Boolean(compute='_is_approve_account', default=False)
     is_admin_ben_dis_accountform_sale = fields.Boolean(compute='_is_approve_account', default=False)
 
-    purchase_pf = fields.Float(default=0,compute='_calculate_purchase')
-    purchase_pp = fields.Float(default=0,compute='_calculate_purchase')
-    sale_dis = fields.Float(default=0,compute='_calculate_sale')
-
-    account_current_currency = fields.Float(default=0.0,compute="_calculate_currency_account_sa",store=True)
-    account_current_inverse_currency = fields.Float(default=0.0,compute="_calculate_currency_account_sa")
-
     gif_temp_account = fields.Float(string="Tasa de Cambio",default=0.0,compute="_onchange_account_id_sale_autorization")
     
 
-    @api.onchange('currency_id','account_current_inverse_currency','date')
+    @api.onchange('currency_id','date')
     def _onchange_account_id_sale_autorization(self):
-        print('Aquí se dice que cambia')
+        '''
+            En está función se asigna el valor del tipo de moneda con el que va a trabajar, se hizo así porque
+            hay un desarrollo que es poner la tasa manual (gif_chance_currency).
+        '''
         for record in self:
             try:
                 if record.gif_own_currency_check_account == True and record.gif_own_inverse_currency_account != 0:
-                    record.account_current_currency = record.currency_id.rate
                     record.gif_temp_account = record.gif_own_inverse_currency_account
                 else:
-                    record.account_current_currency = record.currency_id.rate
                     record.gif_temp_account = record.currency_id.inverse_rate
             except:
-                record.account_current_currency = record.currency_id.rate
                 record.gif_temp_account = record.currency_id.inverse_rate
-    
-    @api.onchange('account_current_inverse_currency')
-    def _onchange_account_current_inverse_currency_account_sa(self):
-        try:
-            self.gif_temp_account = self.gif_own_inverse_currency_account
-        except:
-            self.gif_temp_account = self.currency_id.inverse_rate
-    
-
-    @api.depends('account_current_currency','account_current_inverse_currency','date')
-    def _calculate_currency_account_sa(self):
-        for record in self:
-            try: 
-                if record.gif_own_currency_check_purchase ==True:
-                    record.account_current_inverse_currency = record.gif_own_inverse_currency_account
-                elif record.currency_id.inverse_rate != 0:
-                    record.account_current_currency = record.currency_id.rate
-                    record.account_current_inverse_currency = record.currency_id.inverse_rate
-                else:
-                    record.account_current_currency = 1
-                    record.account_current_inverse_currency = 1
-            except:
-                if record.currency_id.inverse_rate != 0:
-                    record.account_current_currency = record.currency_id.rate
-                    record.account_current_inverse_currency = record.currency_id.inverse_rate
-                else:
-                    record.account_current_currency = 1
-                    record.account_current_inverse_currency = 1
-
-    def _calculate_sale(self):
-        sale_price = 1
-        for record in self:
-            for line in record.invoice_line_ids:
-                if record.type_of_sale:
-                    if line.product_id.partners_details:
-                        for partner in line.product_id.partners_details:
-                            if partner.partner.name == record.partner_id.name:
-                                sale_price = partner.partner_price
-                    else:
-                        sale_price = line.product_id.list_price
-                    record.sale_dis = ((100 - line.product_id.porcentaje_ventas)/100 * sale_price)
-                else:
-                    record.sale_dis = 0
-    
-    def _calculate_purchase(self):
-        uncalculated_purchase = 3
-        for record in self:
-            for line in record.invoice_line_ids:
-                if record.type_of_purchase:
-                    if line.product_id.partners_details_purchase:
-                        for partner in line.product_id.partners_details_purchase:
-                            if record.partner_id.name == partner.partner_purchase.name:
-                                uncalculated_purchase = partner.partner_price_purchase
-                    else:
-                        uncalculated_purchase = line.product_id.standard_price
-                    if line.product_id.descount_selector == "1":
-                        record.purchase_pf = uncalculated_purchase + line.product_id.d_f
-                        record.purchase_pp = 0
-                    elif line.product_id.descount_selector == "2":
-                        record.purchase_pf = 0
-                        record.purchase_pp = ((line.product_id.d_p/100)* uncalculated_purchase )+ uncalculated_purchase
-                else:
-                    record.purchase_pf = 0
-                    record.purchase_pp = 0
     
     def _is_approve_account(self):
         for record in self:
@@ -246,6 +175,12 @@ class AccountMove(models.Model):
                 record.is_admin_office_accountform_sale = False
 
     def action_post(self):
+        '''
+            Está es la función que aplica el botón de confirmar, aquí pasa por las condiciones
+            para ver si se va al estado de aprobación o no. Las cuales son:
+                -Si el precio unitario es diferente al precio que tiene el cliente/proveedor en su tabla,
+                se irá a aprobación, a excepción que sea el admin.
+        '''
         try:
             go_to_approve_account = False
             if self.invoice_origin:
@@ -309,7 +244,6 @@ class AccountMove(models.Model):
                                         else:
                                             go_to_approve_account = True
                     elif record.type_of_sale:
-                        print('Es una venta')
                         for line in record.invoice_line_ids:
                             precio_s = line.price_unit
                             for detail_s in line.product_id.partners_details:
@@ -328,11 +262,13 @@ class AccountMove(models.Model):
             if go_to_approve_account == True:
                 record.state = 'to_approve'
             elif go_to_approve_account == False:
-                print(line.product_uom_id.name)
                 res = super(AccountMove, self).action_post()
                 return res
         except Exception as e:
-            print('Error: ',e)
+            raise UserError(_(e))
+
+    
+    #Dependiendo de la categoria se mostrará un boton diferente, todos hacen la acción de confirmar.
 
     def authorize_account_primary_purchase(self):
         for record in self:
@@ -373,8 +309,9 @@ class AccountMove(models.Model):
         for record in self:
             res = super(AccountMove, self).action_post()
             return res
-
+    
     def go_back_account(self):
+        #Este es el botón que lo regresa al estado de borrador cuando está por aprobar.
         for record in self:
             record.state = 'draft'
 
@@ -387,6 +324,7 @@ class AccountMoveOrderLine(models.Model):
     
     @api.onchange('product_id')
     def _onchange_product_id_raise_error_if_not(self):
+        #Validación para ver si el producto tiene precio con el cliente/proveedor.
         for record in self:
             if record.product_id.name == False or record.product_id.detailed_type != 'product':
                 gif_pasa = True
@@ -396,7 +334,7 @@ class AccountMoveOrderLine(models.Model):
                     user = 'Cliente'
                     if record.product_id.partners_details:
                         for partner in record.product_id.partners_details:
-                            if record.move_id.partner_id.name == partner.partner.name:
+                            if record.move_id.partner_id.name == partner.partner.name and record.move_id.currency_id.name == partner.currency_sale.name:
                                 gif_pasa = True
                                 break
                             else:
@@ -407,7 +345,7 @@ class AccountMoveOrderLine(models.Model):
                     user = 'Proveedor'
                     if record.product_id.partners_details_purchase:
                         for partner in record.product_id.partners_details_purchase:
-                            if record.move_id.partner_id.name == partner.partner_purchase.name:
+                            if record.move_id.partner_id.name == partner.partner_purchase.name and record.move_id.currency_id.name == partner.currency_purchase.name:
                                 gif_pasa = True
                                 break
                             else:
@@ -417,97 +355,160 @@ class AccountMoveOrderLine(models.Model):
             if gif_pasa == False:
                 record.product_id = None
                 string = 'Este ' + user + ' no tiene precios asignados a este producto.'
-                raise UserError(_(string))
+                raise exceptions.UserError(_(string))
             else:
                 pass
 
 
     @api.onchange('product_uom_id')
     def onchange_product_id_changeprice(self):
+        '''
+            Aquí se asigna el precio unitario en base a la tabla que se tienen en los productos.
+        '''
         for record in self:
             if record.move_id.type_of_sale:
                 if record.product_id.partners_details:
                     for partner in record.product_id.partners_details:
-                        if record.move_id.partner_id.name in partner.partner.name:
+                        if record.move_id.partner_id.name in partner.partner.name and record.move_id.currency_id.name == partner.currency_sale.name:
                             record.price_unit = partner.partner_price
+                        # if record.move_id.gif_temp_account > 0:
+                        #     if partner.currency_sale:
+                        #         if partner.currency_sale.name == 'USD' and record.move_id.currency_id.name == 'MXN':
+                        #             if record.move_id.gif_temp_account != 1.0:
+                        #                 record.price_unit = record.price_unit * record.move_id.gif_temp_account
+                        #             else:
+                        #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                        #                 if divisa:
+                        #                     record.price_unit = record.price_unit * divisa.rate_ids[0].inverse_company_rate
+                        #         elif partner.currency_sale.name == 'MXN' and record.move_id.currency_id.name == 'USD':
+                        #             if record.move_id.gif_temp_account != 1.0:
+                        #                 record.price_unit = record.price_unit / record.move_id.gif_temp_account
+                        #             else:
+                        #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                        #                 if divisa:
+                        #                     record.price_unit = record.price_unit / divisa.rate_ids[0].inverse_company_rate
+                        #         else:
+                        #             record.price_unit = record.price_unit
+            
             elif record.move_id.type_of_purchase:
                 if record.product_id.partners_details_purchase:
                     for partner in record.product_id.partners_details_purchase:
-                        if record.move_id.partner_id.name in partner.partner_purchase.name:
+                        if record.move_id.partner_id.name in partner.partner_purchase.name and record.move_id.currency_id.name == partner.currency_purchase.name:
                             record.price_unit = partner.partner_price_purchase
-            if record.move_id.gif_temp_account > 0:
-                record.price_unit = record.price_unit / record.move_id.gif_temp_account
+                        # if record.move_id.gif_temp_account > 0:
+                        #     if partner.currency_purchase:
+                        #         if partner.currency_purchase.name == 'USD' and record.move_id.currency_id.name == 'MXN':
+                        #             if record.move_id.gif_temp_account != 1.0:
+                        #                 record.price_unit = record.price_unit * record.move_id.gif_temp_account
+                        #             else:
+                        #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                        #                 if divisa:
+                        #                     record.price_unit = record.price_unit * divisa.rate_ids[0].inverse_company_rate
+                        #         elif partner.currency_purchase.name == 'MXN' and record.move_id.currency_id.name == 'USD':
+                        #             if record.move_id.gif_temp_account != 1.0:
+                        #                 record.price_unit = record.price_unit / record.move_id.gif_temp_account
+                        #             else:
+                        #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                        #                 if divisa:
+                        #                     record.price_unit = record.price_unit / divisa.rate_ids[0].inverse_company_rate
+                        #         else:
+                        #             record.price_unit = record.price_unit
+            
 
     @api.onchange('name')
     def onchange_name_changeprice(self):
+        '''
+            Aquí se asigna el precio unitario en base a la tabla que se tienen en los productos.
+            También se calcula la unidad de medida.
+            ¿Por qué en dos funciones diferentes? No lo sé, Odoo de otra forma no lo cambiaba o lo hacia mal.
+        '''
         for record in self:
             if record.move_id.type_of_sale:
                 if record.product_id.partners_details:
                     for partner in record.product_id.partners_details:
-                        if record.move_id.partner_id.name in partner.partner.name:
+                        if record.move_id.partner_id.name in partner.partner.name and record.move_id.currency_id.name == partner.currency_sale.name:
                             record.price_unit = partner.partner_price
                             record.product_uom_id = partner.partner_uom
             elif record.move_id.type_of_purchase:
                 if record.product_id.partners_details_purchase:
                     for partner in record.product_id.partners_details_purchase:
-                        if record.move_id.partner_id.name in partner.partner_purchase.name:
+                        if record.move_id.partner_id.name in partner.partner_purchase.name and record.move_id.currency_id.name == partner.currency_purchase.name:
                             record.price_unit = partner.partner_price_purchase
                             record.product_uom_id = partner.partner_uom_purchase
-            if record.move_id.gif_temp_account > 0:
-                record.price_unit = record.price_unit / record.move_id.gif_temp_account
-
-    @api.onchange('product_id')
-    def onchange_quantity_changeprice(self):
-        for record in self:
-            if record.move_id.type_of_sale:
-                if record.product_id.partners_details:
-                    for partner in record.product_id.partners_details:
-                        if record.move_id.partner_id.name in partner.partner.name:
-                            record.price_unit = partner.partner_price
-            elif record.move_id.type_of_purchase:
-                if record.product_id.partners_details_purchase:
-                    for partner in record.product_id.partners_details_purchase:
-                        if record.move_id.partner_id.name in partner.partner_purchase.name:
-                            print('Se le asigna el precio de compra: ')
-                            record.price_unit = partner.partner_price_purchase
-                            print(record.price_unit)
-            if record.move_id.gif_temp_account > 0:
-                record.price_unit = record.price_unit / record.move_id.gif_temp_account
 
     @api.onchange('price_unit')
     def _is_different_account_sa(self):
+        '''
+            Esta es la función que dice si el precio varia con la cantidad que se encuentra en la tabla.
+        '''
         for record in self:
             record.gif_is_different_account = False
             record.gif_difference_account = 0.0
             if record.move_id.type_of_sale:
                 for partner in record.product_id.partners_details:
-                    if record.move_id.partner_id.name == partner.partner.name:
-                        if record.move_id.gif_temp_account == 0:
-                            pp_difference = 1
-                        elif record.move_id.gif_temp_account != 0:
-                            pp_difference = record.move_id.gif_temp_account
-                        if record.price_unit != (partner.partner_price/pp_difference):
-                            record.gif_difference_account = record.price_unit - (partner.partner_price / pp_difference)
+                    if record.move_id.partner_id.name == partner.partner.name and record.move_id.currency_id.name == partner.currency_sale.name:
+                        if record.price_unit != (partner.partner_price):
+                            # if record.move_id.gif_temp_account != 0:
+                            #     if partner.currency_sale:
+                            #         if record.move_id.currency_id.name == 'MXN' and partner.currency_sale.name == 'USD':
+                            #             if record.move_id.gif_temp_account != 1.0:
+                            #                 record.gif_difference_account = record.price_unit - (partner.partner_price * record.move_id.gif_temp_account)
+                            #             else:
+                            #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                            #                 if divisa:
+                            #                     record.gif_difference_account = record.price_unit - (partner.partner_price * divisa.rate_ids[0].inverse_company_rate)
+                            #         elif record.move_id.currency_id.name == 'USD' and partner.currency_sale.name == 'MXN':
+                            #             if record.move_id.gif_temp_account != 1.0:
+                            #                 record.gif_difference_account = record.price_unit - (partner.partner_price / record.move_id.gif_temp_account)
+                            #             else:
+                            #                 divisa = divisa = self.env['res.currency'].search([('name','=','USD')])
+                            #                 if divisa:
+                            #                     record.gif_difference_account = record.price_unit - (partner.partner_price / divisa.rate_ids[0].inverse_company_rate)
+                            #         else:
+                            record.gif_difference_account = record.price_unit - partner.partner_price
+                            #     else:
+                            #         record.gif_difference_account = record.price_unit - (partner.partner_price / record.move_id.gif_temp_account)
+                            # else:
+                            #     record.gif_difference_account = record.price_unit - partner.partner_price
                         else:
                             record.gif_difference_account = 0.0
-                        if record.gif_difference_account == 0:
-                            record.gif_is_different_account = False
-                        elif round(record.gif_difference_account,2) != 0:
-                            record.gif_is_different_account = True
+                if record.gif_difference_account == 0:
+                    record.gif_is_different_account = False
+                elif round(record.gif_difference_account,2) != 0:
+                    record.gif_is_different_account = True
             elif record.move_id.type_of_purchase:
                 for partner_p in record.product_id.partners_details_purchase:
-                    if record.move_id.partner_id.name == partner_p.partner_purchase.name:
-                        if record.move_id.gif_temp_account == 0:
-                            pp_difference = 1
-                        elif record.move_id.gif_temp_account != 0:
-                            pp_difference = record.move_id.gif_temp_account
-                        if record.price_unit != (partner_p.partner_price_purchase/pp_difference):
-                            record.gif_difference_account = record.price_unit -(partner_p.partner_price_purchase / pp_difference) 
-                        else:
-                            record.gif_difference_account = 0.0
-                        if record.gif_difference_account == 0:
-                            record.gif_is_different_account = False
-                        elif round(record.gif_difference_account,2) != 0:
-                            record.gif_is_different_account = True
+                    if record.move_id.partner_id.name == partner_p.partner_purchase.name and record.move_id.currency_id.name == partner_p.currency_purchase.name:
+                        if record.price_unit != (partner_p.partner_price_purchase):
+                            # if record.move_id.gif_temp_account != 0:
+                            #     if partner_p.currency_purchase:
+                            #         if record.move_id.currency_id.name == 'MXN' and partner_p.currency_purchase.name == 'USD':
+                            #             if record.move_id.gif_temp_account != 1.0:
+                            #                 record.gif_difference_account = record.price_unit - (partner_p.partner_price_purchase * record.move_id.gif_temp_account)
+                            #             else:
+                            #                 divisa = self.env['res.currency'].search([('name','=','USD')])
+                            #                 if divisa:
+                            #                     record.gif_difference_account = record.price_unit - (partner_p.partner_price_purchase * divisa.rate_ids[0].inverse_company_rate)
+                            #         elif record.move_id.currency_id.name == 'USD' and partner_p.currency_purchase.name == 'MXN':
+                            #             if record.move_id.gif_temp_account != 1.0:
+                            #                 record.gif_difference_account = record.price_unit - (partner_p.partner_price_purchase / record.move_id.gif_temp_account)
+                            #             else:
+                            #                 divisa = divisa = self.env['res.currency'].search([('name','=','USD')])
+                            #                 if divisa:
+                            #                     record.gif_difference_account = record.price_unit - (partner_p.partner_price_purchase / divisa.rate_ids[0].inverse_company_rate)
+                            #         else:
+                            record.gif_difference_account = record.price_unit - partner_p.partner_price_purchase
+                            break
+                        #             break
+                        #         else:
+                        #             record.gif_difference_account = record.price_unit - (partner_p.partner_price_purchase / record.move_id.gif_temp_account)
+                        #     else:
+                        #         record.gif_difference_account = record.price_unit - partner_p.partner_price_purchase 
+                        # else:
+                        #     record.gif_difference_account = 0.0
+                if record.gif_difference_account == 0:
+                    record.gif_is_different_account = False
+                elif round(record.gif_difference_account,2) != 0:
+                    record.gif_is_different_account = True
 
 

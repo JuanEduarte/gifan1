@@ -4,12 +4,12 @@
     <record id="product_template_inherit_view_id_purchase_segregation" model="ir.ui.view">
         <field name="name">product.template.inherit.view.form</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <!-- Add your xpath here -->
-            <xpath expr="//group[2]" position="after">
+            <xpath expr="//field[@name='seller_ids']" position="after">
                 <!-- Add your fields here -->
-                <group name="gif_type_product_seg_pur" string=" ">
+                <group name="gif_type_product_seg_pur">
                     <field name="product_type_purchase"/>
                 </group>
             </xpath>

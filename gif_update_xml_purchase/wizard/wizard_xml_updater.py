@@ -1,5 +1,6 @@
 import base64
 from ensurepip import version
+from shutil import move
 import requests
 from pprint import pprint
 from io import BytesIO
@@ -141,30 +142,28 @@ class WizardXmlUpdater(models.TransientModel):
 
                     values[name] = invoice_data
                     
-                    # Asociacion de XML a factura
-                    move_id = self.env['account.move'].search([('gif_invoice_uuid','=',uuid)])
-                    if move_id:
-                        try:
-                            ids = move_id.attachment_ids.ids
-                            attached.res_model = 'account.move'
-                            attached.res_name = move_id.name
-                            xml_model.gif_account_move = move_id.id
-                            attached.res_id = move_id.id
-
-                            ids.append(attached.id)
-                            attached = [(6, 0, ids)]
-                            move_id.update({'attachment_ids': attached})
-                            # print("Se adjuntó correctamente")
-                        except:
-                            # pass
-                            print("Algo malo paso")
-                            self.env['gif.purchase.xml.updater'].search([('id','=',xml_model.id)]).unlink()
-                            self.env['ir.attachment'].search([('id','=',attached.id)]).unlink()
+                    # Asociacion de XML a factura o al pago
+                    try:
+                        move_id = self.env['account.move'].search([('gif_invoice_uuid','=',uuid),('move_type','=','in_invoice')])
+                        if move_id:
+                            move_id.attachment_updater(xml_model)
+                        else:
+                            payment_id = self.env['account.payment'].search([('gif_payment_uuid','=',uuid),('payment_type','=','outbound')])
+                            if payment_id:
+                                payment_id.attachment_updater(xml_model)
+                    except:
+                        pass
             
             for file in zipfile.namelist():
                 if '.pdf' in file:
                     _file = zipfile.open(file).read()
-                    fname = file.replace('.pdf','')
+                    
+                    if '/' in file:
+                        fname = file.split('/')[1]
+                    else:
+                        fname = file
+
+                    fname = fname.replace('.pdf','')
                     
                     # Duplicidad
                     pdf_files = self.env['ir.attachment'].search([('name','=',fname)])
@@ -172,7 +171,7 @@ class WizardXmlUpdater(models.TransientModel):
                         # Ya existe
                         record.num_files_duplicated += 1
                         continue
-
+                    
                     xml_model = self.env['gif.purchase.xml.updater'].search([('gif_uuid','like',fname)])
 
                     attached = self.env['ir.attachment'].create({
@@ -190,7 +189,22 @@ class WizardXmlUpdater(models.TransientModel):
                     xml_model.update({'gif_attachment_pdf':_file,
                                         'gif_pdf':True})
 
+                    # Asociacion de XML a factura o al pago
+                    
+                    try:
+                        move_id = self.env['account.move'].search([('gif_invoice_uuid','=',uuid),('move_type','=','in_invoice')])
+                        if len(move_id) == 1:
+                            move_id.attachment_updater(xml_model)
+                        else:
+                            payment_id = self.env['account.payment'].search([('gif_payment_uuid','=',uuid),('payment_type','=','outbound')])
+                            if len(payment_id) == 1:
+                                payment_id.attachment_updater(xml_model)
+                    except:
+                        pass
+
             return values
+
+
 
     def validate_xml_sat(self, supplier_rfc, customer_rfc, total, uuid):
         url = 'https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?wsdl'

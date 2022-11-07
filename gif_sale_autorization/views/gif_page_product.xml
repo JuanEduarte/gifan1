@@ -20,7 +20,6 @@
                         <field name="gif_depth" style=' max-width: 200px;width: 200px;'/>
                         <field name="gif_weight" style=' max-width: 200px;width: 200px;'/>
                         <field name="use_expiration_date"/>
-                        <field name="gif_active"/>
                     </group>
                     <group name="group_name" string=" ">
 
@@ -52,7 +51,6 @@
                         <field name="gif_category" style=' max-width: 300px;width: 300px;'/>
                         <field name="gif_subCategory" style=' max-width: 300px;width: 300px;'/>
                         <field name="gif_freecamp"/>
-                        <field name="gif_brand_ids" style=' max-width: 300px;width: 300px;'/>
                     </group>
                 </page>
                 <page string="Info. Empaque Paletizado" name="Packet">

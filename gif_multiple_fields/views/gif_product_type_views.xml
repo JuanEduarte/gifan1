@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.product.type tree view -->
+    <record id="gif_product_type_view_tree" model="ir.ui.view">
+        <field name="name">gif.product.type.view.tree</field>
+        <field name="model">gif.product.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="gif_type_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif.product.type form view -->
+    <record id="gif_product_type_view_form" model="ir.ui.view">
+        <field name="name">gif.product.type.view.form</field>
+        <field name="model">gif.product.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="gif_type_active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.product.type action window -->
+    <record id="gif_product_type_action" model="ir.actions.act_window">
+        <field name="name">gif.product.type.action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.product.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Aún no hay tipos de producto.
+            </p><p>
+                Por favor cree tipos de producto.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="gif_product_type_menu_act" name="Tipos de Producto" parent="stock.menu_stock_general_settings" action="gif_product_type_action" sequence="240"/>
+</odoo>

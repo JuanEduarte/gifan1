@@ -15,6 +15,7 @@
                 <field name="is_admin_ben_dis_purchase" invisible="1"/>
                 <field name="is_admin_insume_purchase" invisible="1"/>
                 <field name="is_admin_associated_purchase" invisible="1"/>
+                <!-- <field name="gif_should_block" invisible='1'/> -->
             </xpath>
             <xpath expr="//header" position="inside">
                 <button name="authorize_purchase_office" class="btn-primary" type="object" string="Autorizar" attrs="{'invisible': ['|',('state','!=','to_approve'),('is_admin_office_purchase','=',False)]}"/>
@@ -35,6 +36,7 @@
                 <!-- attrs="{'invisible': [('state','!=','to_approve')]}" -->
                 <field name="gif_is_different_purchase" optional="hide" readonly="1"/>
                 <field name="gif_difference_purchase" optional="hide" readonly="1"/>
+                <!-- <field name="gif_block" invisible="1"/> -->
             </xpath>
         </field>
     </record>

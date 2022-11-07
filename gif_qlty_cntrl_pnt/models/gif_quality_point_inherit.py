@@ -25,9 +25,6 @@ class GifQualityPoint(models.Model):
                 point_products |= point_product_from_categories
 
             if point.gif_product_brand:
-                print('Ids: ',point.gif_product_brand.ids)
-                print('Name: ',products.name)
-                print('Brand id: ',products.gif_brand_ids.id)
                 point_product_from_brands = self.env['product.product'].search(([('gif_brand_ids','in',point.gif_product_brand.ids),('id', 'in', products.ids)]))
                 point_products |= point_product_from_brands 
 

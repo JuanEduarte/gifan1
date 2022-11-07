@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models, exceptions,_
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -21,55 +21,54 @@ class PurchaseOrder(models.Model):
     is_ben_dis_purchaseform = fields.Boolean(compute='_purchaseform_calculate')
     is_discount_purchaseform = fields.Boolean(compute='_purchaseform_calculate')
 
-    gif_purchase_currency = fields.Float(default=0.0, string="Tasa Técnica",compute="_calculate_currency_purchase_sa",store=True)
+    gif_purchase_currency = fields.Float(default=0.0, string="Tasa Técnica")
     gif_purchase_inverse_currency = fields.Float(default=0.0, string="MXN por Unidad",compute="_calculate_currency_purchase_sa",store=True)
 
     gif_real_validator = fields.Float(default=0.0,compute="_gif_calculate_real_validator_ev")
     gif_temp_validator = fields.Float(default=0.0,compute="_onchange_currency_id_purchase_sa",string="Tasa de cambio")
+
+    # gif_should_block = fields.Boolean(default=False)
+    
     
 
     @api.onchange('currency_id')
     def _onchange_currency_id_purchase_sa(self):
+        '''
+            En está función se asigna el valor del tipo de moneda con el que va a trabajar, se hizo así porque
+            hay un desarrollo que es poner la tasa manual (gif_chance_currency).
+        '''
         for record in self:
-            try:
-                if record.gif_own_currency_check_purchase == True:
-                    record.gif_temp_validator = record.gif_own_inverse_currency_purchase
-                else:
-                    record.gif_temp_validator = record.currency_id.inverse_rate
-            except:
-                record.gif_temp_validator = record.currency_id.inverse_rate
+            record.gif_temp_validator = record.currency_id.inverse_rate
     
 
-    @api.depends('gif_purchase_currency','gif_purchase_inverse_currency')
+    @api.depends('gif_purchase_inverse_currency')
     def _calculate_currency_purchase_sa(self):
+        '''
+            Realmente este campo no se ocupa, pero no lo podemos eliminar porque está en la vista.
+            Y si lo eliminamos de la vista tendriamos que desinstalar el desarrollo y a este altura eso
+            ya no se puede.
+        '''
         for record in self:
-            try: 
-                if record.gif_own_currency_check_purchase ==True:
-                    record.gif_purchase_inverse_currency = record.gif_own_inverse_currency_purchase
-                elif record.currency_id.inverse_rate != 0:
-                    record.gif_purchase_currency = record.currency_id.rate
-                    record.gif_purchase_inverse_currency = record.currency_id.inverse_rate
-                else:
-                    record.gif_purchase_currency = 1
-                    record.gif_purchase_inverse_currency = 1
-            except:
-                if record.currency_id.inverse_rate != 0:
-                    record.gif_purchase_currency = record.currency_id.rate
-                    record.gif_purchase_inverse_currency = record.currency_id.inverse_rate
-                else:
-                    record.gif_purchase_currency = 1
-                    record.gif_purchase_inverse_currency = 1
+            if record.currency_id.inverse_rate != 0:
+                record.gif_purchase_inverse_currency = record.currency_id.inverse_rate
+            else:
+                record.gif_purchase_inverse_currency = 1
     
     def _gif_calculate_real_validator_ev(self):
+        '''
+            Realmente este campo no se ocupa, pero no lo podemos eliminar porque está en la vista.
+            Y si lo eliminamos de la vista tendriamos que desinstalar el desarrollo y a este altura eso
+            ya no se puede.
+        '''
         if self.gif_purchase_inverse_currency != 0:
             self.gif_real_validator = self.gif_purchase_inverse_currency
         else:
             self.gif_real_validator = 1
     
-    
-
-    # @api.onchange('tipificacion_compra')
     def _purchaseform_calculate(self):
+        '''
+            Se computa que tipo de compra es
+        '''
         for record in self:
             record.is_discount_purchaseform = False
             if record.tipificacion_compra.id == 1:
@@ -79,7 +78,6 @@ class PurchaseOrder(models.Model):
                 record.is_insume_purchaseform = False
                 record.is_associated_purchaseform = False
             elif record.tipificacion_compra.id == 2:
-                print('Es de tipo insumo')
                 record.is_primary_purchaseform = False
                 record.is_office_purchaseform = False
                 record.is_ben_dis_purchaseform = False
@@ -111,6 +109,9 @@ class PurchaseOrder(models.Model):
                 record.is_associated_purchaseform = False
 
     def _is_approve_purchase(self):
+        '''
+            Funcion que comprueba si el usuario es administrador para ese tipo de compra
+        '''
         for record in self:
             user_group = []
             add_user = self.env.uid
@@ -231,7 +232,7 @@ class PurchaseOrder(models.Model):
                             else:
                                 go_to_approve = True
                         else:
-                            raise UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
+                            raise exceptions.UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
                     else:
                         pass
                 elif line.product_template_id.descount_selector == "2":
@@ -252,14 +253,12 @@ class PurchaseOrder(models.Model):
                             else:
                                 go_to_approve = True
                         else:
-                            raise UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
+                            raise exceptions.UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
                     else:
                         pass
             if go_to_approve == True:
-                print('Se va approve')
                 record.state = 'to_approve'
             else:
-                print('Pasa')
                 res = super(PurchaseOrder, self).button_approve()
                 return res
 
@@ -298,6 +297,18 @@ class PurchaseOrder(models.Model):
                         if record.partner_id.name ==  p.partner_purchase.name:
                             line.product_uom = p.partner_uom_purchase
 
+    # @api.onchange('partner_id')
+    # def _onchange_partner_id_gsa(self):
+    #     for record in self:
+    #         if record.partner_id.id != False:
+    #             if record.partner_id.gif_listprice == True:
+    #                 record.gif_should_block = True
+    #             else:
+    #                 record.gif_should_block = False
+    #         else:
+    #             record.gif_should_block = False
+    
+
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
@@ -308,40 +319,90 @@ class PurchaseOrderLine(models.Model):
     gif_difference_purchase = fields.Float(string="Cantidad",default=0.0 ,compute='_is_difference_purchase_sa')
     gif_is_different_purchase = fields.Boolean(string="Varia",default=False,compute='_is_difference_purchase_sa')
 
-    @api.constrains('product_uom','product_template_id')
-    def _check_uom_and_product_gif(self):
-        has_to_pass = False
-        uom_pass = False
-        for record in self:
-            if record.product_template_id.partners_details_purchase:
-                for p in record.product_template_id.partners_details_purchase:
-                    if record.order_id.partner_id.name in p.partner_purchase.name:
-                        has_to_pass = True
-                    else:
-                        has_to_pass = False
-                    if record.product_uom == p.partner_uom_purchase:
-                        uom_pass = True
-                        break
-                    else:
-                        uom_pass = False
-            else:
-                raise ValidationError(_('Este producto no tiene proveedores asignados.'))
+    gif_block = fields.Boolean(compute='_gif_set_block')
 
-        if has_to_pass == False:
-            raise ValidationError(_('Este producto no tiene proveedores asignados.'))
-        if uom_pass == False:
-            raise ValidationError(_('La unidad de medida de la orden no coincide con la unidad de medida del producto.'))
+    def _gif_set_block(self):
+        for record in self:
+            try:
+                if self.order_line.gif_should_block == True:
+                    record.gif_block = True
+                else:
+                    record.gif_block = False
+            except:
+                record.gif_block = False
+    
+
+    @api.constrains('product_template_id')
+    @api.onchange('product_template_id')
+    def _check_uom_and_product_gif(self):
+        try:
+            has_to_pass = False
+            uom_pass = False
+            for record in self:
+                # record.gif_should_block = False
+                if record.product_template_id.detailed_type != 'product':
+                    uom_pass = True
+                    has_to_pass = True
+                else:
+                    if record.product_template_id != False:
+                        if record.product_template_id.partners_details_purchase:
+                            for p in record.product_template_id.partners_details_purchase:
+                                if record.order_id.partner_id.name in p.partner_purchase.name and record.order_id.currency_id.name == p.currency_purchase.name:
+                                    has_to_pass = True
+                                    if record.product_uom == False or record.product_uom == p.partner_uom_purchase:
+                                        uom_pass = True
+                                        break
+                                    else:
+                                        uom_pass = False
+                                else:
+                                    has_to_pass = False
+                    else:
+                        uom_pass = True
+                        has_to_pass = True
+        except Exception as e:
+            print('Error 2: ',e)
+
+    @api.onchange('price_unit')
+    def _onchange_price_unit_gsa(self):
+        price_block = False
+        try:
+            for record in self:
+                # record.gif_should_block = False
+                if record.product_template_id.detailed_type != 'product':
+                    price_block = False
+                else:
+                    if record.price_unit != False:
+                        if record.product_template_id.partners_details_purchase:
+                            for p in record.product_template_id.partners_details_purchase:
+                                if record.order_id.partner_id.name in p.partner_purchase.name and record.order_id.currency_id.name == p.currency_purchase.name and record.price_unit != p.partner_price_purchase:
+                                    price_block = True
+                                    break
+                                else:
+                                    price_block = False
+                        # else:
+                            # record.gif_should_block = True
+                            # raise exceptions.ValidationError(_('Este producto no tiene proveedores asignados.'))
+                    else:
+                        price_block = False
+            if price_block == True:
+                raise exceptions.ValidationError('No puedes modificar el precio de este producto')
+        except Exception as e:
+            if price_block == True:
+                raise ValidationError('No puedes modificar el precio de este producto')
+
+    
     
     @api.onchange('product_template_id')
     def _onchange_product_template_id_reset_order_line_sa(self):
         for record in self:
-            if record.product_template_id.name == False or record.product_template_id.detailed_type == 'product':
+            # record.gif_should_block = False
+            if record.product_template_id.name == False or record.product_template_id.detailed_type != 'product':
                 gif_pasa = True
                 pass
             else:
                 if record.product_template_id.partners_details_purchase:
                     for p in record.product_template_id.partners_details_purchase:
-                        if record.order_id.partner_id.name == p.partner_purchase.name:
+                        if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name == p.partner_purchase.name) and record.order_id.currency_id.name == p.currency_purchase.name:
                             gif_pasa = True
                             break
                         else:
@@ -350,7 +411,6 @@ class PurchaseOrderLine(models.Model):
                     gif_pasa = False
             if gif_pasa == False:
                 record.product_template_id = None
-                raise UserError(_('Este Proveedor no tiene precios asignados a este producto.'))
             else:
                 pass
     
@@ -359,16 +419,15 @@ class PurchaseOrderLine(models.Model):
     def _compute_pp_purchases(self):
         for record in self:
             if record.product_template_id.d_p < 0 or record.product_template_id.standard_price < 0:
-                raise UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
+                raise exceptions.UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
             else:
                 if record.product_template_id.d_p > 100:
-                    raise UserError(_('El descuento porcentual no puede ser mayor a 100.'))
+                    raise exceptions.UserError(_('El descuento porcentual no puede ser mayor a 100.'))
                 else:
                     if record.product_template_id.partners_details_purchase:
                         for p in record.product_template_id.partners_details_purchase:
-                            if record.order_id.partner_id.name == p.partner_purchase.name:
+                            if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name in p.partner_purchase.name) and  record.order_id.currency_id.name == p.currency_purchase.name:
                                 if record.order_id.gif_temp_validator:
-                                    print('Temp validator en el costo: ',record.order_id.gif_temp_validator)
                                     cost = p.partner_price_purchase/record.order_id.gif_temp_validator
                                     currency_discount = record.product_template_id.d_p/record.order_id.gif_temp_validator
                                 else:
@@ -376,8 +435,6 @@ class PurchaseOrderLine(models.Model):
                                     currency_discount = record.product_template_id.d_p
                                 record.d_p_id_purchases = ((currency_discount/100) * cost) + cost
                                 break
-                            # else:
-                            #     raise UserError(_('Este Proveedor no tiene precios asignados a este producto.'))
                         
 
 
@@ -386,11 +443,11 @@ class PurchaseOrderLine(models.Model):
     def _compute_pf_purchases(self):
         for record in self:
             if record.product_template_id.d_f < 0 or record.product_template_id.standard_price < 0:
-                raise UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
+                raise exceptions.UserError(_('No se puede tener precios negativos. Por favor revisa tu producto'))
             else:
                 if record.product_template_id.partners_details_purchase:
                     for p in record.product_template_id.partners_details_purchase:
-                        if record.order_id.partner_id.name == p.partner_purchase.name:
+                        if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name in p.partner_purchase.name) and  record.order_id.currency_id.name == p.currency_purchase.name:
                             if record.order_id.gif_temp_validator:
                                 cost = p.partner_price_purchase/record.order_id.gif_temp_validator
                                 record.d_f_id_purchases = cost + ((record.product_template_id.d_f)/record.order_id.gif_temp_validator)
@@ -415,152 +472,64 @@ class PurchaseOrderLine(models.Model):
             else:
                 coin_name = False
                 for partner_purchase in record.product_template_id.partners_details_purchase:
-                    if  record.order_id.partner_id.name == partner_purchase.partner_purchase.name:
+                    if  (record.order_id.partner_id.name == partner_purchase.partner_purchase.name or record.order_id.partner_id.name in partner_purchase.partner_purchase.name) and record.order_id.currency_id.name == partner_purchase.currency_purchase.name:
                         record.product_uom = partner_purchase.partner_uom_purchase
                         record.price_unit = partner_purchase.partner_price_purchase
-                        print('1')
                         if record.product_uom == partner_purchase.partner_uom_purchase:
                             record.product_uom = None
                             record.product_uom = partner_purchase.partner_uom_purchase
                             record.price_unit = partner_purchase.partner_price_purchase
                             coin_name = partner_purchase.currency_purchase.name
                             break
-                            print('2')
-                if record.order_id.currency_id and record.order_id.gif_temp_validator != 0:
-                    # try:
-                        #print('try')
-                    if coin_name != False:
-                        print('Coin name: ',coin_name)
-                        if coin_name == 'MXN' and record.order_id.currency_id.name == 'USD':
-                            if record.order_id.gif_temp_validator != 1.0:
-                                record.price_unit = record.price_unit / record.order_id.gif_temp_validator
-                            else:
-                                divisa = self.env['res.currency'].search([('name','=','USD')])
-                                if divisa:
-                                    record.price_unit = record.price_unit / divisa.rate_ids[0].inverse_company_rate
-                        elif coin_name == 'USD' and record.order_id.currency_id.name == 'MXN':
-                            print(record.order_id.gif_temp_validator)
-                            if record.order_id.gif_temp_validator != 1.0:
-                                record.price_unit = record.price_unit * record.order_id.gif_temp_validator 
-                            else:
-                                divisa = self.env['res.currency'].search([('name','=','USD')])
-                                if divisa:
-                                    record.price_unit = record.price_unit * divisa.rate_ids[0].inverse_company_rate
-                    else:
-                        record.price_unit = record.price_unit / record.order_id.gif_temp_validator
-                    # except:
-                    #     print('except')
-                    #     record.price_unit = record.price_unit / record.order_id.gif_temp_validator
-                    print('3')
-                    
-    @api.onchange('name')
-    def _onchange_name_sale_autorization_purchase(self):
-        for record in self:
-            if record.order_id.requisition_id:
+
+    @api.onchange('product_qty')
+    def _onchange_quantity_purchase_sale_autorization(self):
+        try:
+            if self.order_id.requisition_id:
                 pass
             else:
-                for partner_purchase in record.product_template_id.partners_details_purchase:
-                    if  record.order_id.partner_id.name == partner_purchase.partner_purchase.name:
-                        record.product_uom = partner_purchase.partner_uom_purchase
-                        record.price_unit = partner_purchase.partner_price_purchase
-                        print('4')
-                if record.order_id.currency_id and record.order_id.gif_temp_validator != 0:
-                    record.price_unit = record.price_unit / record.order_id.gif_temp_validator
-                    print('5')
-    
-    @api.depends('product_qty')
-    def _compute_amount_sale_autorization(self):
-        if self.order_id.requisition_id:
+                for line in self:
+                    for partner_purchase in line.product_template_id.partners_details_purchase:
+                        if  line.order_id.partner_id.name == partner_purchase.partner_purchase.name and line.order_id.currency_id.name == partner_purchase.currency_purchase.name:
+                                line.product_uom = partner_purchase.partner_uom_purchase
+                                line.price_unit = partner_purchase.partner_price_purchase
+                                break
+                    # if line.order_id.currency_id and line.order_id.gif_temp_validator != 0 and line.order_id.currency_id.name != partner_purchase.currency_purchase.name:
+                    #     if line.order_id.currency_id.name != 'MXN' and partner_purchase.currency_purchase.name == 'MXN':
+                    #         line.price_unit = line.price_unit / line.order_id.gif_temp_validator
+                    #     else:
+                    #         line.price_unit = line.price_unit * line.order_id.gif_temp_validator
+        except:
             pass
-        else:
-            for line in self:
-                for partner_purchase in line.product_template_id.partners_details_purchase:
-                    if  line.order_id.partner_id.name == partner_purchase.partner_purchase.name:
-                            line.product_uom = partner_purchase.partner_uom_purchase
-                            line.price_unit = partner_purchase.partner_price_purchase
-                            print('6')
-                if line.order_id.currency_id and line.order_id.gif_temp_validator != 0:
-                    line.price_unit = line.price_unit / line.order_id.gif_temp_validator
-                    print('7')
-
-    @api.onchange('product_qty', 'product_uom')
-    def _onchange_quantity_purchase_sale_autorization(self):
-        if self.order_id.requisition_id:
-            pass
-        else:
-            for line in self:
-                for partner_purchase in line.product_template_id.partners_details_purchase:
-                    if  line.order_id.partner_id.name == partner_purchase.partner_purchase.name:
-                            line.product_uom = partner_purchase.partner_uom_purchase
-                            line.price_unit = partner_purchase.partner_price_purchase
-                            print('8')
-                if line.order_id.currency_id and line.order_id.gif_temp_validator != 0:
-                    line.price_unit = line.price_unit / line.order_id.gif_temp_validator
-                    print('9')
   
     @api.onchange('price_unit')
     def _is_difference_purchase_sa(self):
         for record in self:
-            if record.product_template_id.partners_details_purchase:
-                for p in record.product_template_id.partners_details_purchase:
-                    if record.order_id.partner_id.name == p.partner_purchase.name:
-                        if record.product_template_id.descount_selector == "2" or record.product_template_id.descount_selector == "1":
-                                if record.price_unit > record.d_p_id_purchases or record.price_unit < record.d_p_id_purchases:
-                                    if record.order_id.gif_temp_validator != 0:
-                                        record.gif_is_different_purchase = True
-                                        if p.currency_purchase.name == 'MXN' and record.order_id.currency_id.name == 'USD':
-                                            print('Producto en pesos orden en USD')
-                                            if record.order_id.gif_temp_validator != 1.0:
-                                                print('Diferente a 1')
-                                                print(record.order_id.gif_temp_validator)
-                                                record.gif_difference_purchase = record.price_unit - (p.partner_price_purchase / record.order_id.gif_temp_validator)
-                                                print('Difference: ',record.gif_difference_purchase)
-                                                break
-                                            else:
-                                                print('Aqui busca divisa')
-                                                divisa = self.env['res.currency'].search([('name','=','USD')])
-                                                if divisa:
-                                                    print('Deberia de ser esto')
-                                                    record.gif_difference = record.price_unit - (p.partner_price_purchase / divisa.rate_ids[0].inverse_company_rate)
-                                                    print('Difference: ',record.gif_difference)
-                                                    break
-                                        elif p.currency_purchase.name == 'USD' and record.order_id.currency_id.name == 'MXN':
-                                            if record.order_id.gif_temp_validator != 1.0:
-                                                record.gif_difference_purchase = record.price_unit - (p.partner_price_purchase * record.order_id.gif_temp_validator)
-                                            else:
-                                                divisa = self.env['res.currency'].search([('name','=','USD')])
-                                                if divisa:
-                                                    record.gif_difference_purchase = record.price_unit - (p.partner_price_purchase * divisa.rate_ids[0].inverse_company_rate)
-                                        else:
-                                            record.gif_is_different_purchase = True
-                                            record.gif_difference_purchase = record.price_unit - p.partner_price_purchase
-                                            break
+            try:
+                if record.product_template_id.partners_details_purchase:
+                    for p in record.product_template_id.partners_details_purchase:
+                        if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name in p.partner_purchase.name) and record.order_id.currency_id.name == p.currency_purchase.name:
+                            if record.product_template_id.descount_selector == "2" or record.product_template_id.descount_selector == "1":
+                                if record.price_unit != p.partner_price_purchase:
+                                    record.gif_is_different_purchase = True
+                                    record.gif_difference_purchase = record.price_unit - p.partner_price_purchase
+                                    break
                                 else:
-                                    print('Luego llega aquí')
                                     record.gif_is_different_purchase = False
                                     record.gif_difference_purchase = 0
-                        # elif record.product_template_id.descount_selector == "1":
-                        #     if  record.price_unit > record.d_f_id_purchases or record.price_unit < record.d_p_id_purchases:
-                        #         if record.order_id.gif_temp_validator != 0:
-                        #             record.gif_is_different_purchase = True
-                        #             ##############33
-                        #             record.gif_difference_purchase = record.price_unit - (p.partner_price_purchase/record.order_id.gif_temp_validator)
-                        #             break
-                        #         else:
-                        #             record.gif_is_different_purchase = True
-                        #             record.gif_difference_purchase = record.price_unit - p.partner_price_purchase
-                        #             break
-                        #     else:
-                        #         record.gif_difference_purchase = 0
-                        #         record.gif_is_different_purchase = False
-                        
+                            else:
+                                record.gif_difference_purchase = 0
+                            break
                         else:
-                            print('2 d')
                             record.gif_difference_purchase = 0
+                            record.gif_is_different_purchase = False
+                    if record.gif_difference_purchase != 0:
+                        record.gif_is_different_purchase = True
                     else:
-                        print('3 d')
-                        record.gif_difference_purchase = 0
                         record.gif_is_different_purchase = False
-            else:
+                else:
+                    record.gif_difference_purchase = 0
+                    record.gif_is_different_purchase = False
+            except:
                 record.gif_difference_purchase = 0
                 record.gif_is_different_purchase = False

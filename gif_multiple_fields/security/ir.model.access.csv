@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_multiple_fields.access_gif_business_line,access_gif_business_line,gif_multiple_fields.model_gif_business_line,,1,1,1,1
+gif_multiple_fields.access_gif_product_category,access_gif_product_category,gif_multiple_fields.model_gif_product_category,,1,1,1,1
+gif_multiple_fields.access_gif_product_type,access_gif_product_type,gif_multiple_fields.model_gif_product_type,,1,1,1,1
+gif_multiple_fields.access_gif_product_subcategory,access_gif_product_subcategory,gif_multiple_fields.model_gif_product_subcategory,,1,1,1,1
+gif_multiple_fields.access_gif_product_subtype,access_gif_product_subtype,gif_multiple_fields.model_gif_product_subtype,,1,1,1,1
+

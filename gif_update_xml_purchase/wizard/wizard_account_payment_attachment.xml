@@ -8,7 +8,7 @@
             <form string="Adjuntar archivos XML de facturas de compra">
                 <sheet>
                     <div class="text-muted">
-                        Adjuntar un XML a factura
+                        Adjuntar un XML a pago
                     </div>
                     <group>
                         <field name="gif_attached_xml" widget="selection"/>
@@ -26,7 +26,7 @@
     </record>
     <!-- wizard.payment.attachment.xml action window -->
     <record id="wizard_xml_attach_payment_action" model="ir.actions.act_window">
-        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="name">Adjuntar archivo XML a Pagos</field>
         <field name="res_model">wizard.payment.attachment.xml</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
@@ -40,7 +40,7 @@
             <form string="Adjuntar archivos XML de facturas de compra">
                 <sheet>
                     <div class="text-muted">
-                        Adjuntar un XML a factura de compra
+                        Remover un XML de pago
                     </div>
                     <group>
                         <field name="payment_id" readonly="1"/>
@@ -58,7 +58,7 @@
     </record>
     <!-- wizard.payment.unattachment.xml action window -->
     <record id="wizard_xml_unattach_payment_action" model="ir.actions.act_window">
-        <field name="name">Adjuntar archivo con Facturas en XML</field>
+        <field name="name">Remover archivo XML de Pagos</field>
         <field name="res_model">wizard.payment.unattachment.xml</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

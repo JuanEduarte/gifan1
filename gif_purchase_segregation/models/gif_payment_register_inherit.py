@@ -1,4 +1,4 @@
-from odoo import models,api,fields
+from odoo import models,api,fields, _
 
 
 class AccountPaymentRegisterPS(models.TransientModel):
@@ -10,20 +10,19 @@ class AccountPaymentRegisterPS(models.TransientModel):
     @api.onchange('journal_id')
     def _onchange_journal_id_ps_purchase(self):
         for record in self:
-            invoice_purchase = self.env['account.move'].search([('name','=',record.communication)])
-            if invoice_purchase.type_of_purchase:
+            if record.line_ids.move_id.type_of_purchase.id != False:
                 record.gif_is_purchase = True
-                if invoice_purchase.type_of_purchase.id == 1:
+                if record.line_ids.move_id.type_of_purchase.id == 1:
                     record.type_of_purchase = 1
-                elif invoice_purchase.type_of_purchase.id == 2:
+                elif record.line_ids.move_id.type_of_purchase.id == 2:
                     record.type_of_purchase = 2
-                elif invoice_purchase.type_of_purchase.id == 3:
+                elif record.line_ids.move_id.type_of_purchase.id == 3:
                     record.type_of_purchase = 3
-                elif invoice_purchase.type_of_purchase.id == 4:
+                elif record.line_ids.move_id.type_of_purchase.id == 4:
                     record.type_of_purchase = 4
-                elif invoice_purchase.type_of_purchase.id == 5:
+                elif record.line_ids.move_id.type_of_purchase.id == 5:
                     record.type_of_purchase = 5
-            elif invoice_purchase.type_of_sale:
+            else:
                 record.gif_is_purchase = False
                 record.type_of_purchase = False
 
@@ -120,7 +119,6 @@ class AccountPaymentRegisterPS(models.TransientModel):
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', payments.ids)],
             })
-        print('Y devuelve: ',action)
         return action
 
     
