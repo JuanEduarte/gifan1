@@ -12,8 +12,6 @@ class StockPickingLine(models.Model):
     @api.onchange('picking_type_id')
     def ocultar_resultado(self):
         for record in self:
-            #resultado = self.env['stock.move.line'].search([('product_id','=',record.product_id.id)])
-            print("##################################################################")
             for entrada in record.picking_type_id:  
                 if entrada.name == 'Recolección' or entrada.name=='Órdenes de entrega':
                     print(entrada.name)

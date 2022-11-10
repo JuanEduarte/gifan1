@@ -11,5 +11,15 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="action_report_internal_routes" model="ir.actions.report">
+        <field name="name">Reporte de rutas internas</field>
+        <field name="model">gif.internal.translates</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gif_delivery_routes.report_internal_routes</field>
+        <field name="report_file">gif_delivery_routes.paperformatt_report</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+
 </odoo>
   

@@ -7,8 +7,9 @@
     'depends': [
         'sale','stock','account','gif_sale_segregation','gif_purchase_segregation', ],
     'data': [
-           'security/ir.model.access.csv',
-           'views/consigment_note_view.xml',
+           'views/gif_consigment_note_button.xml',
+           'security/ir.model.access.csv'
+           
             ],
   'qweb': [
   ],
@@ -19,6 +20,5 @@
   'category': '- Arkademy Part 1',
   'summary': 'Catat Penjualan Sederhana',
   'license': 'OPL-1',
-  'website': 'https://www.arkana.co.id/',
   'description': '-'
 }

@@ -22,7 +22,11 @@ class GifDeliveriRoutes(models.Model):
   total                 = fields.Float   (string='Total', compute='_onchange_gif_routes_details' )
   child_ids             = fields.Many2one('res.partner', string='Direccion de entrega')
   evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
-  state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
+  state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado'),('return','Retornado')], default='draft', string='Status' )
+  carrier_marca         =fields.Char(string='Marca del vehiculo')
+  carrier_modelo        =fields.Char(string='Modelo del vehiculo')
+  carrier_placas        =fields.Char(string='Placas del vehiculo')
+  returned              =fields.Selection([('Delivery','Ruta entregada'),('Returned','Ruta regeresada'),('Partial','Parcialmente entregada')], string='Ruta retorno' )
   array1                =fields.Char     (string='a', compute='_onchange_gif_routes_details')
   array2                =fields.Char     (string='b', compute='_onchange_gif_routes_details')
   
@@ -85,6 +89,10 @@ class GifDeliveriRoutes(models.Model):
 
   def action_cancel(self):
     self.state='cancel'
+    
+  def action_return(self):
+    self.state='return'
+  
 
 
 
@@ -103,6 +111,7 @@ class GifDeliveriRoutes(models.Model):
     for record in self:
       if record.carrier_origin == 'intern':
         record.carrier = 13042
+      
         
     
     
@@ -233,7 +242,7 @@ class GifRoutesDetails(models.Model):
           if nam == i.id:
             selet.append(i.name) 
                
-      '''return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', None), ('name', 'ilike', '%FVMXN'), ('name', 'not in', selet)]}}'''
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', None), ('name', 'ilike', '%FVMXN'), ('name', 'not in', selet)]}}
 
 class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'

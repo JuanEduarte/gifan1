@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="nama_model_form">
-            <field name="name">nama.model.form</field>
-            <field name="model">nama.model</field>
-            <field name="inherit_id" ref="nama_modul.nama_model_form"/>
+
+        <record id="gif_consignment_note_form" model="ir.ui.view">
+            <field name="name">gif.consignment.note.form</field>
+            <field name="model">gif.consignment.note</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='date_order']" position="before">
-                    <field name="note"/>
+                <form string="">
+                    <header>
+                        <button name="create_report" string="Crear Reporte" type="object" context="{'Invoice_id': context.get('Invoice_id', False)}"/>
+                    </header>
+                    <sheet>
+                       <group >
+                        <group>
+                            <field name="Invoice_id"/>
+                            <field name="IdOrigen" />
+                            <field name="NumRegIdTribO"/>
+                            <field name="FechaSalida"/>
+                            <field name="HoraSalida"/>
+                            <field name="DistanciaOrigen"/>
+                        </group>
+                        <group>
+                            <field name="IdDestino"/>
+                            <field name="NumRegIdTribD"/>
+                            <field name="FechaLlegada"/>
+                            <field name="HoraLlegada"/>
+                            <field name="DistanciaDestino"/>
+                            <field name="UUIDComercioExt"/>
+                        </group>
+                            
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="consigment_note_tree">
+            <field name="name">account.move.line.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="header" position="inside">
+                    <button name="get_data" type="object" string="Crear carta" context="{'Invoice_id': id}"/>
                 </xpath>
             </field>
         </record>
+
+
     </data>
 </odoo>

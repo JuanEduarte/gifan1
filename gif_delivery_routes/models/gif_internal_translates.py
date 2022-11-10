@@ -20,12 +20,14 @@ class GifInternalRoutes(models.Model):
   maniobras             = fields.Integer (string='Importe de seguros', required=True)
   mov                   =fields.Selection(string='Tipo de movimiento', selection=[('internal','Translados Internos'),('colect','Recolecciones'),('outgoing','Entregas')],  store=True)
   evidence              = fields.Image   ('Suba su imagen de evidencia', max_width=100, max_height=100, verify_resolution=False)
-  state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
+  state                 =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado'),('return','Retornado')], default='draft', string='Status' )
+  returned              =fields.Selection([('Delivery','Ruta entregada'),('Returned','Ruta regeresada'),('Partial','Parcialmente entregada')], string='Ruta retorno' )
   array1                =fields.Char     (string='a', compute='_onchange_gif_routes_details')
   array2                =fields.Char     (string='b', compute='_onchange_gif_routes_details')
+  total                 = fields.Integer (string='Total', compute='_onchange_tottal')
   
     
-  gif_personal_details  = fields.One2many(comodel_name='gif.personal.details',  inverse_name='gif_personal_id',  string='Detalles del personal')
+  gif_personal_details  = fields.One2many(comodel_name='gif.personal.details.int',  inverse_name='gif_personal_id',  string='Detalles del personal')
   gif_routes_movements  = fields.One2many(comodel_name='gif.movements.details', inverse_name='gif_delivery_mov', string='Detalles de movimientos', store=True)
   gif_account_move      = fields.One2many(comodel_name = 'account.move', inverse_name= 'Route' ,  string='campo de validacion', store=True)
   
@@ -33,6 +35,12 @@ class GifInternalRoutes(models.Model):
   lst_invoice  = []
   trd_invoice  = []
   
+  @api.onchange("flete", "seguros", "maniobras")
+  def _onchange_tottal(self):
+    for record in self:
+      if record.flete or record.seguros or record.maniobras:
+        record.total = record.flete + record.seguros + record.maniobras
+      else: record.total = 0
   
   @api.onchange('gif_routes_movements')
   def _onchange_gif_routes_details(self):
@@ -78,6 +86,9 @@ class GifInternalRoutes(models.Model):
 
   def action_cancel(self):
     self.state='cancel'
+    
+  def action_return(self):
+    self.state='return'
    
   @api.onchange('customer')
   def _onchange_customer_select(self):
@@ -86,7 +97,13 @@ class GifInternalRoutes(models.Model):
         return {'domain':{'child_ids':[('id', 'in', record.customer.child_ids.ids)]}}
 
 
- 
+  @api.model
+  def create(self, vals):
+      if vals.get('name', _('New')) == _('New'):
+        vals['name'] = self.env['ir.sequence'].next_by_code('gif.internal.translates') or _('New')
+      result = super(GifInternalRoutes, self).create(vals)
+      return result
+    
   @api.onchange('mov')
   def _onchange_movement(self):
     for record in (self):
@@ -118,18 +135,18 @@ class GifInternalRoutes(models.Model):
         record.plates =''
         
   def action_report(self):
-   return self.env.ref('gif_delivery_routes.action_report_delivery_routes').report_action(self)
+   return self.env.ref('gif_delivery_routes.action_report_internal_routes').report_action(self)
 
 
 class GifPersonalDetails(models.Model):
-  _name = 'gif.personal.details'
+  _name = 'gif.personal.details.int'
   _description = 'Detalles del personal'
   
-  gif_personal_id = fields.Many2one(comodel_name='gif.delivery.routes')
+  gif_personal_id = fields.Many2one(comodel_name='gif.internal.translates')
   employe_name    = fields.Many2one(comodel_name='hr.employee', string='Empleado', required=True)
   employe_type    = fields.Char    (string='Tipo de empleado', compute='_onchange_employe_type')
   employe_id      = fields.Char    (string='ID de personal', compute='_onchange_employe_type')
-  secuence = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute')
+  secuence        = fields.Char    (string='Secuencia', compute='_onchange_secuence_compute')
   
   
   @api.onchange('employe_name')
@@ -162,24 +179,14 @@ class GifmovementsDetails(models.Model):
   
   gif_delivery_mov = fields.Many2one(comodel_name='gif.internal.translates')
   secuence = fields.Char(string='Secuencia')
-  name = fields.Char(comodel= 'stock.picking', string='Nombre')
+  name = fields.Many2one(comodel_name= 'stock.picking', string='Nombre')
   typee = fields.Char(string='Tipo')
   client = fields.Char(string='Cliente')
   origin_doc  = fields.Char(string='Documento de origen')
-  cobrado  = fields.Char(string='Cobrado')
   state =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
   
-  
-  '''@api.onchange('invoice')
-  def _onchange_invoice(self):
-    a=0
-    for record in self:
-      a=a+1
-      if record.name:
-        record.secuence = a
-      else:
-        pass'''
-      
+ 
+
   @api.onchange('gif_delivery_mov.state')
   def _onchange_mov_field(self):
     for record in (self): 

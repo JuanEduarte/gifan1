@@ -20,6 +20,7 @@
            'views/gif_internal_routes_view.xml',
            'reports/gif_routes_report.xml',
            'reports/routes_report.xml',
+           'reports/internal_report.xml',
            'data/data.xml'
     ],
     'installable': True,

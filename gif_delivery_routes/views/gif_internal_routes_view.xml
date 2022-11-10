@@ -35,7 +35,7 @@
 
           </group>
                     <notebook>
-                        <page string="Detalles del personal">
+                        <page string="Detalles del personal" readonly = "0">
                             <field name="gif_personal_details" >
                                 <tree editable="botton">
                                     <field name="secuence" />

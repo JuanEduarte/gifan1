@@ -13,6 +13,7 @@
           <button id='btn_done' name='action_done' class='btn-primary' string='Hecho' states='draft' type='object' />
           <button id='btn_confirm' name='action_confirm' class='btn-primary' string='Confirmar' states='done' type='object' />
           <button id='btn_cancel' name='action_cancel' class='btn-primary' string='Cancelar' states='done,draft,confirm' type='object' />
+          <button id='btn_return' name='action_return' class='btn-primary' string='Retornado' states='confirm' type='object' />
 
           <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm" />
         </header>
@@ -22,22 +23,26 @@
             <group>
               <field name='name' placeholder='Name' readonly="1" />
 
-              <field name="customer" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="carrier_origin" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="carrier" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="vehicle_number" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="plates" />
+              <field name="customer" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
+              <field name="carrier_origin" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
+              <field name="carrier" attrs="{'readonly': ['|',('state', '=', 'confirm'),('carrier_origin', '=', 'intern'),('state', '=', 'return')]}" />
+              <field name="vehicle_number" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')], 'invisible': [('carrier_origin', '!=', 'intern')]}" />
+              <field name="plates" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}" />
+             <field name="carrier_marca" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+            <field name="carrier_modelo" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+           <field name="carrier_placas"  attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
             </group>
 
             <group>
-              <field name="date" attrs="{'readonly': [('state', '=', 'confirm')]}" />
-              <field name="child_ids" attrs="{'readonly': [('state', '=', 'confirm')]}" />
+              <field name="date" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
+              <field name="child_ids" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
+              <field name="returned"  attrs="{'invisible': [('state', '!=', 'return')]}"/>
             </group>
 
           </group>
           <notebook>
             <page string="Detalles del personal">
-              <field name="gif_personal_details">
+              <field name="gif_personal_details" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel')]}" >
                 <tree editable="botton">
                   <field name="secuence" />
                   <field name="employe_name" />
@@ -52,7 +57,7 @@
 
             <page string="Detalles de Ruta">
 
-              <field name="gif_routes_details">
+              <field name="gif_routes_details"  attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel')]}" >
                 <tree editable="botton">
                   <field name="secuence" />
                   <field name="invoice" />

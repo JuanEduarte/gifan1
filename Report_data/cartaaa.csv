@@ -1,0 +1,2 @@
+,Id de origen,RFCOrigen,Origen,NumRegIdTribO,FechaSalida,HoraSalida,DistanciaOrigen,CalleOrigen,NumExtOrigen,NumIntOrigen,ColoniaOrigen,LocalidadOrigen,ReferenciaOrigen,MunicipioOrigen,EstadoOrigen,PaisOrigen,CPOrigen
+0,False,XAXX010101000,ABARROTES CHUPER NEGRO SA DE CV,False,False,False,0,Sur 95,0,0,Asturias,l10n_mx_edi.res.locality(),Cliente Número 17,res.city(),"res.country.state(493,)","res.country(156,)",06890
