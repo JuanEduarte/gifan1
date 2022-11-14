@@ -35,7 +35,7 @@
 
           </group>
                     <notebook>
-                        <page string="Detalles del personal" readonly = "0">
+                        <page string="Detalles del personal" attrs="{'readonly': [('state', '=', 'confirm')]}">
                             <field name="gif_personal_details" >
                                 <tree editable="botton">
                                     <field name="secuence" />
@@ -49,8 +49,8 @@
                     
                     <notebook>
 
-                         <page string="Detalles de movimientos">
-                            <field name="gif_routes_movements" >
+                         <page string="Detalles de movimientos" >
+                            <field name="gif_routes_movements" attrs="{'readonly': [('state', '=', 'confirm')]}" >
                                 <tree editable="botton">
                                     <field name="secuence" />
                                     <field name='name'/>

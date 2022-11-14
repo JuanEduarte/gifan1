@@ -112,12 +112,11 @@ class GifInternalRoutes(models.Model):
             stock_picking_ids = self.env['stock.picking'].search([('partner_id.name', '=', record.customer.name)])
             for i in stock_picking_ids:
               if i.picking_type_id.code == record.mov and i.state=='done':
-                print('abc#########', i.name, i.state, i.picking_type_code, i.picking_type_id.name)
-                print('####### DONE')
+              
                 b = b+1
                 inv_rel =self.env['gif.movements.details'].create([{
                   'gif_delivery_mov': record.id,
-                  'name': i.name,
+                  'name': i.id,
                   'typee' : i.picking_type_id.name, 
                   'client': i.partner_id.name,
                   'origin_doc': i.origin,
@@ -144,6 +143,7 @@ class GifPersonalDetails(models.Model):
   
   gif_personal_id = fields.Many2one(comodel_name='gif.internal.translates')
   employe_name    = fields.Many2one(comodel_name='hr.employee', string='Empleado', required=True)
+  employe_name_ext= fields.Char(string='Empleado', required=True)
   employe_type    = fields.Char    (string='Tipo de empleado', compute='_onchange_employe_type')
   employe_id      = fields.Char    (string='ID de personal', compute='_onchange_employe_type')
   secuence        = fields.Char    (string='Secuencia', compute='_onchange_secuence_compute')
@@ -151,17 +151,11 @@ class GifPersonalDetails(models.Model):
   
   @api.onchange('employe_name')
   def _onchange_employe_type(self):
-    try:
       for record in self:
         if record.employe_name:
           record.employe_type = record.employe_name.job_title
           record.employe_id = record.employe_name.barcode
-        else:
-         record.employe_type = ''
-         record.employe_id = ''
-    except:
-      record.employe_type = ''
-      record.employe_id = ''
+       
       
       
   
@@ -178,13 +172,28 @@ class GifmovementsDetails(models.Model):
   _description = 'Detalles de los movimientos'
   
   gif_delivery_mov = fields.Many2one(comodel_name='gif.internal.translates')
-  secuence = fields.Char(string='Secuencia')
-  name = fields.Many2one(comodel_name= 'stock.picking', string='Nombre')
-  typee = fields.Char(string='Tipo')
-  client = fields.Char(string='Cliente')
-  origin_doc  = fields.Char(string='Documento de origen')
+  secuence = fields.Integer(string='Secuencia')
+  name = fields.Many2one(comodel_name='stock.picking', string='Nombre')
+  typee = fields.Char(string='Tipo', readonly=True)
+  client = fields.Char(string='Cliente', readonly=True)
+  origin_doc  = fields.Char(string='Documento de origen', readonly=True)
   state =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
   
+  @api.onchange('name')
+  def _onchange_name(self):
+    a=0
+    for record in self:
+      a=a+1
+      if record.name:
+        record.typee = record.name.picking_type_id.name
+        record.origin_doc = record.name.origin
+        record.client = record.name.partner_id.name
+        record.secuence = a
+      else:
+        record.typee = ''
+        record.origin_doc = ''
+        record.client = ''
+        record.secuence = a
  
 
   @api.onchange('gif_delivery_mov.state')

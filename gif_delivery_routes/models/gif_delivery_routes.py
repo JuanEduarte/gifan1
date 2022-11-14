@@ -110,7 +110,7 @@ class GifDeliveriRoutes(models.Model):
   def _onchange_carrier_origin(self):
     for record in self:
       if record.carrier_origin == 'intern':
-        record.carrier = 13042
+        record.carrier = 7
       
         
     
@@ -164,10 +164,15 @@ class GifPersonalDetails(models.Model):
   _description = 'Detalles del personal'
   
   gif_personal_id = fields.Many2one(comodel_name='gif.delivery.routes')
-  employe_name    = fields.Many2one(comodel_name='hr.employee', string='Empleado', required=True)
+  employe_name    = fields.Many2one(comodel_name='hr.employee', string='Empleado')
+  employe_name_ext= fields.Char( string='Empleado')
   employe_type    = fields.Char    (string='Tipo de empleado', compute='_onchange_employe_type')
+  employe_type_ext= fields.Char    (string='Tipo de empleado')
   employe_id      = fields.Char    (string='ID de personal', compute='_onchange_employe_type')
-  secuence = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute')
+  employe_id_ext  = fields.Char    (string='ID de personal')
+  secuence        = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute')
+  secuence_ext    = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute_ext')
+  carrier_origin  = fields.Char(string='carrier_origin', compute='_onchange_name_select' )
   
   
   @api.onchange('employe_name')
@@ -185,14 +190,33 @@ class GifPersonalDetails(models.Model):
       record.employe_id = ''
       
       
+  @api.depends('gif_personal_id.carrier_origin')
+  @api.onchange('gif_personal_id.carrier_origin')
+  def _onchange_name_select(self):
+    for record in (self): 
+          if record.gif_personal_id.carrier_origin:
+            record.carrier_origin = record.gif_personal_id.carrier_origin
+            
   
   @api.onchange('employe_name')
   def _onchange_secuence_compute(self):
     a=0
     for record in self:
-      if record.employe_name:
-       a = a+1
-       record.secuence=a
+        if record.employe_name:
+          a = a+1
+          record.secuence=a
+  
+       
+  @api.onchange('employe_name_ext',)
+  def _onchange_secuence_compute_ext(self):
+    a=0
+    try:
+      for record in self:
+        if record.employe_name_ext:
+          a = a+1
+          record.secuence_ext=a
+    except:
+      pass
 
 class GifRoutesDetails(models.Model):
   _name = 'gif.routes.details'
@@ -205,7 +229,6 @@ class GifRoutesDetails(models.Model):
   client = fields.Char(string='Cliente', compute='_onchange_invoice')
   importe  = fields.Char(string='Importe', compute='_onchange_invoice')
   order = fields.Char(string = 'Orden de venta', compute='_onchange_invoice')
-  cobrado  = fields.Char(string='Cobrado')
   validate = fields.Char(String='validar')
   state =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
   
@@ -248,4 +271,4 @@ class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Many2one(string='Rutas')
+  route_id = fields.Many2one(string='Rutas', readonly=True)

@@ -17,6 +17,8 @@
         'sale',
         'product',
         'purchase',
+        'gif_sale_segregation',
+        'gif_purchase_segregation',
         ],
     'data': [
         'views/stock_picking2_inherit_views.xml',

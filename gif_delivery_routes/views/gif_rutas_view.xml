@@ -28,10 +28,10 @@
               <field name="carrier" attrs="{'readonly': ['|',('state', '=', 'confirm'),('carrier_origin', '=', 'intern'),('state', '=', 'return')]}" />
               <field name="vehicle_number" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')], 'invisible': [('carrier_origin', '!=', 'intern')]}" />
               <field name="plates" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}" />
-             <field name="carrier_marca" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
-            <field name="carrier_modelo" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
-           <field name="carrier_placas"  attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
-            </group>
+              <field name="carrier_marca" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+              <field name="carrier_modelo" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+              <field name="carrier_placas"  attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+          </group>
 
             <group>
               <field name="date" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
@@ -40,31 +40,36 @@
             </group>
 
           </group>
-          <notebook>
-            <page string="Detalles del personal">
-              <field name="gif_personal_details" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel')]}" >
+
+          <notebook >
+            <page string="Detalles del personal" >
+              <field name="gif_personal_details" >
                 <tree editable="botton">
-                  <field name="secuence" />
-                  <field name="employe_name" />
-                  <field name="employe_type" />
-                  <field name="employe_id" />
+                  <field name="secuence" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
+                  <field name="employe_name" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
+                  <field name="employe_type" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
+                  <field name="employe_id" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
+                  <field name="secuence_ext" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+                  <field name="employe_name_ext" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+                  <field name="employe_type_ext" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+                  <field name="employe_id_ext" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
+                  <field name="carrier_origin" invisible='1' />
                 </tree>
               </field>
-            </page>
+            </page >
           </notebook>
 
           <notebook>
 
-            <page string="Detalles de Ruta">
+            <page string="Detalles de Ruta" >
 
-              <field name="gif_routes_details"  attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel')]}" >
+              <field name="gif_routes_details"  attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel'),('state', '=', 'return')]}" >
                 <tree editable="botton">
                   <field name="secuence" />
                   <field name="invoice" />
                   <field name='client' />
                   <field name='order' />
                   <field name='importe' />
-                  <field name='cobrado' />
                 </tree>
               </field>
 
@@ -116,8 +121,9 @@
     <field name="res_model">gif.delivery.routes</field>
     <field name="view_mode">tree,form</field>
   </record>
+  
+  <menuitem id="routes_list" name="Rutas de entrega" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence="90" />
 
   <menuitem id="gif_routes_menuitem" name="Rutas de entrega para facturas" parent="gif_delivery_routes.routes_list" action="gif_delivery_action" sequence="100" />
 
-  <menuitem id="routes_list" name="Rutas de entrega" parent="stock.menu_stock_warehouse_mgmt" action="gif_delivery_action" sequence="90" />
 </odoo>

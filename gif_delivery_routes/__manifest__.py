@@ -12,7 +12,7 @@
     'category': 'stock',
     'version': '15.0.1',
     'depends': [
-        'sale','stock','account','gif_sale_segregation','gif_purchase_segregation', ],
+        'sale','stock','account','gif_purchase_segregation','gif_sale_segregation'],
     'data': [
            'security/ir.model.access.csv',
            'views/gif_rutas_view.xml',

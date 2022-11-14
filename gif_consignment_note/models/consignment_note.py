@@ -33,33 +33,77 @@ class ConsignmentNote(models.Model):
         return rec
 
     def create_report(self):
+      Id_de_origen = []
       for record in self:
+        originPartner = self.env['res.partner'].search([('name','ilike','GIFAN INTERNACIONAL S DE RL DE CV')])
         if record.Invoice_id:
-          print (record.Invoice_id.invoice_line_ids.name)
-          i=record.Invoice_id
-          Dta = {
-        #'Partner_id': i.partner_id.name,
-        'Id de origen': record.IdOrigen,
-        'RFCOrigen': i.partner_id.vat,
-        'Origen': i.partner_id.name,
-        'NumRegIdTribO': record.NumRegIdTribD,
-        'FechaSalida': record.FechaSalida,
-        'HoraSalida':   record.HoraSalida,
-        'DistanciaOrigen': record.DistanciaOrigen,
-        'CalleOrigen': i.partner_id.street_name,
-        'NumExtOrigen': 0,
-        'NumIntOrigen': 0,
-        'ColoniaOrigen': i.partner_id.l10n_mx_edi_colony,
-        'LocalidadOrigen': i.partner_id.l10n_mx_edi_locality_id.name,
-        'ReferenciaOrigen': i.partner_id.ref,
-        'MunicipioOrigen': i.partner_id.city_id.name,
-        'EstadoOrigen': i.partner_id.state_id.name,
-        'PaisOrigen': i.partner_id.country_id.name,
-        'CPOrigen': i.partner_id.zip,
-        }
+          for j in record.Invoice_id.invoice_line_ids:
+            originInvoice = self.env['sale.order'].search([('name','=',record.Invoice_id.invoice_origin)])
+            Qty_done = self.env['stock.picking'].search([('origin','=',originInvoice.name),('picking_type_code','ilike','outgoing')])
+            i=record.Invoice_id
+           
+           
+            Dta = {
+      ########DATOS DEL ORIGEN##########
+          'Id de origen': record.IdDestino,
+          'RFCOrigen': originPartner.vat,
+          'Origen': originPartner.name,
+          'NumRegIdTribO': record.NumRegIdTribO,
+          'FechaSalida': record.FechaSalida,
+          'HoraSalida':   record.HoraSalida,
+          'DistanciaOrigen': record.DistanciaOrigen,
+          'CalleOrigen': originPartner.street_name,
+          'NumExtOrigen': 0,
+          'NumIntOrigen': 0,
+          'ColoniaOrigen': originPartner.l10n_mx_edi_colony,
+          'LocalidadOrigen': originPartner.l10n_mx_edi_locality_id.name,
+          'ReferenciaDestino': originPartner.ref,
+          'MunicipioDestino': originPartner.city_id.name,
+          'EstadoDestino': originPartner.state_id.name,
+          'PaisDestino': originPartner.country_id.name,
+          'CPDestino': originPartner.zip,
+                  
+      ########DATOS DEL DESTINO##########
+          'Id de destino': record.IdOrigen,
+          'RFC de Destino': i.partner_id.vat,
+          'Destino': i.partner_id.name,
+          'NumRegIdTribO': record.NumRegIdTribD,
+          'FechaLlegada': record.FechaLlegada,
+          'HoraLlegada':   record.HoraLlegada,
+          'DistanciaDestino': record.DistanciaDestino,
+          'CalleDestino': i.partner_id.street_name,
+          'NumExtDestino': 0,
+          'NumIntDestino': 0,
+          'ColoniaDestino': i.partner_id.l10n_mx_edi_colony,
+          'LocalidadDestino': i.partner_id.l10n_mx_edi_locality_id.name,
+          'ReferenciaDestino': i.partner_id.ref,
+          'MunicipioDestino': i.partner_id.city_id.name,
+          'EstadoDestino': i.partner_id.state_id.name,
+          'PaisDestino': i.partner_id.country_id.name,
+          'CPDestino': i.partner_id.zip,
           
+      ########DATOS DEL PRODUCTO##########
+          'BienesTransp':j.product_id.name,
+          #'ClaveSTCC': record.,
+          'Mercancia':j.product_id.description_sale,
+          'Cantidad': Qty_done.move_line_ids_without_package.qty_done,
+          'ClaveUnidad':Qty_done.move_line_ids_without_package.product_uom_id.unspsc_code_id.code,
+          'Unidad':Qty_done.move_line_ids_without_package.product_uom_id.category_id.name,
+          'Dimensiones':j.product_id.volume,
+          'MaterialPeligroso':j.product_id.gif_hazard_active,
+          'CveMaterialPeligroso':j.product_id.	l10n_mx_edi_hazardous_material_code,
+          'Embalaje':j.product_id.l10n_mx_edi_hazard_package_type,
+          'PesoEnKg':j.product_id.weight,
+          'ValorMercancia':originInvoice.order_line.price_subtotal,
+          'Moneda':i.currency_id.name,
+          'FraccionArancelaria':j.product_id.l10n_mx_edi_tariff_fraction_id,
+          'UUIDComercioExt':i.gif_invoice_uuid,
+          'Pedimento':j.l10n_mx_edi_customs_number,
+          
+          }
+            
         
-          print('ppppppppAAA', self.Invoice_id)
+          print('##########', self.Invoice_id)
           df = pd.DataFrame([Dta], index= [0])
           default_style = Styler(font_size=7) 
           sf = StyleFrame(df, styler_obj=default_style)
@@ -68,4 +112,4 @@ class ConsignmentNote(models.Model):
                                          bg_color=utils.colors.blue,
                                          font_size=7))
           
-          sf.to_excel('/odoo/custom/addons/Report_data/carta3.xlsx').save()
+          sf.to_excel('/odoo/custom/addons/Report_data/carta7.xlsx').save()
