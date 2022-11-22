@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 gif_consignment_note.access_gif_consignment_note,access_gif_consignment_note,gif_consignment_note.model_gif_consignment_note,,1,1,1,1
+gif_consignment_note.access_gif_load_note,access_gif_load_note,gif_consignment_note.model_gif_load_note,,1,1,1,1
+if_consignment_note.access_consignment_note_report,access_consignment_note_report,gif_consignment_note.model_consignment_note_report,,1,1,1,1
+if_consignment_note.access_figuras_transporte_page,access_figuras_transporte_page,gif_consignment_note.model_figuras_transporte_page,,1,1,1,1

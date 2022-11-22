@@ -27,6 +27,8 @@ class GifDeliveriRoutes(models.Model):
   carrier_modelo        =fields.Char(string='Modelo del vehiculo')
   carrier_placas        =fields.Char(string='Placas del vehiculo')
   returned              =fields.Selection([('Delivery','Ruta entregada'),('Returned','Ruta regeresada'),('Partial','Parcialmente entregada')], string='Ruta retorno' )
+  ret = fields.Many2one(comodel_name='crm.tag', string='Ruta retorno')
+  
   array1                =fields.Char     (string='a', compute='_onchange_gif_routes_details')
   array2                =fields.Char     (string='b', compute='_onchange_gif_routes_details')
   

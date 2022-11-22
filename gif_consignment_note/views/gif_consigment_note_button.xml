@@ -8,7 +8,10 @@
             <field name="arch" type="xml">
                 <form string="">
                     <header>
+                        
                         <button name="create_report" string="Crear Reporte" type="object" context="{'Invoice_id': context.get('Invoice_id', False)}"/>
+                        
+                       
                     </header>
                     <sheet>
                        <group >
@@ -27,6 +30,7 @@
                             <field name="HoraLlegada"/>
                             <field name="DistanciaDestino"/>
                             <field name="UUIDComercioExt"/>
+                            <field name="get_template"/>
                         </group>
                             
                        </group>
@@ -34,7 +38,7 @@
                 </form>
             </field>
         </record>
-
+        
 
 
         <record model="ir.ui.view" id="consigment_note_tree">

@@ -93,7 +93,6 @@
                             <td><span t-esc="item.typee"/></td>
                             <td><span t-esc="item.client"/></td>
                             <td><span t-esc="item.origin_doc"/></td>
-                            
                         </tr>
                         </t>
 

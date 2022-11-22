@@ -4,6 +4,7 @@ class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
     
     gif_real_stockpicking= fields.Float(string='Cantidad Entregada')
+
     # gif_real_stock2 = fields.Float(string='Cantidad Real',compute="_calcule_salida")
     gif_real_stock = fields.Float(string='Cantidad Real Entregada',compute="_calcule_salida")
     # gif_real = fields.Char(related='gif_real_stock.gif_real_stock1')

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+  <!-- Form View -->
+  <record model="ir.ui.view" id="gif_load_note">
+    <field name="name">gif.load.note.view.form</field>
+    <field name="model">gif.load.note</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button string="Importar" name="files_data" type="object" class="btn-primary" />
+        </header>
+        <sheet >
+            
+            
+             <group string='Datos origen' >
+              <group>
+                <field name="IdOrigen" readonly="1"/>
+                <field name="RFCOrigen" readonly="1"/>           
+                <field name="Origen" readonly="1"/>
+                <field name="NumRegIdTribO" readonly="1"/>
+                <field name="FechaSalida" readonly="1"/>
+                <field name="HoraSalida" readonly="1"/>
+                <field name="DistanciaOrigen" readonly="1"/>
+                <field name="CalleOrigen" readonly="1"/>
+                <field name="NumExtOrigen" readonly="1"/>
+              </group>
+              <group>
+                <field name="NumIntOrigen" readonly="1"/>
+                <field name="ColoniaOrigen" readonly="1"/>
+                <field name="LocalidadOrigen" readonly="1"/>
+                <field name="ReferenciaOrigen" readonly="1"/>
+                <field name="MunicipioOrigen" readonly="1"/>
+                <field name="EstadoOrigen" readonly="1"/>
+                <field name="PaisOrigen" readonly="1"/>
+                <field name="CPOrigen" readonly="1"/>
+              </group>
+             </group>
+            
+            <group string='Datos destino'  >
+              <group>
+                <field name="IdDestino" readonly="1"/>
+                <field name="RFCDestino" readonly="1"/>
+                <field name="Destino" readonly="1"/>
+                <field name="NumRegIdTribD" readonly="1"/>
+                <field name="FechaLlegada" readonly="1"/>
+                <field name="HoraLlegada" readonly="1"/>
+                <field name="DistanciaDestino" readonly="1"/>
+                <field name="CalleDestino" readonly="1"/>
+                <field name="NumExtDestino" readonly="1"/>
+              </group>
+              <group>
+                <field name="NumIntDestino" readonly="1"/>
+                <field name="ColoniaDestino" readonly="1"/>
+                <field name="LocalidadDestino" readonly="1"/>
+                <field name="ReferenciaDestino" readonly="1"/>
+                <field name="MunicipioDestino" readonly="1"/>
+                <field name="EstadoDestino" readonly="1"/>
+                <field name="PaisDestino" readonly="1"/>
+                <field name="CPDestino" readonly="1"/>
+              </group>
+            </group>
+            <group>
+              <field name="file" />
+            </group>
+
+
+          <notebook>
+            <page  string='Carta Porte'>
+              <field name="CartaPorte_page">
+                <tree editable='botton'>
+                 <field name="BienesTransp"/>
+                 <field name="Mercancia"/>
+                 <field name="Cantidad"/>
+                 <field name="ClaveUnidad"/>
+                 <field name="Unidad"/>
+                 <field name="Dimensiones"/>
+                 <field name="MaterialPeligroso"/>
+                 <field name="CveMaterialPeligroso"/>
+                 <field name="Embalaje"/>
+                 <field name="PesoEnKg"/>
+                 <field name="ValorMercancia"/>
+                 <field name="Moneda"/>
+                 <field name="FraccionArancelaria"/>
+                 <field name="UUIDComercioExt"/>
+                <field name="Pedimento"/>
+                </tree>
+              </field>
+            </page>
+
+            
+
+            <page string='Transporte'>
+              
+                  <group>
+                    <group>
+                      <field name="ConfType"/>
+                      <field name="PermisoSCT" readonly="1" />
+                      <field name="NoPermiso" readonly="1"/>
+                      <field name="Configuracinvehicular" readonly="1"/>
+                      <field name="Placas" readonly="1"/>
+                      <field name="Modelo" readonly="1"/>
+                      <field name="Remolque1" readonly="1"/>
+                      <field name="Placas1" readonly="1"/>
+                      <field name="Remolque2" readonly="1"/>
+                      <field name="Placas2" readonly="1"/>
+                    </group>
+                    <group>
+                      <field name="AseguradoraCivil" readonly="1"/>
+                    <field name="PolizaCivil" readonly="1"/>
+                    <field name="AseguradoraMedioAmb" readonly="1"/>
+                    <field name="PolizaMedioAmb" readonly="1"/>
+                    <field name="AseguradoraCarga" readonly="1"/>
+                    <field name="Polizacarga" readonly="1"/>
+                    <field name="PrimaSeguro" readonly="1"/>
+                    </group>
+                  </group>
+               
+            </page>
+            
+            <page string='Figuras transporte'>
+              <field name="FigurasTransporte_page">
+                <tree editable="botton">
+
+                <field name="TipoFigura"/>
+                <field name="RFC"/>
+                <field name="Nombre"/>
+                <field name="licencia"/>
+                <field name="Pais"/>
+                <field name="NumRegIdTribO"/>
+                <field name="ParteTransporte"/>
+
+                </tree>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+
+
+    </field>
+  </record>
+  <!-- List View -->
+  <record model="ir.ui.view" id="gif_load_note_tree">
+    <field name="name">gif.load.note.view.tree</field>
+    <field name="model">gif.load.note</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name" />
+        <field name="name" />
+      </tree>
+    </field>
+  </record>
+
+
+  <record id="action_load_data" model="ir.actions.act_window">
+    <field name="name">Subir reporte</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">gif.load.note</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="load_data" name="Carga de Carta Porte" parent="account.menu_finance_receivables" action="action_load_data" />
+
+
+</odoo>

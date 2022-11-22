@@ -36,7 +36,7 @@
             <group>
               <field name="date" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
               <field name="child_ids" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
-              <field name="returned"  attrs="{'invisible': [('state', '!=', 'return')]}"/>
+              <field name="ret"  attrs="{'invisible': [('state', '!=', 'return')]}"/>
             </group>
 
           </group>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_partner_inh_form">
+            <field name="name">res.partner.inherit.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="NRegTributario"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_template_inh_form">
+            <field name="name">product.template.inh.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='unspsc_code_id']" position="after">
+                    <field name="Clave_STCC"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="vehicle_config_inh_form">
+            <field name="name">vehicle.config.inh.form</field>
+            <field name="model">l10n_mx_edi.vehicle</field>
+            <field name="inherit_id" ref="l10n_mx_edi_stock.vehicle_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vehicle_config']" position="after">
+                   <field name="cargo_insurer"/>
+                   <field name="cargo_policy"/>
+                   <field name="sure_primex"/>
+                </xpath>
+            </field>
+        </record>
+
+        
+    </data>
+</odoo>
