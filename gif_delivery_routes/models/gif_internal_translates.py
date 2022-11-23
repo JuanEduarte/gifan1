@@ -201,7 +201,3 @@ class GifmovementsDetails(models.Model):
     for record in (self): 
       record.state = record.gif_delivery_mov.state
 
-class ValidationInvoiceField(models.Model):
-  _inherit = 'account.move'
-  
-  route_id = fields.Char(string='Rutas')

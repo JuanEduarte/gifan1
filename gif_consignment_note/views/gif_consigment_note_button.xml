@@ -15,22 +15,22 @@
                     </header>
                     <sheet>
                        <group >
+                       <field name="get_template"/>
                         <group>
-                            <field name="Invoice_id"/>
-                            <field name="IdOrigen" />
-                            <field name="NumRegIdTribO"/>
-                            <field name="FechaSalida"/>
-                            <field name="HoraSalida"/>
-                            <field name="DistanciaOrigen"/>
+                            <field name="Invoice_id" invisible="1"/>
+                            <field name="IdOrigen" required="1"/>
+                            <field name="NumRegIdTribO" />
+                            <field name="FechaSalida" required="1"/>
+                            <field name="HoraSalida" required="1"/>
+                            <field name="DistanciaOrigen" />
                         </group>
                         <group>
-                            <field name="IdDestino"/>
-                            <field name="NumRegIdTribD"/>
-                            <field name="FechaLlegada"/>
-                            <field name="HoraLlegada"/>
-                            <field name="DistanciaDestino"/>
-                            <field name="UUIDComercioExt"/>
-                            <field name="get_template"/>
+                            <field name="IdDestino" required="1"/>
+                            <field name="NumRegIdTribD" />
+                            <field name="FechaLlegada" required="1"/>
+                            <field name="HoraLlegada" required="1"/>
+                            <field name="DistanciaDestino" />
+                            <field name="UUIDComercioExt" />
                         </group>
                             
                        </group>

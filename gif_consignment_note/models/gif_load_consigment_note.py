@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 class GifloadNote(models.Model):
     _name = 'gif.load.note'
 
-    name = fields.Char(string='Nombre')
+    name = fields.Char(string='Reporte de Carta Porte',index=True, default=lambda self: _('New'))
     file = fields.Binary(string='Suba su archivo')
     IdOrigen             = fields.Char(string='Id de origen')
     RFCOrigen            = fields.Char(string='RFCOrigen')
@@ -68,7 +68,14 @@ class GifloadNote(models.Model):
     CartaPorte_page        = fields.One2many(comodel_name='consignment.note.report', inverse_name='Origin_report_data', string='Page de la carta')
     
     FigurasTransporte_page = fields.One2many(comodel_name='figuras.transporte.page', inverse_name='FigurasTransporte_report', string='Page de las figuras de transporte')
-     
+    
+    
+    @api.model
+    def create(self, vals):
+      if vals.get('name', _('New')) == _('New'):
+        vals['name'] = self.env['ir.sequence'].next_by_code('gif.load.note') or _('New')
+      result = super(GifloadNote, self).create(vals)
+      return result
     
     @api.onchange('ConfType')
     def _onchange_ConfType(self):
@@ -99,8 +106,7 @@ class GifloadNote(models.Model):
         origin = self.env['res.partner'].search([('id','=','7')])
         
       for i in self.ConfType.figure_ids:
-        print(i.type)
-        print(origin)
+        
         figure_line = self.env['figuras.transporte.page'].create([{
           'FigurasTransporte_report': self.id,
           'TipoFigura': i.type,
@@ -122,10 +128,10 @@ class GifloadNote(models.Model):
             df = pd.read_excel(xlsx, sheet_name='CartaPorte')
             for i in df.index:
               typef = self.env['l10n_mx_edi.vehicle'].search([('id', '=', 7)])
-              print('LINEA DE REGISTRO',typef.name)
               report_rel = self.env['consignment.note.report'].create([{
                 'Origin_report_data' : self.id,
                 'BienesTransp'       : df[['BienesTransp'][0]][i],
+                'ClaveSTCC'         : df[['Clave STCC'][0]][i],
                 'Mercancia'          : df[['Mercancia'][0]][i],
                 'Cantidad'           : df[['Cantidad'][0]][i],
                 'ClaveUnidad'        : df[['ClaveUnidad'][0]][i],
@@ -142,8 +148,6 @@ class GifloadNote(models.Model):
                 'Pedimento'          : df[['Pedimento'][0]][i],
               }])
               
-            print(df)
-            print(df[['Origen']].values)
         self.IdOrigen = df[['Id de origen'][0]][0]
         self.RFCOrigen = df[['RFCOrigen'][0]][0]
         self.Origen = df[['Origen'][0]][0]
@@ -179,7 +183,6 @@ class GifloadNote(models.Model):
         self.PaisDestino = df[['PaisDestino'][0]][0]
         self.CPDestino = df[['CPDestino'][0]][0]
         
-        print('*********',df[['Origen'][0]][0])
 
              #######Modelos de tablas o pages#######
 
@@ -192,6 +195,7 @@ class GifloadNote(models.Model):
         Origin_report_data = fields.Many2one(comodel_name='gif.load.note', string='Carta Porte Data')
         
         BienesTransp         = fields.Char(string='BienesTransp')
+        ClaveSTCC            = fields.Char(string='Clave STCC')       
         Mercancia            = fields.Char(string='Mercancia')
         Cantidad             = fields.Char(string='Cantidad')
         ClaveUnidad          = fields.Char(string='ClaveUnidad')

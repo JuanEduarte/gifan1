@@ -74,7 +74,6 @@ class GifDeliveriRoutes(models.Model):
   def action_confirm(self):
     if  not  self.gif_routes_details :
      raise UserError(('Debe haber registros en las lineas de detalles de rutas'))
-   
     else:
       self.state='confirm'
       for record in self:
@@ -82,7 +81,7 @@ class GifDeliveriRoutes(models.Model):
               nam = i
               for i in record.customer.invoice_ids:
                 if i.name == nam:
-                  i.route_id = record.name
+                  i.route_id = record.id
         for i in record.customer.invoice_ids:
           if i.route_id == record.name and i.name not in self.trd_invoice:
             i.route_id = None
@@ -131,7 +130,7 @@ class GifDeliveriRoutes(models.Model):
     for record in (self):
      if len(record.gif_routes_details) == 0:
         for i in record.customer.invoice_ids:
-          if i.state == 'posted' and i.route_id == False and record.child_ids == i.partner_shipping_id: 
+          if i.state == 'posted' and i.route_id.id == False and record.child_ids == i.partner_shipping_id: 
             b =+ 1
             invoice_rel =self.env['gif.routes.details'].create([{
               'gif_delivery_id': record.id,
@@ -167,13 +166,13 @@ class GifPersonalDetails(models.Model):
   
   gif_personal_id = fields.Many2one(comodel_name='gif.delivery.routes')
   employe_name    = fields.Many2one(comodel_name='hr.employee', string='Empleado')
-  employe_name_ext= fields.Char( string='Empleado')
+  employe_name_ext= fields.Char( string='Empleado', index=True)
   employe_type    = fields.Char    (string='Tipo de empleado', compute='_onchange_employe_type')
   employe_type_ext= fields.Char    (string='Tipo de empleado')
   employe_id      = fields.Char    (string='ID de personal', compute='_onchange_employe_type')
   employe_id_ext  = fields.Char    (string='ID de personal')
-  secuence        = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute')
-  secuence_ext    = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute_ext')
+  secuence        = fields.Char           (string='Secuencia')
+  secuence_ext    = fields.Char           (string='Secuencia', compute='_onchange_secuence_compute')
   carrier_origin  = fields.Char(string='carrier_origin', compute='_onchange_name_select' )
   
   
@@ -200,26 +199,26 @@ class GifPersonalDetails(models.Model):
             record.carrier_origin = record.gif_personal_id.carrier_origin
             
   
-  @api.onchange('employe_name')
+  @api.onchange('employe_name','employe_name_ext')
   def _onchange_secuence_compute(self):
-    a=0
-    for record in self:
-        if record.employe_name:
-          a = a+1
-          record.secuence=a
-  
-       
-  @api.onchange('employe_name_ext',)
-  def _onchange_secuence_compute_ext(self):
     a=0
     try:
       for record in self:
-        if record.employe_name_ext:
           a = a+1
-          record.secuence_ext=a
-    except:
-      pass
-
+          if record.employe_name:
+            record.secuence=a
+            record.secuence_ext=0
+          elif record.employe_name_ext:
+            record.secuence=0
+            record.secuence_ext=a
+          else:
+            record.secuence_ext=0
+            record.secuence=0
+            pass
+    except: pass
+  
+       
+  
 class GifRoutesDetails(models.Model):
   _name = 'gif.routes.details'
   _description = 'Detalles de las rutas'
@@ -267,10 +266,10 @@ class GifRoutesDetails(models.Model):
           if nam == i.id:
             selet.append(i.name) 
                
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('route_id', '=', None), ('name', 'ilike', '%FVMXN'), ('name', 'not in', selet)]}}
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('name', 'ilike', '%INV'), ('name', 'not in', selet)]}}
 
 class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Many2one(string='Rutas', readonly=True)
+  route_id = fields.Many2one(comodel_name='gif.delivery.routes',string='Rutas')

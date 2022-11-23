@@ -22,6 +22,7 @@
                 </xpath>
             </field>
         </record>
+        
 
         <record model="ir.ui.view" id="vehicle_config_inh_form">
             <field name="name">vehicle.config.inh.form</field>
@@ -31,7 +32,7 @@
                 <xpath expr="//field[@name='vehicle_config']" position="after">
                    <field name="cargo_insurer"/>
                    <field name="cargo_policy"/>
-                   <field name="sure_primex"/>
+                   <field name="sure_prime"/>
                 </xpath>
             </field>
         </record>

@@ -11,6 +11,7 @@
            'views/gif_load_note.xml',
            'views/consignment_inh_views.xml',
            'security/ir.model.access.csv',
+           'data/data.xml'
             ],
   'qweb': [
   ],
