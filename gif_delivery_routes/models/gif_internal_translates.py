@@ -133,7 +133,7 @@ class GifInternalRoutes(models.Model):
       else:
         record.plates =''
         
-  def action_report(self):
+  def action_reportt(self):
    return self.env.ref('gif_delivery_routes.action_report_internal_routes').report_action(self)
 
 

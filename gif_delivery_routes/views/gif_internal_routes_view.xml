@@ -7,7 +7,7 @@
 
     <form string="deilvery_routes">
       <header>
-        <button  name="action_report" type="object" string="Imprimir en pdf" />   
+        <button  name="action_reportt" type="object" string="Imprimir en pdf" />   
 
         <button id='btn_draft'   name='action_draft'   class='btn-primary' string='Regresar a borrador' states='cancel,done'         type='object'/>
         <button id='btn_done'    name='action_done'    class='btn-primary' string='Hecho'               states='draft'          type='object' />

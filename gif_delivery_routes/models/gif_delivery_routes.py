@@ -156,7 +156,7 @@ class GifDeliveriRoutes(models.Model):
       else:
         record.plates =''
         
-  def action_report(self):
+  def action_reportt(self):
    return self.env.ref('gif_delivery_routes.action_report_delivery_routes').report_action(self)
 
 
@@ -273,3 +273,8 @@ class ValidationInvoiceField(models.Model):
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
   route_id = fields.Many2one(comodel_name='gif.delivery.routes',string='Rutas')
+
+class IrActionReport(models.Model):
+    _inherit = 'ir.actions.report'
+
+    device_id = fields.Many2one('iot.device', ondelete='restrict', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")

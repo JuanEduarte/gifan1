@@ -15,6 +15,7 @@ class gif_masive_payment_Wizard(models.TransientModel):
     file_name = fields.Char('nombre del archivo')
     gif_journal = fields.Many2one( comodel_name='account.journal', string='Diario')
     confirm = fields.Char(string='Confirmar') 
+    payment_register_ids = fields.One2many('account.payment', 'masive_payment', string='payment_register')
     
     gif_masive_payment_wzr = fields.One2many(comodel_name='gif.masive.payment.line.wzr', inverse_name='gif_masive_payment', string='a')
     memo = []
@@ -31,25 +32,35 @@ class gif_masive_payment_Wizard(models.TransientModel):
         customer = []
         for l in archive:
             customer.append(l)
+            for line in customer:
+                invoice = line['Factura de venta']
             p = customer[0]['Cliente']
-            res = self.env['res.partner'].search([('name', '=', p)])
+            res = self.env['account.move'].search([('name', '=', invoice)])
+            if not res:
+                print('Correcto')
             if self.gif_journal:
-              print('0000', self.gif_journal)
+              print('0000', self.gif_journal.name)
 
             limit += 1
             if limit > 0:
                 break
-            print(res.name)
-            print(res.bank_ids.display_name)
-            print(res.bank_ids.journal_id)
-            print('****', p)
 
         archive_lines = []
         for line in archive:
             archive_lines.append(line)
+            invoice = line['Factura de venta']
+            inv = self.env['account.move'].search([('name', '=', invoice)])
+            if inv:
+                pay = self.env['account.payment'].create([{
+                    'masive_payment':self.id,
+                }])
+            elif not inv:
+                    print('Correcto')
             self.memo.append(line['Factura de venta'])
             for line in archive_lines:
                 cliente = p
+                
+           
             print(cliente, line['Factura de venta'], line['Importe'])
             for record in self:
                 if cliente:
@@ -58,7 +69,6 @@ class gif_masive_payment_Wizard(models.TransientModel):
                         'client': cliente,
                         'invoice_id': line['Factura de venta'],
                         'amount':line['Importe'],
-                        'partner':res.bank_ids.display_name,
                     }])
 
                 else:
@@ -68,15 +78,13 @@ class gif_masive_payment_Wizard(models.TransientModel):
             'res_model': 'gif.masive.payment.wizard',
             'view_mode': 'form',
             'res_id':self.id,
-            'target': 'new',
             }
     def action_confirm(self):
-            if self.gif_masive_payment_wzr:
-               payment = self.env['account.payment'].create(('memo',{}))
+            
 
                print('AAAAAAAAAAAAA',self.memo)
-            else:
-                print('This is stupid')
+            
+               print('This is stupid')
             
     
 
@@ -93,3 +101,23 @@ class GifMasivePaymentLine(models.Model):
     memo = fields.Char(string='memo')
 
     gif_masive_payment = fields.Many2one(comodel_name='gif.masive.payment.wizard')
+
+    @api.onchange('amount')
+    def amount_depends(self):
+        print('AAAAAAAAA', self.amount)
+        for record in self:
+            print(record)
+    def action_confirm(self):
+            
+
+               print('AAAAAAAAAAAAA')
+            
+               print('This is stupid')
+
+
+
+class PaymentRegister(models.TransientModel):
+    _name = 'account.payment'
+    _description = 'New Field'
+
+    masive_payment = fields.Many2one(comodel_name='gif.masive.payment.wizard', string='masive')
