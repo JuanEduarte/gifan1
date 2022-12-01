@@ -25,7 +25,7 @@
 
               <field name="customer" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
               <field name="carrier_origin" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
-              <field name="carrier" attrs="{'readonly': ['|',('state', '=', 'confirm'),('carrier_origin', '=', 'intern'),('state', '=', 'return')]}" />
+              <field name="carrier"        attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
               <field name="vehicle_number" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')], 'invisible': [('carrier_origin', '!=', 'intern')]}" />
               <field name="plates" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}" />
               <field name="carrier_marca" attrs="{'invisible': [('carrier_origin', '!=', 'extern')]}"/>
@@ -43,7 +43,7 @@
 
           <notebook >
             <page string="Detalles del personal" >
-              <field name="gif_personal_details" >
+              <field name="gif_personal_details" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" >
                 <tree editable="botton">
                   <field name="secuence" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
                   <field name="employe_name" attrs="{'invisible': [('carrier_origin', '!=', 'intern')]}"/>
@@ -60,30 +60,26 @@
           </notebook>
 
           <notebook>
-
-            <page string="Detalles de Ruta" >
-
-              <field name="gif_routes_details"  attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'cancel'),('state', '=', 'return')]}" >
+            <page string="Detalles de Ruta">
+              <field name="gif_routes_details" attrs="{'readonly': [('state', 'not in', ['draft','done'])]}" >
                 <tree editable="botton">
                   <field name="secuence" />
                   <field name="invoice" />
                   <field name='client' />
                   <field name='order' />
-                  <field name='importe' />
+                  <field name='importe'/>
                 </tree>
               </field>
-
             </page>
-
-
           </notebook>
+          
           <group>
-            <field name="total" />
+            <field name="total" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}"/>
           </group>
-          <group>
-            <field name="flete" />
-            <field name="seguros" />
-            <field name="maniobras" />
+          <group >
+            <field name="flete" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}" />
+            <field name="seguros" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}"/>
+            <field name="maniobras" attrs="{'readonly': ['|',('state', '=', 'confirm'),('state', '=', 'return')]}"/>
           </group>
 
         </sheet>

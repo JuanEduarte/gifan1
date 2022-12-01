@@ -1,5 +1,6 @@
 import base64
 import os  
+from os import remove
 import zipfile
 import pandas as pd
 from odoo import api, fields, models
@@ -30,23 +31,22 @@ class ConsignmentNote(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
+        self.invoice_ids.clear()
         rec = super(ConsignmentNote, self).default_get(fields)
         id_ctx = self.env.context.get('active_ids', False)
         rec['Invoice_id'] = id_ctx
         for i in id_ctx:
+          
           if i not in self.invoice_ids:
             self.invoice_ids.append(i)
         return rec
           
 
     def create_report(self):
+      
       for record in self:
-        
-        for folder, subfolders, files in os.walk('/odoo/custom/addons/Report_data/'):
-          for file in files:
-            os.remove('/odoo/custom/addons/Report_data/'+file)
-        
         for i in self.invoice_ids:
+          
           Dta = []
           Inv = self.env['account.move'].search([('id','=', i)])
           for record in self:
@@ -116,12 +116,12 @@ class ConsignmentNote(models.TransientModel):
           string = i.name
           new_string = string.replace('/', "")
             
-          df = pd.DataFrame(Dta, columns=['Id de origen','RFCOrigen','Origen','NumRegIdTribO','FechaSalida','HoraSalida','DistanciaOrigen','CalleOrigen','NumExtOrigen','NumIntOrigen','ColoniaOrigen','LocalidadOrigen','ReferenciaOrigen','MunicipioOrigen','EstadoOrigen','PaisOrigen','CPOrigen',    'Id de destino','RFC de Destino','Destino','NumRegIdTribD','FechaLlegada', 'HoraLlegada','DistanciaDestino','CalleDestino','NumExtDestino','NumIntDestino','ColoniaDestino','LocalidadDestino','ReferenciaDestino','MunicipioDestino','EstadoDestino','PaisDestino','CPDestino','BienesTransp','Clave STCC','Mercancia', 'Cantidad','ClaveUnidad','Unidad','Dimensiones','MaterialPeligroso','CveMaterialPeligroso','Embalaje','PesoEnKg','ValorMercancia','Moneda','FraccionArancelaria','UUIDComercioExt','Pedimento'])
+          df  = pd.DataFrame(Dta, columns=['Id de origen','RFCOrigen','Origen','NumRegIdTribO','FechaSalida','HoraSalida','DistanciaOrigen','CalleOrigen','NumExtOrigen','NumIntOrigen','ColoniaOrigen','LocalidadOrigen','ReferenciaOrigen','MunicipioOrigen','EstadoOrigen','PaisOrigen','CPOrigen',    'Id de destino','RFC de Destino','Destino','NumRegIdTribD','FechaLlegada', 'HoraLlegada','DistanciaDestino','CalleDestino','NumExtDestino','NumIntDestino','ColoniaDestino','LocalidadDestino','ReferenciaDestino','MunicipioDestino','EstadoDestino','PaisDestino','CPDestino','BienesTransp','Clave STCC','Mercancia', 'Cantidad','ClaveUnidad','Unidad','Dimensiones','MaterialPeligroso','CveMaterialPeligroso','Embalaje','PesoEnKg','ValorMercancia','Moneda','FraccionArancelaria','UUIDComercioExt','Pedimento'])
           df1 = pd.DataFrame( columns=['TipoFigura','RFC','Nombre','licencia','Pais','NumRegIdTribO','ParteTransporte'])
           df2 = pd.DataFrame( columns=['PermisoSCT','NoPermiso','Configuracinvehicular','Placas','Modelo','Remolque1','Placas1','Remolque2','Placas2','AseguradoraCivil','PolizaCivil','AseguradoraMedioAmb','PolizaMedioAmb','AseguradoraCarga','Polizacarga','PrimaSeguro'])
           
           with pd.ExcelWriter('/odoo/custom/addons/Report_data/'+ new_string +'.xlsx', engine='xlsxwriter') as writer:
-            df.to_excel(writer,  sheet_name='CartaPorte')
+            df.to_excel (writer,  sheet_name='CartaPorte')
             df1.to_excel(writer, sheet_name='FigurasTransporte')
             df2.to_excel(writer, sheet_name='Transporte')
           

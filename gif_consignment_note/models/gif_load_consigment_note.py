@@ -1,9 +1,7 @@
 from odoo import models, fields, api, _
 import pandas as pd
 import base64
-import openpyxl
-import xlrd
-from odoo.exceptions import UserError
+
 
 
 class GifloadNote(models.Model):
@@ -64,10 +62,8 @@ class GifloadNote(models.Model):
     Polizacarga           = fields.Char(string='Polizacarga')
     PrimaSeguro           = fields.Char(string='PrimaSeguro')
     
-    
     CartaPorte_page        = fields.One2many(comodel_name='consignment.note.report', inverse_name='Origin_report_data', string='Page de la carta')
-    
-    FigurasTransporte_page = fields.One2many(comodel_name='figuras.transporte.page', inverse_name='FigurasTransporte_report', string='Page de las figuras de transporte')
+    FigurasTransporte_page = fields.One2many(comodel_name='figuras.transporte.page', inverse_name='FigurasTransporte_report', string='Page de las figuras de transporte', store=True)
     
     
     @api.model
@@ -114,24 +110,25 @@ class GifloadNote(models.Model):
           'Nombre': origin.name,
           'licencia':origin.l10n_mx_edi_operator_licence,
           'Pais': origin.country_id.name,
-          
-          
         }])
 
-  
 
     def files_data(self):
+        list1 = []
+        
         for record in self:
+            list1.append((record.id, record.ConfType.name, record.PermisoSCT))
             data = record.file
             file_contents = base64.decodestring(data)
             xlsx = pd.ExcelFile(file_contents, engine='openpyxl')
             df = pd.read_excel(xlsx, sheet_name='CartaPorte')
+         
             for i in df.index:
               typef = self.env['l10n_mx_edi.vehicle'].search([('id', '=', 7)])
               report_rel = self.env['consignment.note.report'].create([{
                 'Origin_report_data' : self.id,
                 'BienesTransp'       : df[['BienesTransp'][0]][i],
-                'ClaveSTCC'         : df[['Clave STCC'][0]][i],
+                'ClaveSTCC'          : df[['Clave STCC'][0]][i],
                 'Mercancia'          : df[['Mercancia'][0]][i],
                 'Cantidad'           : df[['Cantidad'][0]][i],
                 'ClaveUnidad'        : df[['ClaveUnidad'][0]][i],
@@ -147,43 +144,151 @@ class GifloadNote(models.Model):
                 'UUIDComercioExt'    : df[['UUIDComercioExt'][0]][i],
                 'Pedimento'          : df[['Pedimento'][0]][i],
               }])
-              
-        self.IdOrigen = df[['Id de origen'][0]][0]
-        self.RFCOrigen = df[['RFCOrigen'][0]][0]
-        self.Origen = df[['Origen'][0]][0]
-        self.NumRegIdTribO = df[['NumRegIdTribO'][0]][0]
-        self.FechaSalida = df[['FechaSalida'][0]][0]
-        self.HoraSalida = df[['HoraSalida'][0]][0]
-        self.DistanciaOrigen = df[['DistanciaOrigen'][0]][0]
-        self.CalleOrigen = df[['CalleOrigen'][0]][0]
-        self.NumExtOrigen = df[['NumExtOrigen'][0]][0]
-        self.NumIntOrigen = df[['NumIntOrigen'][0]][0]
-        self.ColoniaOrigen = df[['ColoniaOrigen'][0]][0]
-        self.LocalidadOrigen = df[['LocalidadOrigen'][0]][0]
-        self.ReferenciaOrigen = df[['ReferenciaOrigen'][0]][0]
-        self.MunicipioOrigen = df[['MunicipioOrigen'][0]][0]
-        self.EstadoOrigen = df[['EstadoOrigen'][0]][0]
-        self.PaisOrigen = df[['PaisOrigen'][0]][0]
-        self.CPOrigen = df[['CPOrigen'][0]][0]
-        self.IdDestino = df[['Id de destino'][0]][0]
-        self.RFCDestino = df[['RFC de Destino'][0]][0]
-        self.Destino = df[['Destino'][0]][0]
-        self.NumRegIdTribD = df[['NumRegIdTribD'][0]][0]
-        self.FechaLlegada = df[['FechaLlegada'][0]][0]
-        self.HoraLlegada = df[['HoraLlegada'][0]][0]
-        self.DistanciaDestino = df[['DistanciaDestino'][0]][0]
-        self.CalleDestino = df[['CalleDestino'][0]][0]
-        self.NumExtDestino = df[['NumExtDestino'][0]][0]
-        self.NumIntDestino = df[['NumIntDestino'][0]][0]
-        self.ColoniaDestino = df[['ColoniaDestino'][0]][0]
-        self.LocalidadDestino = df[['LocalidadDestino'][0]][0]
-        self.ReferenciaDestino = df[['ReferenciaDestino'][0]][0]
-        self.MunicipioDestino = df[['MunicipioDestino'][0]][0]
-        self.EstadoDestino = df[['EstadoDestino'][0]][0]
-        self.PaisDestino = df[['PaisDestino'][0]][0]
-        self.CPDestino = df[['CPDestino'][0]][0]
-        
 
+            
+        self.IdOrigen          = df[['Id de origen'][0]][0]
+        self.RFCOrigen         = df[['RFCOrigen'][0]][0]
+        self.Origen            = df[['Origen'][0]][0]
+        self.NumRegIdTribO     = df[['NumRegIdTribO'][0]][0]
+        self.FechaSalida       = df[['FechaSalida'][0]][0]
+        self.HoraSalida        = df[['HoraSalida'][0]][0]
+        self.DistanciaOrigen   = df[['DistanciaOrigen'][0]][0]
+        self.CalleOrigen       = df[['CalleOrigen'][0]][0]
+        self.NumExtOrigen      = df[['NumExtOrigen'][0]][0]
+        self.NumIntOrigen      = df[['NumIntOrigen'][0]][0]
+        self.ColoniaOrigen     = df[['ColoniaOrigen'][0]][0]
+        self.LocalidadOrigen   = df[['LocalidadOrigen'][0]][0]
+        self.ReferenciaOrigen  = df[['ReferenciaOrigen'][0]][0]
+        self.MunicipioOrigen   = df[['MunicipioOrigen'][0]][0]
+        self.EstadoOrigen      = df[['EstadoOrigen'][0]][0]
+        self.PaisOrigen        = df[['PaisOrigen'][0]][0]
+        self.CPOrigen          = df[['CPOrigen'][0]][0]
+        self.IdDestino         = df[['Id de destino'][0]][0]
+        self.RFCDestino        = df[['RFC de Destino'][0]][0]
+        self.Destino           = df[['Destino'][0]][0]
+        self.NumRegIdTribD     = df[['NumRegIdTribD'][0]][0]
+        self.FechaLlegada      = df[['FechaLlegada'][0]][0]
+        self.HoraLlegada       = df[['HoraLlegada'][0]][0]
+        self.DistanciaDestino  = df[['DistanciaDestino'][0]][0]
+        self.CalleDestino      = df[['CalleDestino'][0]][0]
+        self.NumExtDestino     = df[['NumExtDestino'][0]][0]
+        self.NumIntDestino     = df[['NumIntDestino'][0]][0]
+        self.ColoniaDestino    = df[['ColoniaDestino'][0]][0]
+        self.LocalidadDestino  = df[['LocalidadDestino'][0]][0]
+        self.ReferenciaDestino = df[['ReferenciaDestino'][0]][0]
+        self.MunicipioDestino  = df[['MunicipioDestino'][0]][0]
+        self.EstadoDestino     = df[['EstadoDestino'][0]][0]
+        self.PaisDestino       = df[['PaisDestino'][0]][0]
+        self.CPDestino         = df[['CPDestino'][0]][0]
+    
+    Dta1 = []
+    Dta2 = []
+    Dta3 = []
+    @api.onchange('ConfType')
+    def get_full_data(self):
+      for record in self:
+        for i in record.CartaPorte_page:
+          self.Dta1.append((
+                            self.IdOrigen,
+                            self.RFCOrigen,
+                            self.Origen,
+                            self.NumRegIdTribO,
+                            self.FechaSalida,
+                            self.HoraSalida,
+                            self.DistanciaOrigen,
+                            self.CalleOrigen,
+                            self.NumExtOrigen,
+                            self.NumIntOrigen,
+                            self.ColoniaOrigen,
+                            self.LocalidadOrigen,
+                            self.ReferenciaOrigen,
+                            self.MunicipioOrigen,
+                            self.EstadoOrigen,
+                            self.PaisOrigen,
+                            self.CPOrigen,
+                            self.IdDestino,
+                            self.RFCDestino,
+                            self.Destino,
+                            self.NumRegIdTribD,
+                            self.FechaLlegada,
+                            self.HoraLlegada,
+                            self.DistanciaDestino,
+                            self.CalleDestino,
+                            self.NumExtDestino,
+                            self.NumIntDestino,
+                            self.ColoniaDestino,
+                            self.LocalidadDestino,
+                            self.ReferenciaDestino,
+                            self.MunicipioDestino,
+                            self.EstadoDestino,
+                            self.PaisDestino,
+                            self.CPDestino,
+                            i.BienesTransp, 
+                            i.ClaveSTCC,
+                            i.Mercancia,
+                            i.Cantidad,
+                            i.ClaveUnidad,
+                            i.Unidad,
+                            i.Dimensiones,
+                            i.MaterialPeligroso,
+                            i.CveMaterialPeligroso,
+                            i.Embalaje,
+                            i.PesoEnKg,
+                            i.ValorMercancia,
+                            i.Moneda,
+                            i.FraccionArancelaria,
+                            i.UUIDComercioExt,
+                            i.Pedimento,
+                            ))
+                 
+        for j in record.FigurasTransporte_page:
+          self.Dta2.append((
+            j.TipoFigura,
+            j.RFC,
+            j.Nombre,
+            j.licencia,
+            j.Pais,
+            j.NumRegIdTribO,
+            j.ParteTransporte,
+          ))
+           
+      self.Dta3.append((
+            self.PermisoSCT,           
+            self.NoPermiso,            
+            self.Configuracinvehicular,
+            self.Placas,              
+            self.Modelo,               
+            self.Remolque1,            
+            self.Placas1,              
+            self.Remolque2,           
+            self.Placas2,              
+            self.AseguradoraCivil,     
+            self.PolizaCivil,          
+            self.AseguradoraMedioAmb,  
+            self.PolizaMedioAmb,       
+            self.AseguradoraCarga,     
+            self.Polizacarga,          
+            self.PrimaSeguro,          
+      ))
+      
+      
+      df  = pd.DataFrame(self.Dta1, columns=['Id de origen','RFCOrigen','Origen','NumRegIdTribO','FechaSalida','HoraSalida','DistanciaOrigen','CalleOrigen','NumExtOrigen','NumIntOrigen','ColoniaOrigen','LocalidadOrigen','ReferenciaOrigen','MunicipioOrigen','EstadoOrigen','PaisOrigen','CPOrigen',    'Id de destino','RFC de Destino','Destino','NumRegIdTribD','FechaLlegada', 'HoraLlegada','DistanciaDestino','CalleDestino','NumExtDestino','NumIntDestino','ColoniaDestino','LocalidadDestino','ReferenciaDestino','MunicipioDestino','EstadoDestino','PaisDestino','CPDestino','BienesTransp','Clave STCC','Mercancia', 'Cantidad','ClaveUnidad','Unidad','Dimensiones','MaterialPeligroso','CveMaterialPeligroso','Embalaje','PesoEnKg','ValorMercancia','Moneda','FraccionArancelaria','UUIDComercioExt','Pedimento'])
+      df1 = pd.DataFrame(self.Dta2, columns=['TipoFigura','RFC','Nombre','licencia','Pais','NumRegIdTribO','ParteTransporte'])
+      df2 = pd.DataFrame(self.Dta3, columns=['PermisoSCT','NoPermiso','Configuracinvehicular','Placas','Modelo','Remolque1','Placas1','Remolque2','Placas2','AseguradoraCivil','PolizaCivil','AseguradoraMedioAmb','PolizaMedioAmb','AseguradoraCarga','Polizacarga','PrimaSeguro'])
+          
+      with pd.ExcelWriter('data.xlsx', engine='xlsxwriter') as writer:
+          df.to_excel (writer,  sheet_name='CartaPorte')
+          df1.to_excel(writer, sheet_name='FigurasTransporte')
+          df2.to_excel(writer, sheet_name='Transporte')
+      writer.close()
+      
+      
+      encoded = base64.b64encode(open(writer, 'rb').read())
+      
+      record.file = encoded
+      
+      
+      
              #######Modelos de tablas o pages#######
 
   #*****************Descripcion de origen, destino y Prooductos**************

@@ -17,16 +17,17 @@
             </group>
           </group>
           <notebook>
-                      <page string="Detalles del personal">
-                        <field name="gif_masive_payment_wzr" >
-                          <tree editable="botton">
-                            <field name="client"/>
-                            <field name="invoice_id"/>
-                            <field name="amount" />
-                          </tree>
-                        </field>
-                      </page>
-                    </notebook> 
+            <page string="Detalles del personal">
+              <field name="gif_masive_payment_wzr" >
+                <tree editable="botton">
+                  <field name="client"/>
+                  <field name="invoice_id"/>
+                  <field name="amount" />
+                </tree>
+              </field>
+            </page>
+          </notebook> 
+          
           <footer>
             <button string="Cancel" special="cancel" class="oe_link" />
             <button name='action_confirm' string='Confirmar' class="btn-primary" />

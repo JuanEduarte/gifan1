@@ -70,7 +70,19 @@ class GifDeliveriRoutes(models.Model):
       for i in self.gif_routes_details.invoice:
         self.trd_invoice.append(i.name)
         print('tipo:Ruta de factura')
-    
+      for record in self:
+        for i in self.trd_invoice:
+              nam = i
+              for i in record.customer.invoice_ids:
+                if i.name == nam:
+                  i.route_id = record.id
+        for i in record.customer.invoice_ids:
+          if i.route_id == record.name and i.name not in self.trd_invoice:
+            i.route_id = None
+          else:
+            pass
+      
+      
   def action_confirm(self):
     if  not  self.gif_routes_details :
      raise UserError(('Debe haber registros en las lineas de detalles de rutas'))
@@ -94,9 +106,6 @@ class GifDeliveriRoutes(models.Model):
   def action_return(self):
     self.state='return'
   
-
-
-
   @api.model
   def create(self, vals):
       if vals.get('name', _('New')) == _('New'):
@@ -104,25 +113,17 @@ class GifDeliveriRoutes(models.Model):
       result = super(GifDeliveriRoutes, self).create(vals)
       return result
 
-
-
-
   @api.onchange("carrier_origin")
   def _onchange_carrier_origin(self):
     for record in self:
       if record.carrier_origin == 'intern':
         record.carrier = 7
       
-        
-    
-    
-    
   @api.onchange('customer')
   def _onchange_customer_select(self):
     for record in (self): 
       for i in record.customer:
         return {'domain':{'child_ids':[('id', 'in', record.customer.child_ids.ids)]}}
-
 
   @api.onchange('child_ids')
   def _onchange_customer(self):
@@ -130,7 +131,7 @@ class GifDeliveriRoutes(models.Model):
     for record in (self):
      if len(record.gif_routes_details) == 0:
         for i in record.customer.invoice_ids:
-          if i.state == 'posted' and i.route_id.id == False and record.child_ids == i.partner_shipping_id: 
+          if i.state == 'posted' and i.route_id.id == False and record.child_ids == i.partner_shipping_id and i.move_type == 'out_invoice': 
             b =+ 1
             invoice_rel =self.env['gif.routes.details'].create([{
               'gif_delivery_id': record.id,
@@ -231,7 +232,6 @@ class GifRoutesDetails(models.Model):
   importe  = fields.Char(string='Importe', compute='_onchange_invoice')
   order = fields.Char(string = 'Orden de venta', compute='_onchange_invoice')
   validate = fields.Char(String='validar')
-  state =fields.Selection([('draft','Borrador'),('done','Hecho'),('confirm','Confirmado'),('cancel','Cancelado')], default='draft', string='Status' )
   
   
   @api.onchange('invoice')
@@ -250,11 +250,7 @@ class GifRoutesDetails(models.Model):
         record.client = ''
         record.secuence = a
         
-  @api.onchange('gif_delivery_id.state')
-  def _onchange_move_field(self):
-    for record in (self): 
-      record.state = record.gif_delivery_id.state
-        
+
   @api.depends('gif_delivery_id.customer')
   @api.onchange('invoice')
   def _onchange_customer_select(self):
@@ -266,7 +262,7 @@ class GifRoutesDetails(models.Model):
           if nam == i.id:
             selet.append(i.name) 
                
-      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'), ('name', 'ilike', '%INV'), ('name', 'not in', selet)]}}
+      return {'domain':{'invoice':[('partner_id', '=', record.gif_delivery_id.customer.id),('state', '=', 'posted'),('route_id','=', None),('move_type', '=', 'out_invoice'), ('name', 'not in', selet)]}}
 
 class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
@@ -274,7 +270,3 @@ class ValidationInvoiceField(models.Model):
   Route = fields.Many2one(comodel_name='gif.routes.details')
   route_id = fields.Many2one(comodel_name='gif.delivery.routes',string='Rutas')
 
-class IrActionReport(models.Model):
-    _inherit = 'ir.actions.report'
-
-    device_id = fields.Many2one('iot.device', ondelete='restrict', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")

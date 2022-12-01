@@ -20,7 +20,7 @@
   'installable': True,
   'application': True,
   'category': '- Arkademy Part 1',
-  'summary': 'Catat Penjualan Sederhana',
+  'summary': 'Creacion del reporte Excel de carta porte',
   'license': 'OPL-1',
   'description': '-'
 }
