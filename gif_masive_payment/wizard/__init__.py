@@ -1,1 +1,1 @@
-from . import gif_import_payment_wizard
+from ..models import gif_import_payment_wizard
