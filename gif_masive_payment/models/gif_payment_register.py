@@ -1,7 +1,7 @@
 from odoo import models,api,fields,_
 
 
-class AccountPaymentRegister(models.TransientModel):
+class AccountPaymentRegist(models.TransientModel):
     _inherit = 'account.payment.register'
 
     

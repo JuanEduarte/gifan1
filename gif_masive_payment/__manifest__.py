@@ -23,6 +23,7 @@
       'security/ir.model.access.csv',
       'views/gif_import_payment_wizard.xml',
       'data/data.xml',
+      'wizard/inh_wzrd_payment_register.xml'
     ],
     'installable': True,
     'application': True,

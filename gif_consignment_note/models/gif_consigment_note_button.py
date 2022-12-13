@@ -41,7 +41,7 @@ class GifConsigmentNoteButton(models.Model):
       elif l == 1 :
         create = {
               'type': 'ir.actions.act_window',
-              'res_model': 'account.payment.register',
+              'res_model': 'gif.consignment.note',
               'target': 'new',
               'view_mode': 'form',
               }

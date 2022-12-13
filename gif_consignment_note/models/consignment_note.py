@@ -27,10 +27,11 @@ class ConsignmentNote(models.TransientModel):
     UUIDComercioExt = fields.Integer(string='UUID de Comercio exterior')
     get_template = fields.Binary('Template')
 
-    invoice_ids = []
+    
 
     @api.model
     def default_get(self, fields):
+      
         self.invoice_ids.clear()
         rec = super(ConsignmentNote, self).default_get(fields)
         id_ctx = self.env.context.get('active_ids', False)
@@ -109,7 +110,7 @@ class ConsignmentNote(models.TransientModel):
               j.product_id.weight,
               originInvoice.order_line.price_subtotal,
               i.currency_id.name,
-              j.product_id.l10n_mx_edi_tariff_fraction_id,
+              j.product_id.l10n_mx_edi_tariff_fraction_id.name,
               i.gif_invoice_uuid,
               j.l10n_mx_edi_customs_number
               ))

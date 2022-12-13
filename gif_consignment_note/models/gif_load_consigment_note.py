@@ -8,7 +8,7 @@ class GifloadNote(models.Model):
     _name = 'gif.load.note'
 
     name = fields.Char(string='Reporte de Carta Porte',index=True, default=lambda self: _('New'))
-    file = fields.Binary(string='Suba su archivo')
+    file = fields.Binary(string='Suba su archivo',store=True)
     IdOrigen             = fields.Char(string='Id de origen')
     RFCOrigen            = fields.Char(string='RFCOrigen')
     Origen               = fields.Char(string='Origen')
@@ -44,7 +44,7 @@ class GifloadNote(models.Model):
     PaisDestino          = fields.Char(string='PaisDestino')
     CPDestino            = fields.Char(string='CPDestino')
 
-    ConfType              = fields.Many2one(comodel_name='l10n_mx_edi.vehicle', string='Configuracion del vehiculo')
+    ConfType              = fields.Many2one(comodel_name='l10n_mx_edi.vehicle', string='Configuracion del vehiculo',store=True)
     PermisoSCT            = fields.Char(string='PermisoSCT')
     NoPermiso             = fields.Char(string='NoPermiso')
     Configuracinvehicular = fields.Char(string='Configuracinvehicular')
@@ -62,7 +62,7 @@ class GifloadNote(models.Model):
     Polizacarga           = fields.Char(string='Polizacarga')
     PrimaSeguro           = fields.Char(string='PrimaSeguro')
     
-    CartaPorte_page        = fields.One2many(comodel_name='consignment.note.report', inverse_name='Origin_report_data', string='Page de la carta')
+    CartaPorte_page        = fields.One2many(comodel_name='consignment.note.report', inverse_name='Origin_report_data', string='Page de la carta', store=True)
     FigurasTransporte_page = fields.One2many(comodel_name='figuras.transporte.page', inverse_name='FigurasTransporte_report', string='Page de las figuras de transporte', store=True)
     
     
@@ -122,10 +122,11 @@ class GifloadNote(models.Model):
             file_contents = base64.decodestring(data)
             xlsx = pd.ExcelFile(file_contents, engine='openpyxl')
             df = pd.read_excel(xlsx, sheet_name='CartaPorte')
-         
+          
             for i in df.index:
               typef = self.env['l10n_mx_edi.vehicle'].search([('id', '=', 7)])
-              report_rel = self.env['consignment.note.report'].create([{
+              if self.IdOrigen != None or self.IdOrigen != False:
+               report_rel = self.env['consignment.note.report'].create([{
                 'Origin_report_data' : self.id,
                 'BienesTransp'       : df[['BienesTransp'][0]][i],
                 'ClaveSTCC'          : df[['Clave STCC'][0]][i],
@@ -242,35 +243,37 @@ class GifloadNote(models.Model):
                             ))
                  
         for j in record.FigurasTransporte_page:
-          self.Dta2.append((
-            j.TipoFigura,
-            j.RFC,
-            j.Nombre,
-            j.licencia,
-            j.Pais,
-            j.NumRegIdTribO,
-            j.ParteTransporte,
-          ))
-           
-      self.Dta3.append((
-            self.PermisoSCT,           
-            self.NoPermiso,            
-            self.Configuracinvehicular,
-            self.Placas,              
-            self.Modelo,               
-            self.Remolque1,            
-            self.Placas1,              
-            self.Remolque2,           
-            self.Placas2,              
-            self.AseguradoraCivil,     
-            self.PolizaCivil,          
-            self.AseguradoraMedioAmb,  
-            self.PolizaMedioAmb,       
-            self.AseguradoraCarga,     
-            self.Polizacarga,          
-            self.PrimaSeguro,          
-      ))
-      
+          if j != 0:
+            self.Dta2.append((
+              j.TipoFigura,
+              j.RFC,
+              j.Nombre,
+              j.licencia,
+              j.Pais,
+              j.NumRegIdTribO,
+              j.ParteTransporte,
+            ))
+        print('~~~~~~~+',record)
+        if record.PermisoSCT != False:
+          self.Dta3.append((
+              self.PermisoSCT,           
+              self.NoPermiso,            
+              self.Configuracinvehicular,
+              self.Placas,              
+              self.Modelo,               
+              self.Remolque1,            
+              self.Placas1,              
+              self.Remolque2,           
+              self.Placas2,              
+              self.AseguradoraCivil,     
+              self.PolizaCivil,          
+              self.AseguradoraMedioAmb,  
+              self.PolizaMedioAmb,       
+              self.AseguradoraCarga,     
+              self.Polizacarga,          
+              self.PrimaSeguro,          
+        ))
+      print(self.Dta3)
       
       df  = pd.DataFrame(self.Dta1, columns=['Id de origen','RFCOrigen','Origen','NumRegIdTribO','FechaSalida','HoraSalida','DistanciaOrigen','CalleOrigen','NumExtOrigen','NumIntOrigen','ColoniaOrigen','LocalidadOrigen','ReferenciaOrigen','MunicipioOrigen','EstadoOrigen','PaisOrigen','CPOrigen',    'Id de destino','RFC de Destino','Destino','NumRegIdTribD','FechaLlegada', 'HoraLlegada','DistanciaDestino','CalleDestino','NumExtDestino','NumIntDestino','ColoniaDestino','LocalidadDestino','ReferenciaDestino','MunicipioDestino','EstadoDestino','PaisDestino','CPDestino','BienesTransp','Clave STCC','Mercancia', 'Cantidad','ClaveUnidad','Unidad','Dimensiones','MaterialPeligroso','CveMaterialPeligroso','Embalaje','PesoEnKg','ValorMercancia','Moneda','FraccionArancelaria','UUIDComercioExt','Pedimento'])
       df1 = pd.DataFrame(self.Dta2, columns=['TipoFigura','RFC','Nombre','licencia','Pais','NumRegIdTribO','ParteTransporte'])
@@ -281,7 +284,7 @@ class GifloadNote(models.Model):
           df1.to_excel(writer, sheet_name='FigurasTransporte')
           df2.to_excel(writer, sheet_name='Transporte')
       writer.close()
-      
+      print(writer)
       
       encoded = base64.b64encode(open(writer, 'rb').read())
       

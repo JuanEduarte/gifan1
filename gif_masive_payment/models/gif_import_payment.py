@@ -11,7 +11,7 @@ class gif_masive_payment_form(models.Model):
 
     _name = 'gif.masive.payment'
 
-    name = fields.Char(string='Borrador de pago masivo')
+    name = fields.Char    (string='Pago Masivo', required=True, copy=False, index=True, default=lambda self: _('Borrador de pago masivo'))
     file_data = fields.Binary('Archivo', required=True,)
     file_name = fields.Char('nombre del archivo')
     gif_journal = fields.Many2one(comodel_name='account.journal', string='Diario', domain="[('type', '=', 'bank')]")
@@ -26,13 +26,22 @@ class gif_masive_payment_form(models.Model):
     Payment_type = fields.Many2one(comodel_name='l10n_mx_edi.payment.method', string='Forma de pago')
     account = fields.Char(string='Cuenta bancaria de la empresa')
     client = fields.Many2one(comodel_name='res.partner',string='Cliente')
-            
 
 
     gif_masive_payment_wzr = fields.One2many(
         comodel_name='gif.masive.payment.line', inverse_name='gif_masive_payment', string='ax', store = True)
     memo = []
 
+    @api.model
+    def create(self, vals):
+      if vals.get('name', _('New')) == _('New'):
+        vals['name'] = self.env['ir.sequence'].next_by_code('gif.masive.payment') or _('New')
+      result = super(gif_masive_payment_form, self).create(vals)
+      return result
+    
+    inv_ids = []
+    amounts = []
+    
     def files_data(self):
         file_path = tempfile.gettempdir()+'/file.csv'
         data = self.file_data
@@ -41,12 +50,12 @@ class gif_masive_payment_form(models.Model):
         f.close()
         archive = csv.DictReader(open(file_path))
         
-        
         client_list = []
         archive_lines = []
         total = 0
-        
-        
+        self.inv_ids.clear()     
+        self.amounts.clear()
+        self.memo.clear()
         for line in archive:
             total += float(line['Importe'])
             self.memo.append(str(line['Factura de venta']))
@@ -60,7 +69,15 @@ class gif_masive_payment_form(models.Model):
                 clt = client_list[0]
                 archive_lines.append(line)
                 invoice = line['Factura de venta']
+                self.amounts.append(line['Importe'])
                 inv = self.env['account.move'].search([('name', '=', invoice)])
+                print('Amount',(line['Importe']))
+                print('Amount 1',inv.amount_residual)
+                '''if float(line['Importe']) != inv.amount_residual:
+                   raise UserError('El importe de la factura "'+inv.name+ '" no corresponde a la cantidad adeudada')'''
+                self.inv_ids.append(inv.id)
+                print(self.inv_ids)
+                print('++++++++++',self.amounts)
                 rel = self.env['gif.masive.payment.line'].create([{
                             'gif_masive_payment': self.id,
                             'client': clt,
@@ -77,13 +94,29 @@ class gif_masive_payment_form(models.Model):
     def gif_journal_onchange(self):
         for record in self:
             record.account = record.client.bank_account_count
-    
+        
+    invs = []      
     def return_payment(self):
+       
+        ctx = {
+            'active_model':'account.move',
+            'default_model':'gif.masive.payment',
+            'active_ids':self.inv_ids,
+            'amounts':self.amounts,
+            'journal_id': self.gif_journal,
+            'default_amount':self.total,
+            'default_ref':'INV/2022/00022',
+            'default_partner_id': self.client.id,
+            'default_journal_id': self.gif_journal.id,
+            
+        }
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.payment.register',
             'view_type': 'form',
             'view_mode': 'form',
+            'context': ctx,
+            'target': 'new'
             }
 
 class GifMasivePaymentLine(models.Model):

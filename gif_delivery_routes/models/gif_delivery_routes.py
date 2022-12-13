@@ -74,11 +74,13 @@ class GifDeliveriRoutes(models.Model):
         for i in self.trd_invoice:
               nam = i
               for i in record.customer.invoice_ids:
-                if i.name == nam:
-                  i.route_id = record.id
-        for i in record.customer.invoice_ids:
-          if i.route_id == record.name and i.name not in self.trd_invoice:
-            i.route_id = None
+                print('aaaaaaaaa',i.name, i.tentative_route.name)
+                if i.name == nam and not i.tentative_route and i.move_type == 'out_invoice':
+                  i.tentative_route = record.id
+        for i in record.gif_routes_details.invoice:
+          print(i.name, i.tentative_route, self.trd_invoice)
+          if i.tentative_route.name == record.name and i.name not in self.trd_invoice:
+            i.tentative_route = None
           else:
             pass
       
@@ -91,14 +93,19 @@ class GifDeliveriRoutes(models.Model):
       for record in self:
         for i in self.trd_invoice:
               nam = i
-              for i in record.customer.invoice_ids:
-                if i.name == nam:
+              for i in record.gif_routes_details.invoice:
+                print('+++++++++',i)
+                if i.name == nam and i.tentative_route.name != record.name and i in record.gif_routes_details.invoice:
+                  raise UserError(('La factura "'+i.name+'" se esta procesando en la  ruta "'+ i.tentative_route.name  +'"'))
+                else:
+                  print('########',i)
                   i.route_id = record.id
         for i in record.customer.invoice_ids:
           if i.route_id == record.name and i.name not in self.trd_invoice:
-            i.route_id = None
+              i.route_id = None
+              i.tentative_route = None
           else:
-            pass
+              pass
 
   def action_cancel(self):
     self.state='cancel'
@@ -268,5 +275,6 @@ class ValidationInvoiceField(models.Model):
   _inherit = 'account.move'
   
   Route = fields.Many2one(comodel_name='gif.routes.details')
-  route_id = fields.Many2one(comodel_name='gif.delivery.routes',string='Rutas')
+  route_id = fields.Many2one(comodel_name='gif.delivery.routes',string='Ruta')
+  tentative_route = fields.Many2one(comodel_name='gif.delivery.routes',string='Ruta tentativa')
 
