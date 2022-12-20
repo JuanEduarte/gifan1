@@ -141,6 +141,8 @@ class SaleOrder(models.Model):
                     temp = line.price_unit * record.gif_real_sale
                 else:
                     temp = line.price_unit
+                # if record.gif_IepsDisplay == False and (line.gif_SaleOrderIeps != 0.00 and line.gif_SaleOrderIeps != False):
+                #     porc = porc + line.gif_SaleOrderIeps
                 if porc <= temp:
                     pass
                 else:
@@ -199,26 +201,26 @@ class SaleOrderLine(models.Model):
     gif_is_different = fields.Boolean(string='Varia',default=False,compute='_get_diference_sale_sa')
     gif_use_dif = fields.Float(default = 0,compute="_onchange_price_unit_change_gif_temp_dif_sa")
 
-    @api.onchange('product_template_id')
-    def _onchange_product_template_id_reset_order_line_sa(self):
-        gif_pasa = False
-        for record in self:
-            if record.product_template_id.name == False or record.product_template_id.detailed_type != 'product':
-                gif_pasa = True
-            else:
-                gif_pasa = False
-                if record.product_template_id.partners_details:
-                    for p in record.product_template_id.partners_details:
-                        if (record.order_id.partner_id.name == p.partner.name or record.order_id.partner_id.name in p.partner.name) and record.order_id.pricelist_id.currency_id.name == p.currency_sale.name:
-                            gif_pasa = True
-                            break
-                        else:
-                            gif_pasa = False
-                else:
-                    gif_pasa = False
-            if gif_pasa == False:
-                record.product_template_id = None
-                raise exceptions.UserError(_('Este Cliente no tiene precios asignados a este producto.'))
+    # @api.onchange('product_template_id')
+    # def _onchange_product_template_id_reset_order_line_sa(self):
+    #     gif_pasa = False
+    #     for record in self:
+    #         if record.product_template_id.name == False or record.product_template_id.detailed_type != 'product':
+    #             gif_pasa = True
+    #         else:
+    #             gif_pasa = False
+    #             if record.product_template_id.partners_details:
+    #                 for p in record.product_template_id.partners_details:
+    #                     if (record.order_id.partner_id.name == p.partner.name or record.order_id.partner_id.name in p.partner.name) and record.order_id.pricelist_id.currency_id.name == p.currency_sale.name:
+    #                         gif_pasa = True
+    #                         break
+    #                     else:
+    #                         gif_pasa = False
+    #             else:
+    #                 gif_pasa = False
+    #         if gif_pasa == False:
+    #             record.product_template_id = None
+    #             raise exceptions.UserError(_('Este Cliente no tiene precios asignados a este producto.'))
     
 
     def _compute_pp_sales(self):

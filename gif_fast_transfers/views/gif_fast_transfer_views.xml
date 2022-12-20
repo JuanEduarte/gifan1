@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.fast.transfer tree view -->
+    <record id="gif_fast_transfer" model="ir.ui.view">
+        <field name="name">gif.fast.transfer.view.tree</field>
+        <field name="model">gif.fast.transfer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="gif_type"/>
+                <field name="gif_origin"/>
+                <!-- <field name="gif_sale_order" attrs="{'column_invisible': [('gif_type','in',['purchase','transfer'])]}"/>
+                <field name="gif_purchase_order" attrs="{'column_invisible': [('gif_type','in',['transfer','sale'])]}"/> -->
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- gif.fast.transfer form view -->
+    <record id="gif_fast_transfer_view_form" model="ir.ui.view">
+        <field name="name">gif.fast.transfer.view.form</field>
+        <field name="model">gif.fast.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Transferencias">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                    <button name="send_info" class="btn-primary" type="object" string="Confirmar" states="draft"/>
+                    <button string='Cancelar' class="btn-secondary" special="cancel" states="draft"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label"><field name="gif_type" readonly="1" nolabel="1"/></span>
+                        <!-- <span class="text-warning" attrs="{'invisible': [('show_name_warning', '=', False)]}">The current highest number is <field name="highest_name"/>. You might want to put a higher number here.</span> -->
+                        <h1 class="mt0">
+                            <field name="name" readonly="1"/>
+                        </h1> 
+                    </div>
+                    <group name="gif_capture" attrs="{'readonly': [('state','=','done')]}">
+                        <field name="company_id" invisible="1"/>
+                        <field name="gif_transfer_type" attrs="{'invisible': [('gif_type','!=','transfer')]}"/>
+                        <field name="gif_ubi_origin" attrs="{'invisible': [('gif_type','!=','transfer')]}"/>
+                        <field name="gif_ubi_dest" attrs="{'invisible': [('gif_type','!=','transfer')]}"/>
+                        <field name="gif_picking" readonly="1"/>
+                        <field name="gif_sale_order" readonly="1" attrs="{'invisible': [('gif_type','!=','sale')]}"/>
+                        <field name="gif_purchase_order" readonly="1" attrs="{'invisible': [('gif_type','!=','purchase')]}"/>
+                    </group>
+                    <field name="gif_fast_capture" attrs="{'readonly': [('state','=','done')]}">
+                        <tree editable="botton">
+                            <field name="gif_has_code" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="gif_product_code"/>
+                            <field name="gif_product" readonly="1"/>
+                            <field name="gif_location_code" attrs="{'readonly': [('gif_qty','=',0),('gif_has_code','=',True)]}"/>  <!--  -->
+                            <field name="gif_location" readonly="1"/>
+                            <field name="gif_date"/>
+                            <field name="gif_lot"/>
+                            <field name="gif_lot_id" invisible="1"/>
+                            <field name="gif_qty"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- gif.fast.transfer action window -->
+    <record id="gif_fast_transfer_action" model="ir.actions.act_window">
+        <field name="name">GIFAN Movimientos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.fast.transfer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Aún no hay moviemientos.
+            </p><p>
+                Por favor cree un movimiento.
+            </p>
+        </field>
+    </record>
+
+    <record id="gif_transfer_name" model="ir.sequence">
+        <field name="name">Auto Transfer Name</field>
+        <field name="code">gif.fast.transfer.name</field>
+        <field name="prefix">FTR</field>
+        <field name="padding">5</field>
+    </record>
+
+    <menuitem id="gif_fast_transfer_menu_categ" name="GIFAN Movimientos" parent="stock.menu_stock_warehouse_mgmt" sequence="30" />
+    <menuitem id="gif_fast_transfer_menu_act" name="Crear Movimiento" parent="gif_fast_transfer_menu_categ" action="gif_fast_transfer_action" sequence="1" />
+</odoo>

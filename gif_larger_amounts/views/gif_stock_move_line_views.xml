@@ -11,19 +11,12 @@
                 <xpath expr="//field[@name='product_uom_id']" position="after">
                     <field name="gif_unidad_stock" string="Unidades" readonly="1" force_save="1"/>
                 </xpath>
+                
                 <xpath expr="//field[@name='product_uom_id']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
             </field>
         </record>
-
-
-
-    
-
-
-
-
 
     </data>
 </odoo>

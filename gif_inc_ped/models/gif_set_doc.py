@@ -10,7 +10,7 @@ class GIFSetDoc(models.Model):
     gif_sec_des = fields.Char(string='Descripción')
     gif_con = fields.Char(string='Consecutivo')
     gif_has_iva = fields.Boolean(string='Incluye IVA')
-    gif_iva = fields.Integer(string='% IVA') #Solo editable Si tiene IVA
+    gif_iva = fields.Float(string='% IVA') #Solo editable Si tiene IVA
     gif_cost = fields.Boolean(string='Acum. Costo')
     gif_debit = fields.Char(string='Cuenta Cargo')
     gif_credit = fields.Char(string='Cuenta Abono')

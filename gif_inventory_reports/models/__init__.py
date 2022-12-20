@@ -1,5 +1,5 @@
 # Base y producto
-from . import gif_base_report
+# from . import gif_base_report
 from . import gif_product_centralized
 
 # Reportes

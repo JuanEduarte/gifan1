@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        
+        <template id="addenda_soriana" name="Adenda Soriana">
+            <Addenda
+                xmlns="https://edixcfdisecure.ekomercio.com/esquemas"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://edixcfdisecure.ekomercio.com/esquemas https://edixcfdisecure.ekomercio.com/esquemas/Soriana.xsd">
+
+                <DSCargaRemisionProv>
+                    <Remision
+                        t-att-Id="no_identify"
+                        t-att-RowOrder="no_identify">
+
+                        <Proveedor t-out="supplier_code" />
+                        <Remision t-out="record.name" />
+                        <Consecutivo>No reconocido</Consecutivo>
+                        <FechaRemision t-out="init_date" />
+                        <Tienda t-out="record.partner_shipping_id.ref" />
+                        <TipoMoneda>No reconocido</TipoMoneda>
+                        <TipoBulto> No reconocido </TipoBulto> 
+                        <EntregaMercancia> No reconocido </EntregaMercancia>
+                        <CumpleReqFiscales> Noreconocido </CumpleReqFiscales> 
+                        <CantidadBultos> No reconocido </CantidadBultos> 
+                        <Subtotal t-esc="format_float(total_price_subtotal_before_discount, currency_precision)" />
+                        <Descuentos t-esc="format_float(total_price_discount, currency_precision) if not record.currency_id.is_zero(total_price_discount) else 0.0" />
+
+                        <t t-if="tax_details_transferred['tax_details'] or tax_details_withholding['tax_details']">
+                            <t t-if="tax_details_withholding['tax_details']">
+                                <t t-foreach="tax_details_withholding['tax_details'].values()" t-as="tax_detail_vals">
+                                    <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+
+                                    <!-- IEPS -->
+                                    <t t-if="get_tax_cfdi_name(tax_detail_vals) == '003'">
+                                        <IEPS t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                    </t>
+
+                                    <!-- IVA -->
+                                    <t t-if="get_tax_cfdi_name(tax_detail_vals) == '002'">
+                                        <IVA t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                    </t>
+                                </t>
+                            </t>
+
+                            <t t-if="tax_details_transferred['tax_details']">
+                                <t t-foreach="tax_details_transferred['tax_details'].values()" t-as="tax_detail_vals">
+                                    <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                    
+                                    <!-- IEPS -->
+                                    <t t-if="get_tax_cfdi_name(tax_detail_vals) == '003'">
+                                        <IEPS t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                    </t>
+
+                                    <!-- IVA -->
+                                    <t t-if="get_tax_cfdi_name(tax_detail_vals) == '002'">
+                                        <IVA t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                    </t>
+                                </t>
+                            </t>
+                        </t>
+
+                        <OtrosImpuestos>otros impuestos</OtrosImpuestos>
+                        <Total t-esc="format_float(record.amount_total, currency_precision)" />
+                        <CantidadPedidos>No reconocidos</CantidadPedidos>
+                        <FechaEntregaMercancia t-out="cancel_date" />
+                        <Cita>No reconocido</Cita>
+                    </Remision>
+
+                    <Pedidos t-att-Id="no_identify" t-att-RowOrder="no_identify">
+                        <Proveedor t-out="supplier_code" />
+                        <Remision t-out="record.name"/>
+                        <FolioPedido t-out="sale_order_id.origin" />
+                        <Tienda t-out="record.partner_shipping_id.ref" />
+                        <CantidadArticulos t-out="products_cnt" />
+                    </Pedidos>
+
+                    <t t-set="index" t-value="0"/>
+                    <t t-foreach="invoice_line_vals_list" t-as="line_vals">
+                        <t t-set="line" t-value="line_vals['line']"/>
+                        <t t-set="index" t-value="index + 1"/>
+
+                        <Articulos t-att-Id="'Articulo'+str(index)" t-att-RowOrder="index">
+                            <Proveedor t-out="sor_supplier_code" />
+                            <Remision t-out="record.name"/>
+                            <FolioPedido t-out="sor_sale_order" />
+                            <Tienda t-out="record.partner_shipping_id.ref" />
+                            <Codigo t-out="format_string(line.product_id.default_code)" />
+                            <CantidadUnidadCompra t-out="line.quantity"/>
+                            <CostoNetoUnidadCompra t-out="line.price_unit" />
+                            
+                            <t t-set="tax_detail_transferred" t-value="tax_details_transferred['invoice_line_tax_details'][line]"/>
+                            <t t-set="tax_detail_withholding" t-value="tax_details_withholding['invoice_line_tax_details'][line]"/>
+                            <t t-if="tax_detail_transferred['tax_details'] or tax_detail_withholding['tax_details']">
+                               
+                                <t t-if="tax_detail_withholding['tax_details']">
+                                    <t t-foreach="tax_detail_transferred['tax_details'].values()" t-as="tax_detail_vals">
+                                        <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                        
+                                        <!-- IVA -->
+                                        <t t-if="get_tax_cfdi_name(tax_detail_vals) == '002'">
+                                            <PorcentajeIVA t-out="format_float(tax_detail_vals['tax_rate_transferred'] * 100, 2)" />
+                                        </t>
+
+                                        <!-- IEPS -->
+                                        <t t-if="get_tax_cfdi_name(tax_detail_vals) == '003'">
+                                            <PorcentajeIEPS t-out="format_float(tax_detail_vals['tax_rate_transferred'] * 100, 2)" />
+                                        </t>
+                                    </t>
+                                </t>
+
+                                <t t-if="tax_detail_transferred['tax_details']">
+                                    <t t-foreach="tax_detail_transferred['tax_details'].values()" t-as="tax_detail_vals">
+                                        <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                        
+                                        <!-- IVA -->
+                                        <t t-if="get_tax_cfdi_name(tax_detail_vals) == '002'">
+                                            <PorcentajeIVA t-out="format_float(tax_detail_vals['tax_rate_transferred'] * 100, 2)" />
+                                        </t>
+
+                                        <!-- IEPS -->
+                                        <t t-if="get_tax_cfdi_name(tax_detail_vals) == '003'">
+                                            <PorcentajeIEPS t-out="format_float(tax_detail_vals['tax_rate_transferred'] * 100, 2)" />
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+                        </Articulos>
+                    </t>
+                    
+
+                </DSCargaRemisionProv>
+
+            </Addenda>
+        </template>
+
+        <record id="addenda_soriana" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>
+</odoo>

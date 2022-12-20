@@ -95,7 +95,7 @@ class AccountPaymentRegisterPS(models.TransientModel):
         print('Estos son los payments al final: ',payments)
         print('Justo antes del final de payment')
         return payments
-
+    
     def action_create_payments(self):
         print('Este es el boton')
         payments = self._create_payments()

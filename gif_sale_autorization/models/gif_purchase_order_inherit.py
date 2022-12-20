@@ -217,6 +217,8 @@ class PurchaseOrder(models.Model):
                 if line.product_template_id.descount_selector == "1":
                     fixed = line.d_f_id_purchases
                     porc = 0
+                    # if record.gif_IepsDisplay == False and (line.gif_PurchaseOrderIeps != 0.00 and line.gif_PurchaseOrderIeps != False):
+                    #     fixed = fixed + line.gif_PurchaseOrderIeps
                     if temp > fixed:
                         if temp >= 0:
                             if record.is_primary_purchaseform and record.is_admin_primary_purchase:
@@ -238,6 +240,8 @@ class PurchaseOrder(models.Model):
                 elif line.product_template_id.descount_selector == "2":
                     porc = line.d_p_id_purchases
                     fixed = 0
+                    # if record.gif_IepsDisplay == False and (line.gif_PurchaseOrderIeps != 0.00 and line.gif_PurchaseOrderIeps != False):
+                    #     porc = porc + line.gif_PurchaseOrderIeps
                     if  temp > porc:
                         if temp>= 0:
                             if record.is_primary_purchaseform and record.is_admin_primary_purchase:
@@ -319,17 +323,17 @@ class PurchaseOrderLine(models.Model):
     gif_difference_purchase = fields.Float(string="Cantidad",default=0.0 ,compute='_is_difference_purchase_sa')
     gif_is_different_purchase = fields.Boolean(string="Varia",default=False,compute='_is_difference_purchase_sa')
 
-    gif_block = fields.Boolean(compute='_gif_set_block')
+    gif_block = fields.Boolean(compute='_onchange_price_unit_gsa')
 
-    def _gif_set_block(self):
-        for record in self:
-            try:
-                if self.order_line.gif_should_block == True:
-                    record.gif_block = True
-                else:
-                    record.gif_block = False
-            except:
-                record.gif_block = False
+    # def _gif_set_block(self):
+    #     for record in self:
+    #         try:
+    #             if self.order_line.gif_should_block == True:
+    #                 record.gif_block = True
+    #             else:
+    #                 record.gif_block = False
+    #         except:
+    #             record.gif_block = False
     
 
     @api.constrains('product_template_id')
@@ -339,7 +343,6 @@ class PurchaseOrderLine(models.Model):
             has_to_pass = False
             uom_pass = False
             for record in self:
-                # record.gif_should_block = False
                 if record.product_template_id.detailed_type != 'product':
                     uom_pass = True
                     has_to_pass = True
@@ -362,57 +365,64 @@ class PurchaseOrderLine(models.Model):
         except Exception as e:
             print('Error 2: ',e)
 
-    @api.onchange('price_unit')
+    @api.onchange('product_template_id')
     def _onchange_price_unit_gsa(self):
         price_block = False
         try:
             for record in self:
+                record.gif_block = False
                 # record.gif_should_block = False
                 if record.product_template_id.detailed_type != 'product':
                     price_block = False
                 else:
-                    if record.price_unit != False:
+                    # validar = record.price_subtotal + record.gif_PurchaseOrderIeps
+                   # if record.price_unit != False: and (record.price_unit != validar)
+                    if len(record.product_template_id.partners_details_purchase) > 0:
                         if record.product_template_id.partners_details_purchase:
                             for p in record.product_template_id.partners_details_purchase:
-                                if record.order_id.partner_id.name in p.partner_purchase.name and record.order_id.currency_id.name == p.currency_purchase.name and record.price_unit != p.partner_price_purchase:
-                                    price_block = True
+                                if p.partner_purchase.name in record.order_id.partner_id.name and record.order_id.currency_id.name == p.currency_purchase.name: #and record.price_unit != p.partner_price_purchase
+                                    price_block = False
                                     break
                                 else:
-                                    price_block = False
-                        # else:
-                            # record.gif_should_block = True
-                            # raise exceptions.ValidationError(_('Este producto no tiene proveedores asignados.'))
+                                    record.gif_block = True
+                                    price_block = True
+                            # else:
+                            #     record.gif_should_block = True
+                            #     # raise exceptions.ValidationError(_('Este producto no tiene proveedores asignados.'))
+                        else:
+                            price_block = True
                     else:
                         price_block = False
+                        record.gif_block = False
             if price_block == True:
-                raise exceptions.ValidationError('No puedes modificar el precio de este producto')
+                raise exceptions.ValidationError('Este producto no tiene proveedores asignados.') #No puedes modificar el precio de este producto
         except Exception as e:
             if price_block == True:
-                raise ValidationError('No puedes modificar el precio de este producto')
+                raise exceptions.ValidationError('Este producto no tiene proveedores asignados.') #No puedes modificar el precio de este producto
 
     
     
-    @api.onchange('product_template_id')
-    def _onchange_product_template_id_reset_order_line_sa(self):
-        for record in self:
-            # record.gif_should_block = False
-            if record.product_template_id.name == False or record.product_template_id.detailed_type != 'product':
-                gif_pasa = True
-                pass
-            else:
-                if record.product_template_id.partners_details_purchase:
-                    for p in record.product_template_id.partners_details_purchase:
-                        if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name == p.partner_purchase.name) and record.order_id.currency_id.name == p.currency_purchase.name:
-                            gif_pasa = True
-                            break
-                        else:
-                            gif_pasa = False
-                else:
-                    gif_pasa = False
-            if gif_pasa == False:
-                record.product_template_id = None
-            else:
-                pass
+    # @api.onchange('product_template_id')
+    # def _onchange_product_template_id_reset_order_line_sa(self):
+    #     for record in self:
+    #         # record.gif_should_block = False
+    #         if record.product_template_id.name == False or record.product_template_id.detailed_type != 'product':
+    #             gif_pasa = True
+    #             pass
+    #         else:
+    #             if record.product_template_id.partners_details_purchase:
+    #                 for p in record.product_template_id.partners_details_purchase:
+    #                     if (record.order_id.partner_id.name == p.partner_purchase.name or record.order_id.partner_id.name == p.partner_purchase.name) and record.order_id.currency_id.name == p.currency_purchase.name:
+    #                         gif_pasa = True
+    #                         break
+    #                     else:
+    #                         gif_pasa = False
+    #             else:
+    #                 gif_pasa = False
+    #         if gif_pasa == False:
+    #             record.product_template_id = None
+    #         else:
+    #             pass
     
 
     @api.onchange('product_uom')
@@ -499,12 +509,15 @@ class PurchaseOrderLine(models.Model):
                     #         line.price_unit = line.price_unit / line.order_id.gif_temp_validator
                     #     else:
                     #         line.price_unit = line.price_unit * line.order_id.gif_temp_validator
-        except:
-            pass
+        except Exception as e:
+            print('Un except en el onchange de qty: ',e)
   
     @api.onchange('price_unit')
     def _is_difference_purchase_sa(self):
         for record in self:
+            print('Se ha modificado el price_unit a: ',record.price_unit)
+            record.gif_is_different_purchase = False
+            record.gif_difference_purchase = 0
             try:
                 if record.product_template_id.partners_details_purchase:
                     for p in record.product_template_id.partners_details_purchase:
@@ -513,6 +526,8 @@ class PurchaseOrderLine(models.Model):
                                 if record.price_unit != p.partner_price_purchase:
                                     record.gif_is_different_purchase = True
                                     record.gif_difference_purchase = record.price_unit - p.partner_price_purchase
+                                    if record.gif_block == True:
+                                        record.price_unit = p.partner_price_purchase
                                     break
                                 else:
                                     record.gif_is_different_purchase = False

@@ -1,0 +1,13 @@
+<!-- account.move.reversal inherit form view -->
+<record id="account_move_reversal_view_id" model="ir.ui.view">
+    <field name="name">account.move.reversal.inherit.view.form</field>
+    <field name="model">account.move.reversal</field>
+    <field name="inherit_id" ref="account.view_account_move_reversal"/>
+    <field name="arch" type="xml">
+        <xpath expr="//footer" position="before">
+            <group>
+                <field name="gif_concept"/>
+            </group>
+        </xpath>
+    </field>
+</record>

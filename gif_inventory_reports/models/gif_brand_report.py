@@ -46,11 +46,11 @@ class GifBrandReport(models.Model):
                 warehouse_id = self.env['stock.location'].browse(quant.location_id.id).warehouse_id
                 if not warehouse_id: continue
 
-                vals['gif_warehouse_existences'] = warehouse_id.name
-                vals['gif_partner_purchase'] = None
+                # vals['gif_warehouse_existences'] = warehouse_id.name
+                # vals['gif_partner_purchase'] = None
                 vals['product'] = product_id.id
                 vals['description_sale']: product_id.description_sale
-                vals['gif_brand'] = quant.product_tmpl_id.gif_brand_ids.gif_brand_name
+                vals['gif_brand'] = quant.product_tmpl_id.gif_brand_ids.name
                 vals['gif_warehouse_existences'] = quant.available_quantity
                 vals['gif_unit_cost'] = product_id.standard_price
                 vals['gif_total_cost'] = vals['gif_unit_cost'] * vals['gif_warehouse_existences']

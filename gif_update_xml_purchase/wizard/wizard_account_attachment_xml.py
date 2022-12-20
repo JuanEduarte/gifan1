@@ -16,16 +16,16 @@ class WizardAccountAttachmentXML(models.TransientModel):
         rec['move_id'] = id_ctx
         return rec
     
-    # @api.onchange('move_id')
-    # def get_purchase(self):
-    #     for record in self:
-    #         res = {}
-    #         print(record.move_id.partner_id)
-    #         xmls = self.env['gif.purchase.xml.updater'].search([('gif_rfc_issuer', '=', record.move_id.partner_id.vat), ('gif_account_move', '=', False)])
-    #         # xmls = self.env['gif.purchase.xml.updater'].search([])
-    #         ids = xmls.ids
-    #         res['domain'] = {'gif_attached_xml': [('id', '=', ids)]}
-    #         return res
+    @api.onchange('move_id')
+    def get_purchase(self):
+        for record in self:
+            res = {}
+            # print(record.move_id.partner_id)
+            xmls = self.env['gif.purchase.xml.updater'].search([('gif_rfc_issuer', '=', record.move_id.partner_id.vat), ('gif_account_move', '=', False)])
+            # xmls = self.env['gif.purchase.xml.updater'].search([])
+            ids = xmls.ids
+            res['domain'] = {'gif_attached_xml': [('id', '=', ids)]}
+            return res
 
     def attachment_to_invoice(self):
         for record in self:
@@ -101,16 +101,16 @@ class WizardPaymentAttachmentXML(models.TransientModel):
         return rec
         
 
-    # @api.onchange('payment_id')
-    # def get_purchase(self):
-    #     for record in self:
-    #         res = {}
-    #         print(record.payment_id.partner_id)
-    #         xmls = self.env['gif.purchase.xml.updater'].search([('gif_rfc_issuer', '=', record.payment_id.partner_id.vat), ('gif_account_payment', '=', False)])
-    #         # xmls = self.env['gif.purchase.xml.updater'].search([])
-    #         ids = xmls.ids
-    #         res['domain'] = {'gif_attached_xml': [('id', '=', ids)]}
-    #         return res
+    @api.onchange('payment_id')
+    def get_purchase(self):
+        for record in self:
+            res = {}
+            # print(record.payment_id.partner_id)
+            xmls = self.env['gif.purchase.xml.updater'].search([('gif_rfc_issuer', '=', record.payment_id.partner_id.vat), ('gif_account_payment', '=', False)])
+            # xmls = self.env['gif.purchase.xml.updater'].search([])
+            ids = xmls.ids
+            res['domain'] = {'gif_attached_xml': [('id', '=', ids)]}
+            return res
 
     def attachment_to_payment(self):
         for record in self:

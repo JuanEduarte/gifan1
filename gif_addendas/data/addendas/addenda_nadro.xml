@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="addenda_nadro" name="Addenda Nadro">
+            <Addenda>
+            <t t-foreach="invoice_line_vals_list" t-as="line_vals">
+                <t t-set="line" t-value="line_vals['line']"/>
+                <DatosNadro>
+                    <Orden t-out="record.invoice_origin" />
+                    <Plazo t-out="payment_term_days" />
+                    <EntregaEntrante t-out="record.invoice_origin"/>
+                    <PosicionOC>No_reconocido</PosicionOC>
+                    <TotalOC t-esc="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"/>
+                    <CodEAN t-esc="format_string(line.product_id.default_code)"/>
+                </DatosNadro>
+            </t>
+            </Addenda>
+        </template>
+
+        <record id="addenda_nadro" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>    
+</odoo>

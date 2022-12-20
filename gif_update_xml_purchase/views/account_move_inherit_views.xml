@@ -13,7 +13,7 @@
             <xpath expr="//div[@name='journal_div']" position="after">
                 <field name="gif_invoice_uuid"  attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
             </xpath>
-            <xpath expr="//header" position="inside">
+            <xpath expr="//header/button[@name='button_draft']" position="before">
                 <button name="gif_update_xml_purchase.wizard_xml_attach_invoice_action" type="action" class="btn btn-secondary" string="Adjuntar XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
                 <button name="attachment_updater" type="object" class="btn btn-secondary" string="Auto Adjuntar XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>
                 <button name="gif_update_xml_purchase.wizard_xml_unattach_invoice_action" type="action" class="btn btn-secondary" string="Remover XML" attrs="{'invisible': [('move_type', 'in', ['entry', 'out_invoice', 'out_refund', 'out_receipt'])]}"/>

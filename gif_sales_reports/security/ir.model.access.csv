@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_sales_reports.access_gif_diary_sales_report,access_gif_diary_sales_report,gif_sales_reports.model_gif_diary_sales_report,,1,1,1,1
+gif_sales_reports.access_gif_goals,access_gif_goals,gif_sales_reports.model_gif_goals,,1,1,1,1

@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+    <template id="addenda_liverpool" name="Adenda Liverpool">
+
+        <Complemento
+                xmlns:detallista="http://www.sat.gob.mx/detallista" >
+
+            <detallista:detallista
+                t-att-type="no_identify"
+                t-att-contentVersion="no_identify"
+                t-att-documentStructureVersion="no_identify"
+                t-att-documentStatus="no_identify">
+
+            <detallista:requestForPaymentIdentification>
+                <detallista:entityType>INVOICE</detallista:entityType>
+            </detallista:requestForPaymentIdentification>
+
+            <detallista:specialInstruction t-att-code="no_identify">
+                <detallista:text t-esc="'('+num2word(record.amount_total, currency_name)+')'" />
+            </detallista:specialInstruction>
+
+            <detallista:orderIdentification>
+                <detallista:referenceIdentification t-att-type="no_identify" t-out="sale_order_origin" />
+                <detallista:ReferenceDate t-out="init_date" />
+            </detallista:orderIdentification>
+            
+            <detallista:AdditionalInformation>
+                <detallista:referenceIdentification t-att-type="no_identify">'No_reconocido'</detallista:referenceIdentification>
+            </detallista:AdditionalInformation>
+            
+            <detallista:DeliveryNote>
+                <detallista:referenceIdentification>'No_reconocido'</detallista:referenceIdentification>
+                <detallista:ReferenceDate t-out="init_date" />
+            </detallista:DeliveryNote>
+            
+            <detallista:buyer>
+                <detallista:gln>'No_reconocido'</detallista:gln>
+                <detallista:contactInformation>
+                    <detallista:personOrDepartmentName>
+                        <detallista:text>'No_reconocido'</detallista:text>
+                    </detallista:personOrDepartmentName>
+                </detallista:contactInformation>
+            </detallista:buyer>
+            
+            <detallista:seller>
+                <detallista:gln>'No_reconocido'</detallista:gln>
+                <detallista:alternatePartyIdentification
+                    t-att-type="no_identify"
+                    t-out="supplier_code" />
+            </detallista:seller>
+
+            <detallista:allowanceCharge
+                t-att-allowanceChargeType="no_identify"
+                t-att-settlementType="no_identify">
+
+                <detallista:specialServicesType>'No_reconocido'</detallista:specialServicesType>
+                <detallista:monetaryAmountOrPercentage>
+                    <detallista:rate base="No_reconcido">
+                        <detallista:percentage>'No_reconocido'</detallista:percentage>
+                    </detallista:rate>
+                </detallista:monetaryAmountOrPercentage>
+            </detallista:allowanceCharge>
+            
+            <t t-set="index" t-value="0" />
+            <t t-foreach="invoice_line_vals_list" t-as="line_vals">
+                <t t-set="line" t-value="line_vals['line']"/>
+                <t t-set="index" t-value="index + 1"/>
+
+                <detallista:lineItem
+                    t-att-type="'SimpleInvoiceLineItemType'"
+                    t-att-number="index">
+
+                    <detallista:tradeItemIdentification>
+                        <detallista:gtin t-out="line.product_id.default_code" />
+                    </detallista:tradeItemIdentification>
+                
+                    <detallista:alternateTradeItemIdentification
+                                t-att-type="no_identify" t-out="line.product_id.default_code" />
+                
+                    <detallista:tradeItemDescriptionInformation>
+                        <detallista:longText t-out="line.product_id.description_sale"/>
+                    </detallista:tradeItemDescriptionInformation>
+                
+                    <detallista:invoicedQuantity
+                        t-att-unitOfMeasure="line.product_uom_id.unspsc_code_id.code"
+                        t-out="line.quantity" />
+
+                    <detallista:grossPrice>
+                        <detallista:Amount  t-out="line.price_unit"/>
+                    </detallista:grossPrice>
+                
+                    <detallista:netPrice>
+                        <detallista:Amount t-out="line.price_unit"/>
+                    </detallista:netPrice>
+
+                    <detallista:totalLineAmount>
+                        <detallista:grossAmount>
+                            <detallista:Amount t-esc="format_float(line_values['price_subtotal_before_discount'] if tax_objected == '02' else line.price_total + line_values['price_discount'], currency_precision)" />
+                        </detallista:grossAmount>
+                        
+                        <detallista:netAmount>
+                            <detallista:Amount t-esc="format_float(line_values['price_subtotal_before_discount'] if tax_objected == '02' else line.price_total + line_values['price_discount'], currency_precision)" />
+                        </detallista:netAmount>
+                    </detallista:totalLineAmount>
+                </detallista:lineItem>
+            </t>
+
+            <detallista:totalAmount>
+                <detallista:Amount t-esc="format_float(record.amount_total, currency_precision)" />
+            </detallista:totalAmount>
+            
+            <detallista:TotalAllowanceCharge
+                t-att-allowanceOrChargeType="no_identify">
+                
+                <detallista:specialServicesType>'No_reconocido'</detallista:specialServicesType>
+                <detallista:Amount>'No_reconocido'</detallista:Amount>
+            </detallista:TotalAllowanceCharge>
+
+            </detallista:detallista>
+
+        </Complemento>
+    </template>
+
+    <record id="addenda_liverpool" model="ir.ui.view">
+        <field name="l10n_mx_edi_addenda_flag">True</field>
+    </record>
+
+    </data>
+</odoo>

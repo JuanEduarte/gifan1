@@ -14,9 +14,11 @@
     'depends': [
                 'base',
                 'sale',
+                'account',
                 'purchase',
-                'sale', 
                 'stock',
+                'gif_purchase_segregation',
+                'gif_sale_segregation',
         
         ],
     'data': [

@@ -41,6 +41,7 @@ class gif_masive_payment_form(models.Model):
     
     inv_ids = []
     amounts = []
+    type_sales = []
     
     def files_data(self):
         file_path = tempfile.gettempdir()+'/file.csv'
@@ -56,6 +57,7 @@ class gif_masive_payment_form(models.Model):
         self.inv_ids.clear()     
         self.amounts.clear()
         self.memo.clear()
+        self.type_sales.clear()
         for line in archive:
             total += float(line['Importe'])
             self.memo.append(str(line['Factura de venta']))
@@ -71,13 +73,15 @@ class gif_masive_payment_form(models.Model):
                 invoice = line['Factura de venta']
                 self.amounts.append(line['Importe'])
                 inv = self.env['account.move'].search([('name', '=', invoice)])
-                print('Amount',(line['Importe']))
-                print('Amount 1',inv.amount_residual)
+                
+                print('Amount',(line['Importe']),self.type_sales)
+                print('Amount 1',inv.amount_residual,self.type_sales)
                 '''if float(line['Importe']) != inv.amount_residual:
                    raise UserError('El importe de la factura "'+inv.name+ '" no corresponde a la cantidad adeudada')'''
                 self.inv_ids.append(inv.id)
+                self.type_sales.append(inv.type_of_sale.id)
                 print(self.inv_ids)
-                print('++++++++++',self.amounts)
+                print('++++++++++',self.amounts, self.type_sales)
                 rel = self.env['gif.masive.payment.line'].create([{
                             'gif_masive_payment': self.id,
                             'client': clt,
@@ -85,7 +89,7 @@ class gif_masive_payment_form(models.Model):
                             'amount':line['Importe'],
                         }])
                 partner_id = self.env['res.partner'].search([('name', '=', clt)])
-            
+        
         self.total = total
         self.Memo = self.memo
         self.client = partner_id[0]
@@ -100,14 +104,15 @@ class gif_masive_payment_form(models.Model):
        
         ctx = {
             'active_model':'account.move',
+            'model':'gif.masive.payment',
             'default_model':'gif.masive.payment',
             'active_ids':self.inv_ids,
             'amounts':self.amounts,
             'journal_id': self.gif_journal,
             'default_amount':self.total,
-            'default_ref':'INV/2022/00022',
             'default_partner_id': self.client.id,
             'default_journal_id': self.gif_journal.id,
+            'type_sales':self.type_sales
             
         }
         return {
@@ -131,5 +136,8 @@ class GifMasivePaymentLine(models.Model):
 
     gif_masive_payment = fields.Many2one(
         comodel_name='gif.masive.payment')
+
+ 
+
 
  

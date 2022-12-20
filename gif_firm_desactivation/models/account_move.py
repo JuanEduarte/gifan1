@@ -17,6 +17,36 @@ class AccountMove(models.Model):
         default=False,
         help="Campo utilizado para evitar el timbrado de la factura.")
 
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(AccountMove, self).create(vals)
+        res.verify_control_pac()
+        return res
+
+    @api.onchange('invoice_line_ids')
+    def verify_control_pac(self):
+        """Funcion que verifica la casilla de control PAC del almacen de cada producto en las entregas de la orden de venta origen."""
+        for record in self:
+
+            if record.invoice_origin:
+                origins = list(map(lambda o: o.strip(), record.invoice_origin.split(',')))
+                stock_pickings = record.env['stock.picking'].search([('origin','in',origins),('state','!=','cancel')])
+                
+                if not stock_pickings: return False
+            
+            else: return False
+
+            record.gif_firm_flag = False
+            
+            for picking in stock_pickings:
+                for line in picking.move_line_ids_without_package:
+                    if line.location_id.warehouse_id.gif_firm_flag:
+                        record.gif_firm_flag = True
+                        break
+
+                if record.gif_firm_flag: break
+
+
     def l10n_mx_edi_update_sat_status(self):
         '''Synchronize both systems: Odoo & SAT to make sure the invoice is valid.
         '''

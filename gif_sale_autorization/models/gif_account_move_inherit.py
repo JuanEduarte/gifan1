@@ -189,6 +189,8 @@ class AccountMove(models.Model):
                 for record in self:
                     for line in record.invoice_line_ids:
                         precio = line.price_unit
+                        # if record.gif_displayAccount == False and (line.gif_AccountMoveIeps != 0.00 and line.gif_AccountMoveIeps != False):
+                        #     precio = precio + line.gif_AccountMoveIeps
                         if record.type_of_purchase:
                             if purchases:
                                 for p_line in purchases.order_line:
@@ -321,38 +323,50 @@ class AccountMoveOrderLine(models.Model):
 
     gif_difference_account = fields.Float(string="Cantidad",compute="_is_different_account_sa",default=0.0)
     gif_is_different_account = fields.Boolean(string='Vario',default=False,compute="_is_different_account_sa")
+    gif_block = fields.Boolean(compute='_onchange_product_id_raise_error_if_not')
+    
     
     @api.onchange('product_id')
     def _onchange_product_id_raise_error_if_not(self):
         #Validación para ver si el producto tiene precio con el cliente/proveedor.
         for record in self:
+            gif_pasa = True
+            record.gif_block = False
             if record.product_id.name == False or record.product_id.detailed_type != 'product':
                 gif_pasa = True
                 pass
             else:
                 if record.move_id.move_type in ('out_invoice','out_refund','out_receipt'):
                     user = 'Cliente'
-                    if record.product_id.partners_details:
+                    if len(record.product_id.partners_details) > 0:
                         for partner in record.product_id.partners_details:
                             if record.move_id.partner_id.name == partner.partner.name and record.move_id.currency_id.name == partner.currency_sale.name:
+                                record.gif_block = True
                                 gif_pasa = True
                                 break
                             else:
                                 gif_pasa = False
                     else:
-                        gif_pasa = False
+                        gif_pasa = True
                 elif record.move_id.move_type in ('in_invoice','in_refund','in_receipt'):
                     user = 'Proveedor'
-                    if record.product_id.partners_details_purchase:
+                    if len(record.product_id.partners_details_purchase) > 0:
                         for partner in record.product_id.partners_details_purchase:
-                            if record.move_id.partner_id.name == partner.partner_purchase.name and record.move_id.currency_id.name == partner.currency_purchase.name:
+                            print(partner.partner_purchase.name)
+                            print(record.move_id.partner_id.name)
+                            if partner.partner_purchase.name in record.move_id.partner_id.name and record.move_id.currency_id.name == partner.currency_purchase.name:
                                 gif_pasa = True
+                                record.gif_block = True
+                                print('Se da el true')
                                 break
                             else:
+                                print('Se da el false')
                                 gif_pasa = False
                     else:
-                        gif_pasa = False
+                        gif_pasa = True
             if gif_pasa == False:
+                # print('Es falso')
+                # print(record.move_id.currency_id.name,partner.currency_purchase.name)
                 record.product_id = None
                 string = 'Este ' + user + ' no tiene precios asignados a este producto.'
                 raise exceptions.UserError(_(string))

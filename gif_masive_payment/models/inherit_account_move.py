@@ -1,118 +1,155 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.addons.account_sepa.models.account_payment_register import  AccountPaymentRegister
+from json import dumps
+import json
 
-class AccountPaymentRegist(models.TransientModel):
-    _inherit = 'account.payment.register'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     
-    @api.model
-    def _onchange_journal_id(self):
-        print('~~~~~~~~~~~',self._context)
     
-    def _create_payment_vals_from_wizard(self):
-        payment_vals = {
-            'date': self.payment_date,
-            'amount': self.amount,
-            'payment_type': self.payment_type,
-            'partner_type': self.partner_type,
-            'ref': self.communication,
-            'journal_id': self.journal_id.id,
-            'currency_id': self.currency_id.id,
-            'partner_id': self.partner_id.id,
-            'partner_bank_id': self.partner_bank_id.id,
-            'payment_method_line_id': self.payment_method_line_id.id,
-            'destination_account_id': self.line_ids[0].account_id.id,
-            'type_of_purchase': self.type_of_purchase.id,
-            'type_of_sale': self.type_of_sale.id,
-        }
+    def _compute_payments_widget_to_reconcile_info(self):
+        print('ooooooooooooooooooo')
+        for move in self:
+            move.invoice_outstanding_credits_debits_widget = json.dumps(False)
+            move.invoice_has_outstanding = False
 
-        if not self.currency_id.is_zero(self.payment_difference) and self.payment_difference_handling == 'reconcile':
-            payment_vals['write_off_line_vals'] = {
-                'name': self.writeoff_label,
-                'amount': self.payment_difference,
-                'account_id': self.writeoff_account_id.id,
-            }
-        return payment_vals
-    
-    def _create_payments(self):
-        self.ensure_one()
-        batches = self._get_batches()
-        edit_mode = self.can_edit_wizard and (len(batches[0]['lines']) == 1 or self.group_payment)
-        to_process = []
+            if move.state != 'posted' \
+                    or move.payment_state not in ('not_paid', 'partial') \
+                    or not move.is_invoice(include_receipts=True):
+                continue
 
-        if edit_mode:
-            print('If edit mode')
-            payment_vals = self._create_payment_vals_from_wizard()
-            to_process.append({
-                'create_vals': payment_vals,
-                'to_reconcile': batches[0]['lines'],
-                'batch': batches[0],
-            })
-            print('AAAAAAAAAAAAAAAAA ',to_process)
-        else:
-            print('Else')
-            # Don't group payments: Create one batch per move.
-            if not self.group_payment:
-                print('If del else')
-                new_batches = []
-                for batch_result in batches:
-                    for line in batch_result['lines']:
-                        new_batches.append({
-                            **batch_result,
-                            'lines': line,
-                        })
-                batches = new_batches
+            pay_term_lines = move.line_ids\
+                .filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
 
-            for batch_result in batches:
-                to_process.append({
-                    'create_vals': self._create_payment_vals_from_batch(batch_result),
-                    'to_reconcile': batch_result['lines'],
-                    'batch': batch_result,
+            domain = [
+                ('account_id', 'in', pay_term_lines.account_id.ids),
+                ('parent_state', '=', 'posted'),
+                ('partner_id', '=', move.commercial_partner_id.id),
+                ('reconciled', '=', False),
+                '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
+            ]
+
+            payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
+
+            if move.is_inbound():
+                domain.append(('balance', '<', 0.0))
+                payments_widget_vals['title'] = _('Outstanding credits')
+            else:
+                domain.append(('balance', '>', 0.0))
+                payments_widget_vals['title'] = _('Outstanding debits')
+
+            for line in self.env['account.move.line'].search(domain):
+
+                if line.currency_id == move.currency_id:
+                    # Same foreign currency.
+                    amount = abs(line.amount_residual_currency)
+                else:
+                    # Different foreign currencies.
+                    amount = move.company_currency_id._convert(
+                        abs(line.amount_residual),
+                        move.currency_id,
+                        move.company_id,
+                        line.date,
+                    )
+
+                if move.currency_id.is_zero(amount):
+                    continue
+
+                payments_widget_vals['content'].append({
+                    'journal_name': line.ref or line.move_id.name,
+                    'amount': amount,
+                    'currency': move.currency_id.symbol,
+                    'id': line.id,
+                    'move_id': line.move_id.id,
+                    'position': move.currency_id.position,
+                    'digits': [69, move.currency_id.decimal_places],
+                    'date': fields.Date.to_string(line.date),
+                    'account_payment_id': line.payment_id.id,
                 })
-                print('To process en else y for: ',to_process)
-                print('Context~~~~~~',self._context)
 
-        print('Payments: ')
-        payments = self._init_payments(to_process, edit_mode=edit_mode)
-        self._post_payments(to_process, edit_mode=edit_mode)
-        self._reconcile_payments(to_process, edit_mode=edit_mode)
-        print('Estos son los payments al final: ',payments)
-        print('Justo antes del final de payment')
-        return payments
+            if not payments_widget_vals['content']:
+                continue
 
-    @api.onchange('journal_id')
-    def onchange_journal_id(self):
-        print(self._context)
-    
-    
-    def action_create_payments(self):
-        print('Este es el boton')
-        payments = self._create_payments()
-
-        if self._context.get('dont_redirect_to_payments'):
-            return True
-
-        action = {
-            'name': _('Payments'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.payment',
-            'context': {'create': False},
-        }
-        if len(payments) == 1:
-            action.update({
-                'view_mode': 'form',
-                'res_id': payments.id,
-            })
-        else:
-            action.update({
-                'view_mode': 'tree,form',
-                'domain': [('id', 'in', payments.ids)],
-            })
-        return action
-
-  
+            move.invoice_outstanding_credits_debits_widget = json.dumps(payments_widget_vals)
+            move.invoice_has_outstanding = True
             
             
             
-    
+            
+    @api.onchange('gif_firm_flag')
+    def onchange_gif_firm_flag(self):
+        print('ooooooooooooooooooo')
+        for move in self:
+            move.invoice_outstanding_credits_debits_widget = json.dumps(False)
+            move.invoice_has_outstanding = False
+
+            if move.state != 'posted' \
+                    or move.payment_state not in ('not_paid', 'partial') \
+                    or not move.is_invoice(include_receipts=True):
+                continue
+
+            pay_term_lines = move.line_ids\
+                .filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+
+            domain = [
+                ('account_id', 'in', pay_term_lines.account_id.ids),
+                ('parent_state', '=', 'posted'),
+                ('partner_id', '=', move.commercial_partner_id.id),
+                ('reconciled', '=', False),
+                '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
+            ]
+
+            payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.name}
+
+            if move.is_inbound():
+                domain.append(('balance', '<', 0.0))
+                payments_widget_vals['title'] = _('Outstanding credits')
+                print('this is the domain',domain)
+            else:
+                domain.append(('balance', '>', 0.0))
+                payments_widget_vals['title'] = _('Outstanding debits')
+                print('or this is the domain',domain)
+
+            for line in self.env['account.move.line'].search(domain):
+                print('This is that domain returns', line)
+                if line.currency_id == move.currency_id:
+                    # Same foreign currency.
+                    amount = abs(line.amount_residual_currency)
+                    print('this is the amount', amount)
+                else:
+                    # Different foreign currencies.
+                    amount = move.company_currency_id._convert(
+                        abs(line.amount_residual),
+                        move.currency_id,
+                        move.company_id,
+                        line.date,
+                    )
+                    print('or maybe this is the amount', amount)
+                    
+
+                if move.currency_id.is_zero(amount):
+                    print('move-------',move)
+                    continue
+                print('move-------',move, move.name)
+                
+
+                payments_widget_vals['content'].append({
+                    'journal_name': line.ref or line.move_id.name,
+                    'amount': amount,
+                    'currency': move.currency_id.symbol,
+                    'id': line.id,
+                    'move_id': line.move_id.id,
+                    'position': move.currency_id.position,
+                    'digits': [69, move.currency_id.decimal_places],
+                    'date': fields.Date.to_string(line.date),
+                    'account_payment_id': line.payment_id.id,
+                })
+            print('**   payments_widget_vals   **',payments_widget_vals)
+
+            if not payments_widget_vals['content']:
+                continue
+
+            move.invoice_outstanding_credits_debits_widget = json.dumps(payments_widget_vals)
+            move.invoice_has_outstanding = True
+            print('**   payments_widget_vals11   **',payments_widget_vals)

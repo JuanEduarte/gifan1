@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- model.name inherit form view -->
+    <record id="gif_stock_picking_inherit_form_view_id_gft" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.view.form.gft</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//header" position="inside">
+                <!-- -->
+                <button name="gif_send_transfer" class="btn-primary" type="object" string="Captura" attrs="{'invisible': ['|',('state','!=','assigned'),('picking_type_code', 'not in', ('incoming','internal'))]}"/>
+            </xpath>
+            <xpath expr="//header//button[@name='action_set_quantities_to_reservation']" position="attributes">
+                <!-- Add your fields here -->
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

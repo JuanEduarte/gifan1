@@ -4,11 +4,24 @@ from odoo import models,api,fields,_
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
-    
-    @api.model
-    def _onchange_journal_id(self):
-        print('~~~~~~~~~~~',self._context)
-    
+    @api.depends('amount')
+    def _compute_payment_difference(self):
+        for wizard in self:
+            if wizard.source_currency_id == wizard.currency_id:
+                # Same currency.
+                wizard.payment_difference = wizard.source_amount_currency - wizard.amount
+                print('wizard wizard wizard wizard',wizard.payment_difference)
+                
+            elif wizard.currency_id == wizard.company_id.currency_id:
+                # Payment expressed on the company's currency.
+                wizard.payment_difference = wizard.source_amount - wizard.amount
+                print('wizard wizard wizard wizard',wizard.payment_difference)
+            else:
+                # Foreign currency on payment different than the one set on the journal entries.
+                amount_payment_currency = wizard.company_id.currency_id._convert(wizard.source_amount, wizard.currency_id, wizard.company_id, wizard.payment_date)
+                wizard.payment_difference = amount_payment_currency - wizard.amount
+                
+            
     def _create_payment_vals_from_wizard(self):
         payment_vals = {
             'date': self.payment_date,
@@ -24,6 +37,8 @@ class AccountPaymentRegister(models.TransientModel):
             'destination_account_id': self.line_ids[0].account_id.id,
             'type_of_purchase': self.type_of_purchase.id,
             'type_of_sale': self.type_of_sale.id,
+            'amount_residual':self.payment_difference,
+            'amount_residual_signed_show':self.payment_difference,
         }
 
         if not self.currency_id.is_zero(self.payment_difference) and self.payment_difference_handling == 'reconcile':
@@ -55,22 +70,45 @@ class AccountPaymentRegister(models.TransientModel):
             if not self.group_payment:
                 print('If del else')
                 new_batches = []
+                print('batch_result-000000000',batches)
+                
                 for batch_result in batches:
+                    print('batch_result-000000000',batch_result)
                     for line in batch_result['lines']:
+                        print('lineeeeeeeeee++*',line.name)
                         new_batches.append({
                             **batch_result,
                             'lines': line,
                         })
                 batches = new_batches
+                print('batches', batches)
 
-            for batch_result in batches:
+            ind = 0
+            ind2 = 0
+            for batch_result, k, j in zip(batches, self._context['amounts'], self._context['type_sales'],):
+                print('kkkkkkkk',k)
+                print('JJJJJJJJ',j)
+                print(ind)
                 to_process.append({
                     'create_vals': self._create_payment_vals_from_batch(batch_result),
                     'to_reconcile': batch_result['lines'],
                     'batch': batch_result,
                 })
-                print('To process en else y for: ',to_process)
-                print('Context~~~~~~',self._context)
+                to_process[ind]['create_vals']['amount'] = float(k)
+                to_process[ind]['create_vals']['type_of_sale'] = j
+                to_process[ind]['create_vals']['invoice_outstanding_credits_debits_widget'] = self.payment_difference
+                
+                
+                ind += 1
+                
+                
+                
+             
+            print('Context3~~~~~~',self._context)
+            print('To process en else y for: ',to_process)
+                
+                #print('Context3~~~~~~',self._context.amount)
+                
 
         print('Payments: ')
         payments = self._init_payments(to_process, edit_mode=edit_mode)
@@ -86,7 +124,6 @@ class AccountPaymentRegister(models.TransientModel):
     
     
     def action_create_payments(self):
-        print('Este es el boton')
         payments = self._create_payments()
 
         if self._context.get('dont_redirect_to_payments'):

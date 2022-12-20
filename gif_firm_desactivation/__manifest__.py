@@ -16,14 +16,15 @@
         'account',
         'account_accountant',
         'account_edi',
-        'l10n_mx',
+        'l10n_mx_edi',
         'base_vat',
         'product_unspsc',
-        'gif_sale_segregation',
-        'gif_purchase_segregation'
+        # 'gif_sale_segregation',
+        # 'gif_purchase_segregation'
 	],
     'data': [
-        'views/gif_account_move_form.xml'
+        'views/gif_account_move_form.xml',
+        'views/gif_stock_warehouse_form.xml',
     ],
     'installable': True,
     'application': True,

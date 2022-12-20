@@ -3,7 +3,7 @@
     <!-- res.partner inherit form view -->
     <record id="res_partner_inherit_view_id" model="ir.ui.view">
         <field name="name">res.partner.inherit.view.form</field>
-        <field name="model">res.partner</field>s
+        <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <!-- Add your xpath here -->

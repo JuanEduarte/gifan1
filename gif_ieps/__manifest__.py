@@ -16,13 +16,23 @@
     'category': 'Account','Contacts'
     'version': '15.0.1',
     # any module necessary for this one to work correctly
-    'depends': ['base','account', 'sale', 'contacts','purchase'],
+    'depends': ['base','account', 'sale', 'contacts','purchase','gif_purchase_segregation','gif_sale_segregation'],
     # 'product_expiry'
     # always loaded
     'data': [
         #'security/ir.model.access.csv',
-        'views/gif_desgloseIEPS.xml'
-
+        'data/gif_cfdi33.xml',
+        'data/gif_cfdi40.xml',
+        'report/gif_sale_report.xml',
+        'report/gif_purchase_report.xml',
+        'report/gif_account_report.xml',
+        'report/gif_sale_report_template.xml',
+        'report/gif_purchase_report_template.xml',
+        'report/gif_account_report_template.xml',
+        'views/gif_desgloseIEPS.xml',
+        'views/gif_account_move_inherit_views.xml',
+        'views/gif_purchase_order_inherit_views.xml',
+        'views/gif_sale_order_inherit_views.xml'
         ],
     # only loaded in demonstration mode
     'demo': [],

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_fast_transfers.access_gif_fast_capture,access_gif_fast_capture,gif_fast_transfers.model_gif_fast_capture,,1,1,1,1
+gif_fast_transfers.access_gif_fast_transfer,access_gif_fast_transfer,gif_fast_transfers.model_gif_fast_transfer,,1,1,1,1

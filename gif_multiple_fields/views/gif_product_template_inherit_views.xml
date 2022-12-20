@@ -19,6 +19,7 @@
                 <field name="gif_business_rel" />
                 <field name="gif_category_rel" />
                 <field name="gif_has_ieps" />
+                <field name="gif_type_ieps" attrs="{'invisible': [('gif_has_ieps','=',False)]}"/>
                 <field name="gif_type_rel" />
                 <field name="gif_subtype_rel"/>
                 <field name="gif_cate_rel"/>
@@ -29,14 +30,14 @@
 
             <xpath expr="//page[@name='sales']/group[@name='gif_type_product_seg_sal']" position="inside">
                 <!-- Add your fields here -->
-                <field name="gif_ieps_sale_por"/>
-                <field name="gif_ieps_sale_fij"/>
+                <field name="gif_ieps_sale_por" attrs="{'invisible': [('gif_type_ieps','!=','1')]}"/>
+                <field name="gif_ieps_sale_fij" attrs="{'invisible': [('gif_type_ieps','!=','2')]}"/>
             </xpath>
 
             <xpath expr="//group[@name='gif_type_product_seg_pur']" position="inside">
                 <!-- Add your fields here -->
-                <field name="gif_ieps_purchase_por"/>
-                <field name="gif_ieps_purchase_fij"/>
+                <field name="gif_ieps_purchase_por" attrs="{'invisible': [('gif_type_ieps','!=','1')]}"/>
+                <field name="gif_ieps_purchase_fij" attrs="{'invisible': [('gif_type_ieps','!=','2')]}"/>
             </xpath>
 
             <xpath expr="//field[@name='unspsc_code_id']" position="after">

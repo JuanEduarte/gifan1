@@ -37,7 +37,7 @@ class GIFPediments(models.Model):
     gif_change = fields.Many2one(comodel_name='res.currency', string='Moneda')
     gif_seg = fields.Float(string='Seguros')
     gif_emb = fields.Float(string='Embalajes')
-    gif_com_val = fields.Float(string='Valor Comercial')
+    gif_com_val = fields.Float(string='Valor Comercial',compute="_get_com_val")
     gif_contract = fields.Float(string='Contra Prestac')
     gif_pre_val = fields.Float(string='Prevalidación')
     gif_iva = fields.Float(string='Total IVA')
@@ -145,11 +145,12 @@ class GIFPediments(models.Model):
 
     @api.onchange('gif_dol_val','gif_dol_inv')
     def _get_com_val(self):
-        self.gif_com_val = 0
-        if self.gif_dol_inv != 0 and self.gif_dol_val != 0:
-            self.gif_com_val = self.gif_dol_inv * self.gif_dol_val
-        else:
-            self.gif_com_val = 0
+        for record in self:
+            record.gif_com_val = 0
+            if record.gif_dol_inv != 0 and record.gif_dol_val != 0:
+                record.gif_com_val = record.gif_dol_inv * record.gif_dol_val
+            else:
+                record.gif_com_val = 0
 
     @api.onchange('gif_dol_val','gif_dol_inv','gif_flete','gif_seg','gif_emb')
     def _gif_calculate_ad_val(self):

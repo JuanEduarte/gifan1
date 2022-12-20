@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- gif.goals tree view -->
+    <record id="gif_goals_view_tree" model="ir.ui.view">
+        <field name="name">gif.goals.view.tree</field>
+        <field name="model">gif.goals</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="gif_customer"/>
+                <field name="gif_brand"/>
+                <field name="gif_month"/>
+                <field name="gif_year"/>
+                <field name="gif_goal"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- gif goals action window -->
+    <record id="gif_goals_action" model="ir.actions.act_window">
+        <field name="name">Metas monetarias</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gif.goals</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No hay metas monetarias.
+            </p><p>
+                Comience por cargar algunas metas monetarias.
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="gif_goals_menu_act" name="Metas monetarias" parent="sale.product_menu_catalog" action="gif_goals_action" sequence="4"/>
+</odoo>

@@ -1,7 +1,7 @@
 {
     'name': "Gifan - Cantidades Mayores",
     'version': '15.0.1',
-    'depends': ['base','stock'],
+    'depends': ['base','stock',	'delivery'],
     'author': "Qualsys Consulting",
     'sumary' : "Modelo de Cantidades mayores en Compras",
     'category': 'customization',
@@ -15,7 +15,6 @@
     'data': [
         "views/gif_stock_move_line_views.xml",
         "views/gif_stock_picking_views.xml",
-                
     ],
     
     

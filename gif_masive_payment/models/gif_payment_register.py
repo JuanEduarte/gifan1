@@ -70,7 +70,11 @@ class AccountPaymentRegist(models.TransientModel):
                     'batch': batch_result,
                 })
                 print('To process en else y for: ',to_process)
-                print('Context~~~~~~',self._context)
+                print('****************',to_process.amount)
+                
+                print('****************',to_process.amount)
+                
+                print('Context~~~~~~1',self._context)
 
         print('Payments: ')
         payments = self._init_payments(to_process, edit_mode=edit_mode)

@@ -7,9 +7,13 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <!-- Add your xpath here -->
-            <xpath expr="//group[@name='purchase']" position="inside">
-                <!-- Add your fields here -->
+            <!-- <xpath expr="//group[@name='purchase']" position="inside">
                 <field name="gif_listprice"/>
+            </xpath> -->
+            <xpath expr="//field[@name='property_product_pricelist']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_procter_1"/>
+                <field name="gif_procter_2"/>
             </xpath>
         </field>
     </record>

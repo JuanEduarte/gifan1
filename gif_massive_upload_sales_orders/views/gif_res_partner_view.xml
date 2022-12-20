@@ -8,8 +8,9 @@
         <field name="arch" type="xml">
             <!-- Add your xpath here -->
             <xpath expr="//group[@name='container_row_2']" position="inside">
-                <group string="Almacén">
-                    <field name="gif_default_warehouse"/>
+                <group string="Almacén por defecto">
+                    <field name="gif_default_sale_warehouse"/>
+                    <field name="gif_default_purchase_warehouse"/>
                 </group>
             </xpath>
             

@@ -39,25 +39,36 @@ class GifExistencesReport(models.Model):
     def create_product_centralized(self, code_time, product_id):
 
         products_ids = []
-        reserved_qty = self.get_reserved_qty(product_id)
+        # reserved_qty = self.get_reserved_qty(product_id)
+
+        products_quants = {}
 
         for quant in self.env['stock.quant'].search([('product_id.id','=',product_id.id)]):
             warehouse_id = self.env['stock.location'].browse(quant.location_id.id).warehouse_id
             if not warehouse_id: continue
             
-            vals = {
-                'warehouse'       : warehouse_id.id,
-                'product'         : product_id.id,
-                'description_sale': product_id.description_sale,
-                #'reserved_qty'    : abs(quant.inventory_diff_quantity),
-                'available_qty'   : quant.quantity,
-                # 'gif_pallets'     : 0,  
-                'avg_cost'        : product_id.standard_price,
-                'code_time'       : code_time,
-            }
+            if warehouse_id.id in products_quants.keys():
+                vals = products_quants[warehouse_id.id]
+                vals['reserved_qty'] = vals.get('reserved_qty',0) + quant.reserved_quantity
+                vals['available_qty'] = vals['available_qty'] + quant.quantity - quant.reserved_quantity
 
-            vals['ext_avg_cost'] = vals['available_qty'] * vals['avg_cost']
-            vals['reserved_qty'] = reserved_qty.get(quant.lot_id.name,0)
+            else:
+                vals = {
+                    'warehouse'       : warehouse_id.id,
+                    'product'         : product_id.id,
+                    'description_sale': product_id.description_sale,
+                    'reserved_qty'    : quant.reserved_quantity,
+                    'available_qty'   : quant.quantity - quant.reserved_quantity,
+                    # 'gif_pallets'     : 0,  
+                    'avg_cost'        : product_id.standard_price,
+                    'code_time'       : code_time,
+                }
+
+                vals['ext_avg_cost'] = vals['available_qty'] * vals['avg_cost']
+
+                products_quants[warehouse_id.id] = vals
+
+            # vals['reserved_qty'] = reserved_qty.get(quant.lot_id.name,0)
 
             # if quant.product_tmpl_id.packaging_ids:
             #     for pack in quant.product_tmpl_id.packaging_ids:
@@ -66,6 +77,8 @@ class GifExistencesReport(models.Model):
             #         product_quant = self.env['gif.product.centralized'].create(vals)
             #         products_ids.append(product_quant.id)
             # else:
+
+        for vals in products_quants.values():
             product_quant = self.env['gif.product.centralized'].create(vals)
             products_ids.append(product_quant.id)
         

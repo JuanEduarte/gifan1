@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <template id="addenda_amazon" name="Addenda Servicios Comerciales Amazon">
+            <Addenda>
+                <amazon:ElementosAmazon
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:amazon="http://www.amazon.com.mx/AmazonAddenda"
+                    xsi:schemaLocation="http://www.amazon.com.mx/AmazonAddenda http://repository.edicomnet.com/schemas/mx/cfd/addenda/AmazonAddenda.xsd">
+                    
+                    <amazon:LosAtributos
+                        t-att-identificacionUnica="no_identify"
+                        t-att-nombreDelAtributo="'AmazonPO'"
+                        t-att-valorDelAtributo="format_string(record.invoice_origin, 1000)" />
+                </amazon:ElementosAmazon>
+            </Addenda>
+        </template>
+                
+        <record id="addenda_amazon" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>    
+</odoo>

@@ -8,13 +8,16 @@ class GifSaleOrderInherit(models.Model):
     gif_init_date = fields.Date(string="Fecha de inicio")
     gif_supplier_code = fields.Char(string="Número de proveedor")
 
-# class GifSaleOrderLine(models.Model):
-#     _inherit = 'sale.order.line'
 
-#     price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True, inverse='_compute_amount')
+    @api.depends('partner_id.ref','partner_id.gif_default_sale_warehouse ')
+    @api.onchange('partner_id')
+    def _onchange_partner(self):
+        self.gif_partner_code = self.partner_id.ref if self.partner_id.ref else False
+        self.warehouse_id = self.partner_id.gif_default_sale_warehouse if True else False
 
-#     # def _set_price(self):
-#     #     self.write({'price_unit': self.price_subtotal/self.product_uom_qty })
+    @api.onchange('partner_shipping_id')
+    def _onchange_partner_shipping(self):
+        self.gif_partner_shipping_code = self.partner_shipping_id.ref if self.partner_shipping_id.ref else False
 
 
 class GifResPartner(models.Model):
@@ -23,14 +26,18 @@ class GifResPartner(models.Model):
     def default_warehouse(self):
         return self.env['stock.warehouse'].search([])[0].id
         
-    gif_default_warehouse = fields.Many2one('stock.warehouse', string="Almcén por defecto", default=default_warehouse)
+    def default_picking(self):
+        return self.env['stock.picking.type'].search([])[0].id
+
+    gif_default_sale_warehouse = fields.Many2one('stock.warehouse', string="Almcén de venta", default=default_warehouse)
+    gif_default_purchase_warehouse = fields.Many2one('stock.picking.type', string="Almcén de compra", default=default_picking)
 
 
-class GifSaleOrder(models.Model):
-    _inherit = 'sale.order'
+class GifPurchaseOrderInherit(models.Model):
+    _inherit = 'purchase.order'
 
-    @api.depends('partner_id.ref','partner_id.gif_default_warehouse ')
+    @api.depends('partner_id.gif_default_purchase_warehouse')
     @api.onchange('partner_id')
     def _onchange_partner(self):
-        self.gif_partner_code = self.partner_id.ref if self.partner_id.ref else False
-        self.warehouse_id = self.partner_id.gif_default_warehouse if self.partner_id.gif_default_warehouse else False
+        if self.partner_id.gif_default_purchase_warehouse:
+            self.picking_type_id = self.partner_id.gif_default_purchase_warehouse

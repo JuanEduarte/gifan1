@@ -10,7 +10,7 @@ class GifPartnersDetails(models.Model):
     '''
 
     partner = fields.Many2one(comodel_name='res.partner', string='Socio')
-    partner_price = fields.Float(string='Precio')
+    partner_price = fields.Float(string='Precio',digits=(12,4))
     partner_uom = fields.Many2one(comodel_name='uom.uom', string='Unidad Medida')
     bar_code = fields.Char(string='Código de Barras del Cliente')
     individual_code = fields.Char(string='Código Individual del Cliente')

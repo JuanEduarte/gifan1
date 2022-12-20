@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="gif_saleOrderFieldIEPS" model="ir.ui.view">
+        <field name="name">gif.saleOrderFieldIEPS</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="gif_IepsDisplay" invisible="1"/>  
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position = "before" > 
+                <field name="gif_IepsDisplayOL" invisible="1"/>
+                <field name = "gif_SaleOrderIeps" force_save="1"  />
+                <field name="gif_tax_id_ieps" invisible="1"/>
+                <field name = "gif_SaleOrderIepsChar" class="text-right" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='tax_totals_json']" position="after">
+                <!-- Add your fields here -->
+                <field name="gif_tax_totals_json" invisible="1"/>
+                
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

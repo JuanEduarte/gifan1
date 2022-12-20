@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+gif_big_tables_reports.access_gif_base_report,access_gif_base_report,gif_big_tables_reports.model_gif_base_report,,1,1,1,1
+gif_big_tables_reports.access_gif_big_sales,access_gif_big_sales,gif_big_tables_reports.model_gif_big_sales,,1,1,1,1
+gif_big_tables_reports.access_gif_sale_analisys,access_gif_sale_analisys,gif_big_tables_reports.model_gif_sale_analisys,,1,1,1,1

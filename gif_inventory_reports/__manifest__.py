@@ -5,6 +5,7 @@
     'depends': ['base',
                 'stock',
                 'gif_sale_autorization',
+                'gif_big_tables_reports'
     ],
     'author': 'Qualsys Consulting',
     'category': 'Customizations',

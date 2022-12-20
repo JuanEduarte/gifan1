@@ -136,39 +136,33 @@ class WizardSalesOrdersUploader(models.TransientModel):
         """Función que valida la existencia de un producto y si se puede vender al cliente."""
 
         name = str(upc)
-        # Buscamos el producto por código de barras
-        product = self.env['product.product'].search([('barcode','=',name)])
-        
-        if len(product) > 1:
-            raise ValidationError("El código %s está establecido para varios productos." % name)
 
-        if not product:
-            # Buscamos el producto por código de barras o individual del cliente
-            details_id = self.env['gif.partners.details'].search(['|',('bar_code','=',name),('individual_code','=',name)])
-            """Lo activo?"""
-            # if len(details_id) > 1:
-            #     raise ValidationError("El código %s está establecido para varios clientes." % name)
-
-            product_id = details_id[0].product_tmp_id.product_variant_id.id
-            product = self.env['product.product'].browse(product_id)
-            
+        partner_details = self.env['gif.partners.details'].search(['&',
+                             ('partner','=', self.gif_customer.id),
+                             ('currency_sale','=',self.gif_customer.property_product_pricelist.currency_id.id), ## Lista de precios
+                             '|',
+                             ('bar_code','=',name),
+                             ('individual_code','=',name)
+                             ])
         
-        if not product:
-            self.products_not_found.append(str(upc))
-            return (False,False)
+        if len(partner_details) > 1:
+            raise ValidationError("El código %s se encuentra repetido en los siguientes productos: %s" % (name, ', '.join([str(p.product_tmp_id.product_variant_id.name) for p in partner_details]) ))
 
-        partner_details = self.env['gif.partners.details'].search([
-                             ('product_tmp_id','=', product.product_tmpl_id.id),
-                             ('partner','=', self.gif_customer.id) ])
-        
         if not partner_details:
-            self.invalid_products.append(f'{product.barcode} - {product.name}\n')
+            self.products_not_found.append(str(upc))
+            # self.invalid_products.append(f'{name}\n')
             return (False,False)
+
+        product_id = partner_details.product_tmp_id.product_variant_id.id
+        product = self.env['product.product'].browse(product_id)
         
-        # return (product, partner_details)
+        # if not product:
+        #     self.products_not_found.append(str(upc))
+        #     return (False,False)
+
         return (product, partner_details)
 
-    def read_soriana(self):
+    def read_soriana(self): # TUPLE INDEX ERROR
         """Función que recupera los datos del archivo con formato para Soriana"""
         # Encabezado
         self.gif_supplier_code = self.gif_content_file[0][1]
@@ -216,7 +210,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                     'product_uom_qty': float(qty),
                     'product_uom': partner_details.partner_uom.id,
                     # 'price_subtotal': float(row[6]),
-                    'name':product.product_tmpl_id.description_sale,
+                    # 'name':product.product_tmpl_id.description_sale,
                     'product_id':product.id,
                 }
                 order_line['price_unit'] = round(float(precost) / order_line['product_uom_qty'], 2)
@@ -262,7 +256,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                     'product_template_id': product.product_tmpl_id.id,
                     'product_uom_qty': float(qty),
                     'product_uom': partner_details.partner_uom.id,
-                    'name':product.product_tmpl_id.description_sale,
+                    # 'name':product.product_tmpl_id.description_sale,
                     'product_id':product.id,
                     'price_unit':partner_details.partner_price,
                 }
@@ -318,7 +312,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                 'product_template_id': product.product_tmpl_id.id,
                 'product_uom_qty': float(qty),
                 'product_uom': partner_details.partner_uom.id,
-                'name':product.product_tmpl_id.description_sale,
+                # 'name':product.product_tmpl_id.description_sale,
                 'product_id':product.id,
                 # 'price_unit':partner_details.partner_price,
                 'price_subtotal': float(subtot),
@@ -349,7 +343,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                 self.gif_delivery_dir = del_dir.id
                 self.gif_delivery_dir_code = del_dir.ref
 
-            elif re.match('Direcci.n:', row[0]):
+            elif re.match('Direcci(.+):$', row[0]):
                 self.gif_init_date = self.get_date(row[7])
             
             elif row[0] == 'Municipio:':
@@ -369,7 +363,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                     'product_template_id': product.product_tmpl_id.id,
                     'product_uom_qty': float(qty),
                     'product_uom': partner_details.partner_uom.id,
-                    'name':product.product_tmpl_id.description_sale,
+                    # 'name':product.product_tmpl_id.description_sale,
                     'product_id':product.id,
                     # 'price_unit':partner_details.partner_price,
                 }
@@ -391,7 +385,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
         
         # Se buscan las lineas de productos
         for mod,upc,qty,subt,*_ in self.gif_content_file:
-            print(mod,upc,qty,subt,*_)
+            
             if mod == "DD" and str(upc).isnumeric():# and str(dir) == self.gif_delivery_dir_code:
                 
                 product, partner_details = self._check_product(upc)
@@ -402,7 +396,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
                     'product_template_id': product.product_tmpl_id.id,
                     'product_uom_qty': float(qty),
                     'product_uom': partner_details.partner_uom.id,
-                    'name':product.product_tmpl_id.description_sale,
+                    # 'name':product.product_tmpl_id.description_sale,
                     'product_id':product.id,
                     # 'price_subtotal':float(subt)
                     # 'price_unit':partner_details.partner_price,
@@ -496,7 +490,7 @@ class WizardSalesOrdersUploader(models.TransientModel):
         # Validacion de existencia de productos
         if self.products_not_found:
             prods = ', '.join(set(self.products_not_found))
-            raise ValidationError("No se encontraron los siguientes prouctos:\n"+prods)
+            raise ValidationError("No se encontraron los siguientes productos:\n"+prods)
         
         # Validacion de venta de productos al cliente
         if self.invalid_products:
@@ -532,15 +526,15 @@ class WizardSalesOrdersUploader(models.TransientModel):
             'date_order': self.with_user_timezone(self.gif_order_date),
             'tipificacion_venta':self.gif_tfv.id,
             'tag_ids':[(4,self.gif_tag.id)],
-            'warehouse_id': self.gif_customer.gif_default_warehouse.id,
+            'warehouse_id': self.gif_customer.gif_default_sale_warehouse.id,
             'partner_shipping_id':self.gif_delivery_dir.id,
             'gif_partner_shipping_code':self.gif_delivery_dir_code,
         }
+        
         so = self.env['sale.order'].create(vals)
         
         # Se crean las lineas de orden
-        for line_vals in self.gif_sale_order_lines:
-            so.order_line = [(0,0,line_vals)]
+        so.order_line = [(0,0,line) for line in self.gif_sale_order_lines]
 
     def with_user_timezone(self, date_time):
         """Funcion que recibe una fecha (obj. date o datetime) y devuelve un datetime con la diferencia de zona horaria del usuario aplicada.

@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        
+        <template id="addenda_panadero" name="Adenda Proveedora del Panadero">
+            <Addenda>
+
+                <requestForPayment
+                    t-att-type="no_identify"
+                    t-att-contentVersion="no_identify"
+                    t-att-documentStructureVersion="no_identify"
+                    t-att-documentStatus="no_identify"
+                    t-att-DeliveryDate="only_date.replace('-','')">
+
+                    <requestForPaymentIdentification>
+                        <entityType>INVOICE</entityType>
+                        <uniqueCreatorIdentification t-out="record.name" />
+                    </requestForPaymentIdentification>
+
+                    <specialInstruction t-att-code="no_identify">
+                        <text t-esc="'('+num2word(record.amount_total, currency_name)+')'" />
+                    </specialInstruction>
+
+                    <orderIdentification>
+                        <referenceIdentification t-att-type="no_identify" t-out="sale_order_origin" />
+                        <ReferenceDate t-out="init_date"/>
+                    </orderIdentification>
+
+                    <AdditionalInformation>
+                        <referenceIdentification t-att-type="No_reconcocido" t-out="record.name" />
+                        <referenceIdentification t-att-type="NO_reconcocido">'No_reconocido'</referenceIdentification>
+                    </AdditionalInformation>
+
+                    <DeliveryNote>
+                        <referenceIdentification/>
+                        <ReferenceDate/>
+                    </DeliveryNote>
+
+                    <buyer>
+                        <gln>'No_reconocido'</gln>
+                        <contactInformation>
+                            <personOrDepartmentName>
+                                <text>'No_reconocido'</text>
+                            </personOrDepartmentName>
+                        </contactInformation>
+                    </buyer>
+
+                    <seller>
+                        <gln>'No_reconocido'</gln>
+                        <alternatePartyIdentification
+                            t-att-type="no_identify"
+                            t-out="supplier_code" />
+                    </seller>
+
+                    <shipTo>
+                        <gln>'No_reconocido'</gln>
+                        <nameAndAddress>
+                            <name t-out="record.partner_shipping_id.name" />
+                            <streetAddressOne t-out="record.partner_shipping_id.street_name" />
+                            <city t-out="record.partner_shipping_id.city" />
+                            <postalCode t-out="record.partner_shipping_id.zip" />
+                        </nameAndAddress>
+                    </shipTo>
+
+                    <currency t-att-currencyISOCode="currency_name">
+                        <currencyFunction>BILLING_CURRENCY</currencyFunction>
+                        <rateOfChange>1</rateOfChange>
+                    </currency>
+
+                    <paymentTerms
+                        t-att-paymentTermsEvent="no_identify"
+                        t-att-PaymentTermsRelationTime="no_identify">
+                        <netPayment t-att-netPaymentTermsType="no_identify">
+                            <paymentTimePeriod>
+                                <timePeriodDue t-att-timePeriod="'DAYS'">
+                                    <value t-out="payment_term_days" />
+                                </timePeriodDue>
+                            </paymentTimePeriod>
+                        </netPayment>
+                    </paymentTerms>
+
+                    <allowanceCharge
+                        t-att-allowanceChargeType="no_identify"
+                        t-att-settlementType="no_identify">
+                        <specialServicesType>'No_reconocido'</specialServicesType>
+                        <monetaryAmountOrPercentage>
+                            <rate base="no_identify">
+                                <percentage>'No_reconocido'</percentage>
+                            </rate>
+                        </monetaryAmountOrPercentage>
+                    </allowanceCharge>
+
+                    <t t-set="index" t-value="0"/>
+                    <t t-foreach="invoice_line_vals_list" t-as="line_vals">
+                        <t t-set="line" t-value="line_vals['line']"/>
+                        <t t-set="index" t-value="index + 1"/>
+
+                        <lineItem
+                            t-att-type="'SimpleInvoiceLineltemType'"
+                            t-att-number="index">
+
+                            <tradeItemIdentification>
+                                <gtin t-out="line.product_id.default_code" />
+                            </tradeItemIdentification>
+                            
+                            <alternateTradeItemIdentification
+                                t-att-type="no_identify" t-out="line.product_id.default_code" />
+                            
+                            <tradeItemDescriptionInformation t-att-language="'ES'">
+                                <longText t-out="line.product_id.description_sale"/>
+                            </tradeItemDescriptionInformation>
+                            
+                            <invoicedQuantity
+                                t-att-unitOfMeasure="line.product_uom_id.unspsc_code_id.code"
+                                t-out="line.quantity" />
+                            
+                            <grossPrice>
+                                <Amount t-out="line.price_unit"/>
+                            </grossPrice>
+
+                            <AdditionalInformation>
+                                <referenceIdentification t-att-type="ON">'No_reconocido'</referenceIdentification>
+                            </AdditionalInformation>
+
+                            <totalLineAmount>
+                                <grossAmount>
+                                    <Amount t-esc="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"/>
+                                </grossAmount>
+                                <netAmount>
+                                    <Amount t-esc="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"/>
+                                </netAmount>
+                            </totalLineAmount>
+
+                        </lineItem>
+                    </t>
+                    
+                    <totalAmount>
+                        <Amount t-esc="format_float(total_price_subtotal_before_discount, currency_precision)" />
+                    </totalAmount>
+
+                    <TotalAllowanceCharge
+                        t-att-allowanceOrChargeType="no_identify">
+                        <specialServicesType>No_reconcocido</specialServicesType>
+                        <Amount>No_reconcocido</Amount>
+                    </TotalAllowanceCharge>
+
+                    <baseAmount>
+                        <Amount t-esc="format_float(total_price_subtotal_before_discount, currency_precision)" />
+                    </baseAmount>
+                    
+                    
+                    <t t-if="tax_details_transferred['tax_details'] or tax_details_withholding['tax_details']">
+                        <t t-if="tax_details_withholding['tax_details']">
+                            <t t-foreach="tax_details_withholding['tax_details'].values()" t-as="tax_detail_vals">
+                                <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+
+                                <tax t-att-type="get_tax_cfdi_name(tax_detail_vals)">
+                                    <taxPercentage t-out="format_float(tax_detail_vals['tax_rate_transferred'], 2)" />
+                                    <taxAmount t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                </tax>
+                            </t>
+                        </t>
+
+                        <t t-if="tax_details_transferred['tax_details']">
+                            <t t-foreach="tax_details_transferred['tax_details'].values()" t-as="tax_detail_vals">
+                                <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                
+                                <tax t-att-type="get_tax_cfdi_name(tax_detail_vals)">
+                                    <taxPercentage t-out="format_float(tax_detail_vals['tax_rate_transferred'], 2)" />
+                                    <taxAmount t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                </tax>
+                            </t>
+                        </t>
+                    </t>
+                    
+                    <payableAmount>
+                        <Amount t-esc="format_float(record.amount_total, currency_precision)" />
+                    </payableAmount>
+
+                </requestForPayment>
+
+            </Addenda>
+        </template>
+
+        <record id="addenda_panadero" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>
+</odoo>

@@ -6,5 +6,5 @@ from . import gif_partners_details_purchase
 from . import gif_account_move_inherit
 from . import gif_packaging_type
 from . import gif_product_brand
-# from . import gif_res_partner_inherit
+from . import gif_res_partner_inherit
 

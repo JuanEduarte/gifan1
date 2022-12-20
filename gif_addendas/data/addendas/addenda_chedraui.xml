@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        
+        <template id="addenda_chedraui" name="Adenda Chedraui">
+            <Addenda
+                xmlns="https://edixcfdisecure.ekomercio.com/esquemas"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://edixcfdisecure.ekomercio.com/esquemas https://edixcfdisecure.ekomercio.com/esquemas/AMC71.xsd">
+
+                <requestForPayment
+                    t-att-type="no_identify"
+                    t-att-contentVersion="no_identify"
+                    t-att-documentStructureVersion="no_identify"
+                    t-att-documentStatus="no_identify"
+                    t-att-DeliveryDate="only_date">
+
+                    <requestForPaymentIdentification>
+                        <entityType>INVOICE</entityType>
+                        <uniqueCreatorIdentification t-out="record.name" />
+                    </requestForPaymentIdentification>
+
+                    <specialInstruction code="no_identify">
+                        <text t-esc="'('+num2word(record.amount_total, currency_name)+')'" />
+                    </specialInstruction>
+
+                    <orderIdentification>
+                        <referenceIdentification t-att-type="no_identify" t-out="sale_order_origin" />
+                        <ReferenceDate t-out="init_date"/>
+                    </orderIdentification>
+
+                    <AdditionalInformation>
+                        <referenceIdentification t-att-type="no_identify">No reconocido</referenceIdentification>
+                    </AdditionalInformation>
+
+                    <buyer>
+                        <gln>No reconocido</gln>
+                        <contactInformation>
+                            <personOrDepartmentName>
+                                <text>No reconocido</text>
+                            </personOrDepartmentName>
+                        </contactInformation>
+                    </buyer>
+
+                    <seller>
+                        <gln>No reconocido</gln>
+                        <alternatePartyIdentification
+                            t-att-type="no_identify"
+                            t-out="supplier_code" />
+                    </seller>
+
+                    <shipTo>
+                        <gln>No reconocido</gln>
+                        <nameAndAddress>
+                            <name t-out="record.partner_shipping_id.name" />
+                            <streetAddressOne t-out="record.partner_shipping_id.street_name" />
+                            <city t-out="record.partner_shipping_id.city" />
+                            <postalCode t-out="record.partner_shipping_id.zip" />
+                        </nameAndAddress>
+                    </shipTo>
+
+                    <InvoiceCreator>
+                        <gln>'No_reconocido'</gln>
+                        <alternatePartyIdentification t-att-type="no_identify" t-out="record.company_id.vat" />
+                        <nameAndAddress>
+                            <name t-out="record.company_id.name" />
+                            <streetAddressOne t-out="record.company_id.street_name" />
+                            <city t-esc="company_direction" />
+                            <postalCode t-esc="record.company_id.zip" />
+                        </nameAndAddress>
+                    </InvoiceCreator>
+
+                    <currency t-att-currencyISOCode="currency_name">
+                        <currencyFunction>BILLING_CURRENCY</currencyFunction>
+                        <rateOfChange>1</rateOfChange>
+                    </currency>
+
+                    <paymentTerms
+                        t-att-paymentTermsEvent="no_identify"
+                        t-att-PaymentTermsRelationTime="no_identify">
+                        <netPayment t-att-netPaymentTermsType="no_identify">
+                            <paymentTimePeriod>
+                                <timePeriodDue t-att-timePeriod="'DAYS'">
+                                    <value t-out="payment_term_days" />
+                                </timePeriodDue>
+                            </paymentTimePeriod>
+                        </netPayment>
+                    </paymentTerms>
+
+                    <t t-set="index" t-value="0" />
+                    <t t-foreach="invoice_line_vals_list" t-as="line_vals">
+                        <t t-set="line" t-value="line_vals['line']"/>
+                        <t t-set="index" t-value="index + 1"/>
+
+                        <lineItem
+                            t-att-type="'SimpleInvoiceLineltemType'"
+                            t-att-number="index">
+
+                            <tradeItemIdentification>
+                                <gtin t-out="line.product_id.default_code" />
+                            </tradeItemIdentification>
+                            
+                            <alternateTradeItemIdentification
+                                t-att-type="'No_identificado'" t-out="line.product_id.default_code" />
+                            
+                            <tradeItemDescriptionInformation t-att-language="'ES'">
+                                <longText t-out="line.product_id.description_sale"/>
+                            </tradeItemDescriptionInformation>
+                            
+                            <invoicedQuantity t-att-unitOfMeasure="line.product_uom_id.unspsc_code_id.code" t-out="line.quantity" />
+                            
+                            <aditionalQuantity QuantityType="no_identify">'No_reconocido'</aditionalQuantity>
+                            
+                            <grossPrice>
+                                <Amount t-out="line.price_unit"/>
+                            </grossPrice>
+                            
+                            <netPrice>
+                                <Amount t-out="line.price_unit"/>
+                            </netPrice>
+                            
+                            <t t-set="tax_detail_transferred" t-value="tax_details_transferred['invoice_line_tax_details'][line]"/>
+                            <t t-set="tax_detail_withholding" t-value="tax_details_withholding['invoice_line_tax_details'][line]"/>
+                            <t t-if="tax_detail_transferred['tax_details'] or tax_detail_withholding['tax_details']">
+                                
+                                <t t-if="tax_detail_withholding['tax_details']">
+                                    <t t-foreach="tax_detail_withholding['tax_details'].values()" t-as="tax_detail_vals">
+                                        <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+
+                                        <tradeItemTaxInformation>
+                                            <taxTypeDescription t-esc="{'001':'ISR', '002':'IVA', '003':'IEPS'}.get(get_tax_cfdi_name(tax_detail_vals))" />
+                                            <tradeItemTaxAmount>
+                                                <taxPercentage t-out="format_float(tax_detail_vals['tax_rate_transferred'], 2)" />
+                                                <taxAmount t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                            </tradeItemTaxAmount>
+                                        </tradeItemTaxInformation>
+                                    </t>
+                                </t>
+
+                                <t t-if="tax_detail_transferred['tax_details']">
+                                    <t t-foreach="tax_detail_transferred['tax_details'].values()" t-as="tax_detail_vals">
+                                        <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                                        
+                                        <tradeItemTaxInformation>
+                                            <taxTypeDescription t-esc="{'001':'ISR', '002':'IVA', '003':'IEPS'}.get(get_tax_cfdi_name(tax_detail_vals))" />
+                                            <tradeItemTaxAmount>
+                                                <taxPercentage t-out="format_float(tax_detail_vals['tax_rate_transferred'], 2)" />
+                                                <taxAmount t-out="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision) if tax.l10n_mx_tax_type != 'Exento' else False"/>
+                                            </tradeItemTaxAmount>
+                                        </tradeItemTaxInformation>
+                                    </t>
+                                </t>
+                            </t>
+
+                            <totalLineAmount>
+                                <grossAmount>
+                                    <Amount t-esc="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"/>
+                                </grossAmount>
+                                <netAmount>
+                                    <Amount t-esc="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"/>
+                                </netAmount>
+                            </totalLineAmount>
+
+                        </lineItem>
+                    </t>
+                    
+                    <totalAmount>
+                        <Amount t-esc="format_float(total_price_subtotal_before_discount, currency_precision)" />
+                    </totalAmount>
+
+                    <baseAmount>
+                        <Amount t-esc="format_float(total_price_subtotal_before_discount, currency_precision)" />
+                    </baseAmount>
+                    
+                    <payableAmount>
+                        <Amount t-esc="format_float(record.amount_total, currency_precision)" />
+                    </payableAmount>
+                </requestForPayment>
+
+            </Addenda>
+        </template>
+
+        <record id="addenda_chedraui" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>
+</odoo>

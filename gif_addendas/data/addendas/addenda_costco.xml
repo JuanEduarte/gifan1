@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="addenda_costco" name="Addenda Costco">
+            <Addenda>
+                <Addenda_Costco_Detecno>
+                    <Version>1.0</Version>
+                    <TipoProveedor>No_recococido</TipoProveedor>
+                    <NoProveedor t-out="customer.gif_provider_id" />
+                    <SufijoProveedor>No recococido</SufijoProveedor>
+                    <NoOc>No recococido</NoOc>
+                    <Moneda t-out="currency_name" />
+                    <TerminosPago t-out="record.invoice_payment_term_id.name" />
+                    <IDFactura t-out="record.name" />
+                    <CorreoAviso>No recococido</CorreoAviso>
+                </Addenda_Costco_Detecno>                
+            </Addenda>    
+        </template>
+
+        <record id="addenda_costco" model="ir.ui.view">
+            <field name="l10n_mx_edi_addenda_flag">True</field>
+        </record>
+
+    </data>    
+</odoo>

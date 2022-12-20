@@ -36,7 +36,12 @@
                 <!-- attrs="{'invisible': [('state','!=','to_approve')]}" -->
                 <field name="gif_is_different_purchase" optional="hide" readonly="1"/>
                 <field name="gif_difference_purchase" optional="hide" readonly="1"/>
+                <field name="gif_block" invisible="1"/>
                 <!-- <field name="gif_block" invisible="1"/> -->
+            </xpath>
+            <xpath expr="//page[@name='products']//tree//field[@name='price_unit']" position="attributes">
+                <!-- Add your fields here -->
+                <attribute name="attrs">{'readonly': [('gif_block','=',True)]}</attribute>
             </xpath>
         </field>
     </record>

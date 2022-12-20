@@ -1,4 +1,5 @@
 from odoo import api, fields, models,_
+from odoo.exceptions import UserError
 
 
 class GifInventory(models.Model):
@@ -23,21 +24,30 @@ class GifInventory(models.Model):
     def _onchange_gif_product(self):
         for record in self:
             product = False
+            inventary = False
             if record.code_prod:
-                product = record.env['product.template'].search([('barcode','=',record.code_prod)])
-                if len(product) == 0:
-                    product = record.env['gif.partners.details'].search(['|',('bar_code','=',record.code_prod),('individual_code','=',record.code_prod)])
-                if len(product) == 0:
-                    product = record.env['gif.partners.details.purchase'].search(['|',('bar_code_purchase','=',record.code_prod),('individual_code_purchase','=',record.code_prod)])
-                inventary = record.env['stock.quant'].search([('location_id','=',record.gif_location.id)])
-                record.gif_product = product.product_tmp_id.id
-                record.gif_uom = product.product_tmp_id.uom_id
-                for i in inventary:
-                    if i.product_id.name == product.name:
-                        record.gif_real_inv = i.inventory_quantity_auto_apply
-                        break
+                product = record.env['product.template'].search([('barcode','=',record.code_prod)],limit=1)
+                if len(product) != 0 and product != False:
+                    record.gif_product = product.id
+                    record.gif_uom = product.uom_id.id
+                else:
+                    product = record.env['gif.partners.details'].search(['|',('bar_code','=',record.code_prod),('individual_code','=',record.code_prod)],limit=1)
+                    if len(product) != 0 and product != False:
+                        record.gif_product = product.product_tmp_id.id
+                        record.gif_uom = product.parrtner_uom.id
                     else:
-                        pass
+                        product = record.env['gif.partners.details.purchase'].search(['|',('bar_code_purchase','=',record.code_prod),('individual_code_purchase','=',record.code_prod)],limit=1)
+                        if len(product) != 0 and product != False:
+                            record.gif_product = product.product_tmp_id_purchase.id
+                            record.gif_uom = product.partner_uom_purchase.id
+                inventary = record.env['stock.quant'].search([('location_id','=',record.gif_location.id)])
+                if inventary != False and record.gif_product.id != False:
+                    for i in inventary:
+                        if i.product_id.name == record.gif_product.name:
+                            record.gif_real_inv = i.inventory_quantity_auto_apply
+                            break
+                        else:
+                            pass
             else:
                 record.gif_product = False
                 record.gif_uom = False
@@ -59,6 +69,10 @@ class GifInventory(models.Model):
             else:
                 record.gif_check = False
 
-    
+    @api.ondelete(at_uninstall=True)
+    def _delete_registers(self):
+        for record in self:
+            if record.state == 'done':
+                raise UserError('No puedes borrar registros que estén concluidos.')
     
     

@@ -19,8 +19,6 @@
         'base',
         'sale',
         'account',
-        'gif_purchase_segregation',
-        'gif_sale_segregation'
     ],
 
     # always loaded

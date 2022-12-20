@@ -30,7 +30,7 @@ class StockLandedCost(models.Model):
                 for line in self.cost_lines:
                     line.price_unit = pediment.gif_total
             else:
-                cost_des = self.env['product.product'].search([('name','=','Costo Destino')])
+                cost_des = self.env['product.product'].search([('name','=','COSTO DESTINO')])
                 self.update({
                     'cost_lines': [(0,0,{
                         'split_method': 'equal',

@@ -4,4 +4,5 @@ gif_multiple_fields.access_gif_product_category,access_gif_product_category,gif_
 gif_multiple_fields.access_gif_product_type,access_gif_product_type,gif_multiple_fields.model_gif_product_type,,1,1,1,1
 gif_multiple_fields.access_gif_product_subcategory,access_gif_product_subcategory,gif_multiple_fields.model_gif_product_subcategory,,1,1,1,1
 gif_multiple_fields.access_gif_product_subtype,access_gif_product_subtype,gif_multiple_fields.model_gif_product_subtype,,1,1,1,1
+gif_multiple_fields.access_gif_category,access_gif_category,gif_multiple_fields.model_gif_category,,1,1,1,1
 

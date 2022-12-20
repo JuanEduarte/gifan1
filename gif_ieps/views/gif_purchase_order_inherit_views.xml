@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="gif_purchaseOrderFieldIEPS" model="ir.ui.view">
+        <field name="name">gif.purchaseOrderFieldIEPS</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <!-- attrs="{'invisible': [('gif_IepsDisplayOL','=',False)]}" -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position = "before" > 
+                <field name = "gif_IepsDisplayOL" invisible="1"/>
+                <field name = "gif_PurchaseOrderIeps"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
