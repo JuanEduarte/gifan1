@@ -6,9 +6,9 @@ class GifSaleAnalisys(models.Model):
 
     #report_id = fields.Many2one('gif.report', store=True)
 
-    gif_customer = fields.Many2one('res.partner', string="Cliente", readonly=True)
+    gif_customer_id = fields.Many2one('res.partner', string="Cliente", readonly=True)
     
-    gif_product = fields.Many2one('product.product', string="Producto", readonly=True)
+    gif_product_id = fields.Many2one('product.product', string="Producto", readonly=True)
     gif_supplier = fields.Char(string="Proveedor", readonly=True)
     gif_brand = fields.Char(string="Marca", readonly=True)
     gif_goal = fields.Float(string="Meta", readonly=True)

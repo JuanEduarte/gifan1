@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-gif_sale_reports.access_sales_reports_wizard,access_sales_reports_wizard,gif_sale_reports.model_sales_reports_wizard,,1,1,1,1

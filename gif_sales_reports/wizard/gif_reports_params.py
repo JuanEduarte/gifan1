@@ -24,12 +24,12 @@ class SalesReportsWizard(models.TransientModel):
     def get_sale_report(self):
       by_date = self.env['sale.order'].search([('create_date', '<=', self.end_date),('create_date', '>=', self.start_date)])
       print(by_date)
-      if self.client_param1 == False and self.client_param2 == False:    
+      if self.client_param1  == False and self.client_param2  == False and self.product_param1  == False and self.product_param2 == False :    
         for i in by_date:
           print(i)
           self.moves.append(i)
       
-      elif self.client_param1 and self.client_param2 == False:
+      elif self.client_param1 and self.client_param2 == False and self.product_param1 == False and self.product_param2 == False:
         print('#### UN SOLO PARAMETRO DE CLIENTE')
         clients_name = []
         self.moves.clear()
@@ -42,7 +42,34 @@ class SalesReportsWizard(models.TransientModel):
           res = self.env['sale.order'].search([('partner_id.name', '=', j)])
         self.moves.append(res)
         #print('*** REGRESA', self.moves)
+        
+        
+      elif self.client_param1 and self.product_param1 and(self.client_param2 and self.product_param2) == False:
+        print('#### Parametro de un cliente y un producto')
+        clients_name = []
+        product_name = []
+        self.moves.clear()
+        by_date = self.env['sale.order'].search([('product_id', '=', self.product_param1)])
+        for i in by_date:
+          clients_name.append(i.partner_id.name)
+          product_name.append(i.order_line)
+        print(product_name)
+        for i in product_name:
+          print(i.product_template_id)
+        dato = '^'+(str(self.client_param1)).upper()
+        datop = '^'+(str(self.product_param1)).upper()
+        filtred = [p for p in clients_name if  re.match(dato, (p.upper()))]
+        pfiltred = [p for p in clients_name if  re.match(datop, (p.upper()))]
 
+        print('filtred',filtred)
+        print('pfiltred',pfiltred)
+        
+        for j in filtradas:
+          res = self.env['sale.order'].search([('partner_id.name', '=', j)])
+        self.moves.append(res)
+        #print('*** REGRESA', self.moves)
+        
+        
       elif self.client_param1 and self.client_param2:
         orders = []
         self.moves.clear()
